@@ -11,6 +11,13 @@
         "source": "**",
         "destination": "/index.html"
       }
+    ],
+    "redirects": [
+      {
+        "source": "https://kreditsch.de/**",
+        "destination": "https://www.kreditsch.de/**",
+        "type": 301
+      }
     ]
   }
 }
