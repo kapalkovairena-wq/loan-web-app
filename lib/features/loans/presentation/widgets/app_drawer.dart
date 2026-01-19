@@ -5,8 +5,9 @@ import '../pages/about_page.dart';
 import '../pages/contact_page.dart';
 import '../pages/loan_solution_section.dart';
 import '../pages/loan_offers_page.dart';
-import '../pages/loan_offers_page.dart';
-import '../pages/loan_offers_page.dart';
+import '../pages/client_profile_page.dart';
+import '../pages/loan_history_page.dart';
+import '../pages/admin_loan_page.dart';
 
 
 class AppDrawer extends StatelessWidget {
@@ -42,6 +43,24 @@ class AppDrawer extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const LoanSolutionSection()),
+            );
+          }),
+          _drawerItem(context, 'Profil', () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const ClientProfilePage()),
+            );
+          }),
+          _drawerItem(context, 'Historique des demandes', () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoanHistoryPage()),
+            );
+          }),
+          _drawerItem(context, 'Admins', () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const AdminLoanPage()),
             );
           }),
           _drawerItem(context, 'Contact', () {
