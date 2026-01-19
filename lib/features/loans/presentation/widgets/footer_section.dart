@@ -216,7 +216,7 @@ class FooterSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: const Center(
                 child: Text(
-                  "© Copyright 2024 KreditSch. Tous droits réservés.",
+                  "© Copyright 2026 KreditSch. Tous droits réservés.",
                   style: TextStyle(color: Colors.white70),
                 ),
               ),

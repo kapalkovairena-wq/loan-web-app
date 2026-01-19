@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_header.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/whatsApp_button.dart';
 import '../widgets/hero_banner.dart';
 import '../widgets/loan_ideas_section.dart';
-import '../widgets/app_drawer.dart';
 import '../widgets/why_choose_us_loan_section.dart';
 import '../widgets/loan_services_cards_section.dart';
 import '../widgets/why_choose_us_section.dart';
@@ -11,7 +12,6 @@ import '../widgets/credit_services_section.dart';
 import '../widgets/testimonials_section.dart';
 import '../widgets/loan_process_section.dart';
 import '../widgets/footer_section.dart';
-import '../widgets/whatsApp_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

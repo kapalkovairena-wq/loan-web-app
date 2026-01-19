@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/input_field.dart';
+import '../widgets/footer_section.dart';
+import '../widgets/app_drawer.dart';
+import '../widgets/whatsApp_button.dart';
+import '../widgets/app_header.dart';
+import '../widgets/hero_banner.dart';
 
 class LoanRequestPage extends StatefulWidget {
   const LoanRequestPage({super.key});
@@ -51,13 +56,17 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFF8F9FB),
-        appBar: AppBar(
-          title: const Text("Demande de prêt"),
-          backgroundColor: const Color(0xFF061A3A),
-        ),
-        body: SingleChildScrollView(
-            child: Center(
+      drawer: const AppDrawer(),
+      backgroundColor: const Color(0xFFF8F9FB),
+      body: Stack(
+        children: [
+      SingleChildScrollView(
+      child: Column(
+          children: [
+          const AppHeader(),
+        const HeroBanner(),
+        const SizedBox(height: 80),
+        Center(
                 child: Container(
                   width: 900,
                   padding: const EdgeInsets.all(30),
@@ -74,7 +83,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    const Text(
+                      const Text(
                     "Informations personnelles",
                     style: TextStyle(
                       fontSize: 22,
@@ -195,12 +204,22 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
             ),
+            const SizedBox(height: 80),
+            const FooterSection(),
+          ],
+      ),
         ),
+          const WhatsAppButton(
+            phoneNumber: "+4915774851991",
+            message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
+          ),
+        ],
+      )
     );
   }
 

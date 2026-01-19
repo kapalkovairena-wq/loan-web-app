@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../pages/home_page.dart';
 import '../pages/loan_simulation_page.dart';
-//import '../pages/about_page.dart';
-//import '../pages/contact_page.dart';
-// importe tes autres pages si besoin
+import '../pages/about_page.dart';
+import '../pages/contact_page.dart';
+import '../pages/loan_solution_section.dart';
+
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -23,16 +24,22 @@ class AppDrawer extends StatelessWidget {
             );
           }),
           _drawerItem(context, 'À propos de nous', () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoanExpertiseSection()),
+            );
           }),
-          _drawerItem(context, 'Poursuivre', () {
-            Navigator.pop(context);
-          }),
-          _drawerItem(context, 'Personnel', () {
-            Navigator.pop(context);
+          _drawerItem(context, 'Investissement', () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoanSolutionSection()),
+            );
           }),
           _drawerItem(context, 'Contact', () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const ContactPage()),
+            );
           }),
           _drawerItem(context, 'Demander un prêt', () {
             Navigator.pushReplacement(
