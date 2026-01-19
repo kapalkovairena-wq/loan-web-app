@@ -5,6 +5,8 @@ import '../pages/about_page.dart';
 import '../pages/contact_page.dart';
 import '../pages/loan_solution_section.dart';
 import '../pages/loan_offers_page.dart';
+import '../pages/loan_offers_page.dart';
+import '../pages/loan_offers_page.dart';
 
 
 class AppDrawer extends StatelessWidget {
