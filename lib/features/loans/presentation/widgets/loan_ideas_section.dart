@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../pages/loan_request_page.dart';
+
+import '../pages/loan_offers_page.dart';
 
 
 class LoanIdeasSection extends StatelessWidget {
@@ -131,7 +132,7 @@ class _ContentSection extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
               );
             },
             child: const Text('Découvrir nos offres'),

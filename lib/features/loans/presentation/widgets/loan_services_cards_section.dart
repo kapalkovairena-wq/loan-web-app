@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../pages/loan_offers_page.dart';
+
 class LoanServicesCardsSection extends StatelessWidget {
   const LoanServicesCardsSection({super.key});
 
@@ -19,7 +21,7 @@ class LoanServicesCardsSection extends StatelessWidget {
                 Expanded(
                   child: _LoanCard(
                     imageUrl:
-                    'https://images.unsplash.com/photo-1604594849809-dfedbc827105',
+                    'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/top-view-of-businessmen-analyzing-management-statistics-while-working-at-company-investments-r6sdkfa7f0qarcxa8bmgf8ue5mupxbdnt3jijgp1qo.webp',
                     icon: Icons.savings_outlined,
                     title: 'Prêts personnels',
                     description:
@@ -31,7 +33,7 @@ class LoanServicesCardsSection extends StatelessWidget {
                 Expanded(
                   child: _LoanCard(
                     imageUrl:
-                    'https://images.unsplash.com/photo-1554224155-6726b3ff858f',
+                    'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/businesswoman-leader-team-conference-on-meeting-presentation-to-planning-investment-project-working-r6sdiewmsrz7xdueyyc6l93weyrggmebv5b4l5od1s.webp',
                     icon: Icons.business_center_outlined,
                     title: 'Prêts professionnels',
                     description:
@@ -49,7 +51,7 @@ class LoanServicesCardsSection extends StatelessWidget {
           /// IMAGE CENTRALE
           /// =======================
           Image.network(
-            'https://images.unsplash.com/photo-1523958203904-cdcb402031fd',
+            'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/Finovobank3-r6tmwcqsy2pvr6gewqegefmemja3rg0y6edjrx0mxc.jpg',
             width: double.infinity,
             height: 480,
             fit: BoxFit.cover,
@@ -127,7 +129,12 @@ class _LoanCard extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+                  );
+                },
                 child: const Text(
                   'En savoir plus →',
                   style: TextStyle(color: Colors.amber),
@@ -163,7 +170,7 @@ class _BottomCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        children: const [
+        children: [
           Icon(Icons.support_agent, size: 40, color: Colors.amber),
           SizedBox(height: 20),
           Text(
@@ -181,9 +188,17 @@ class _BottomCard extends StatelessWidget {
             style: TextStyle(color: Colors.black54),
           ),
           SizedBox(height: 20),
-          Text(
-            'En savoir plus →',
-            style: TextStyle(color: Colors.amber),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+              );
+            },
+            child: const Text(
+              'En savoir plus →',
+              style: TextStyle(color: Colors.amber),
+            ),
           ),
         ],
       ),

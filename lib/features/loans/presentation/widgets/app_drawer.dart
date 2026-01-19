@@ -4,6 +4,7 @@ import '../pages/loan_simulation_page.dart';
 import '../pages/about_page.dart';
 import '../pages/contact_page.dart';
 import '../pages/loan_solution_section.dart';
+import '../pages/loan_offers_page.dart';
 
 
 class AppDrawer extends StatelessWidget {
@@ -23,10 +24,16 @@ class AppDrawer extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const HomePage()),
             );
           }),
-          _drawerItem(context, 'À propos de nous', () {
+          _drawerItem(context, 'Découvrir nos offres', () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => const LoanExpertiseSection()),
+              MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+            );
+          }),
+          _drawerItem(context, 'Demander un prêt', () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
             );
           }),
           _drawerItem(context, 'Investissement', () {
@@ -41,10 +48,10 @@ class AppDrawer extends StatelessWidget {
               MaterialPageRoute(builder: (_) => const ContactPage()),
             );
           }),
-          _drawerItem(context, 'Demander un prêt', () {
+          _drawerItem(context, 'À propos de nous', () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+              MaterialPageRoute(builder: (_) => const LoanExpertiseSection()),
             );
           }),
         ],

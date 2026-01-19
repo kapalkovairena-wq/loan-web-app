@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../presentation/auth/auth_gate.dart';
+import '../../presentation/auth/register_page.dart';
+
 class HeroBanner extends StatelessWidget {
   const HeroBanner({super.key});
 
@@ -13,7 +16,7 @@ class HeroBanner extends StatelessWidget {
         children: [
           /// Image de fond
           Image.network(
-            'https://images.unsplash.com/photo-1521791136064-7986c2920216',
+            'https://images.unsplash.com/photo-1523958203904-cdcb402031fd',
             fit: BoxFit.cover,
           ),
 
@@ -34,7 +37,7 @@ class HeroBanner extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Des services bancaires\npour développer votre entreprise',
+                      'Des services de prêts\npour développer votre entreprise',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 32,
@@ -53,12 +56,22 @@ class HeroBanner extends StatelessWidget {
                     Row(
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const AuthGate()),
+                            );
+                          },
                           child: const Text('Devenez client'),
                         ),
                         const SizedBox(width: 20),
                         OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => const RegisterPage()),
+                            );
+                          },
                           child: const Text(
                             'Registre',
                             style: TextStyle(color: Colors.white),

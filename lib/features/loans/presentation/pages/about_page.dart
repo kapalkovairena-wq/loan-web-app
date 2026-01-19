@@ -7,6 +7,7 @@ import '../widgets/hero_banner.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/whatsApp_button.dart';
 import '../widgets/footer_section.dart';
+import '../pages/loan_offers_page.dart';
 
 
 class AboutPage extends StatefulWidget {
@@ -228,14 +229,14 @@ class LoanExpertiseSection extends StatelessWidget {
         // ================= IMAGE SECTION =================
         Stack(
           children: [
+            Image.network(
+              'https://images.unsplash.com/photo-1521791136064-7986c2920216',
+              fit: BoxFit.cover,
+            ),
             Container(
               width: double.infinity,
               height: 420,
               decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/loan_team.jpg'),
-                  fit: BoxFit.cover,
-                ),
               ),
             ),
 
@@ -785,8 +786,10 @@ class _ActionLink extends StatelessWidget {
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: () {
-          // TODO : navigation vers page prêts
-          // Navigator.pushNamed(context, '/loans');
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+          );
         },
         child: Text(
           'Découvrez nos solutions de prêt >',

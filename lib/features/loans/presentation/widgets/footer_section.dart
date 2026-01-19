@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../pages/loan_simulation_page.dart';
+
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
 
@@ -114,11 +116,14 @@ class FooterSection extends StatelessWidget {
     padding: const EdgeInsets.symmetric(
     horizontal: 25, vertical: 18),
     ),
-    onPressed: () {
-    // TODO: Lien vers la page principale ou inscription
-    },
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+        );
+      },
     child: const Text(
-    "Devenir client",
+    "Voir une simulation",
     style: TextStyle(color: Colors.black),
     ),
     ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../pages/loan_request_page.dart';
+import '../pages/loan_offers_page.dart';
+
 class WhyChooseUsLoanSection extends StatelessWidget {
   const WhyChooseUsLoanSection({super.key});
 
@@ -77,7 +80,12 @@ class _TopDarkSection extends StatelessWidget {
                       vertical: 18,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+                    );
+                  },
                   child: const Text(
                     'Faire une demande',
                     style: TextStyle(color: Colors.black),
@@ -162,7 +170,7 @@ class _BottomImageSection extends StatelessWidget {
     return Column(
       children: [
         Image.network(
-          'https://images.unsplash.com/photo-1521737604893-d14cc237f11d',
+          'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/Screenshot_2026-01-19-04-24-55-829_com.android.chrome-edit.jpg',
           width: double.infinity,
           height: 420,
           fit: BoxFit.cover,
@@ -199,7 +207,12 @@ class _BottomImageSection extends StatelessWidget {
                     vertical: 18,
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+                  );
+                },
                 child: const Text(
                   'Voir les offres',
                   style: TextStyle(color: Colors.black),
