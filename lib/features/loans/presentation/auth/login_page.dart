@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 OutlinedButton.icon(
                   icon: Image.network(
-                    "https://developers.google.com/identity/images/g-logo.png",
+                    "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/google.png",
                     height: 18,
                   ),
                   label: const Text("Continuer avec Google"),
