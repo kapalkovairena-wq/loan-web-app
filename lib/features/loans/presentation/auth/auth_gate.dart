@@ -13,6 +13,7 @@ class AuthGate extends StatefulWidget {
 
 class _AuthGateState extends State<AuthGate> {
   late final Stream<User?> _authStream;
+  bool _profileCreated = false; // pour éviter plusieurs appels
 
   @override
   void initState() {
@@ -20,9 +21,18 @@ class _AuthGateState extends State<AuthGate> {
 
     _authStream = FirebaseAuth.instance.authStateChanges();
 
-    _authStream.listen((user) {
-      if (user != null) {
-        SupabaseProfileService.createProfile(user);
+    _authStream.listen((user) async {
+      if (user != null && !_profileCreated) {
+        try {
+          await SupabaseProfileService.createProfile(user);
+          _profileCreated = true;
+          print("Profil Supabase créé avec succès pour ${user.uid}");
+        } catch (e) {
+          print("Erreur création profil Supabase : $e");
+        }
+      } else if (user == null) {
+        // Reset flag si utilisateur se déconnecte
+        _profileCreated = false;
       }
     });
   }
