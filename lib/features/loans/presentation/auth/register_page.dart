@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
+import '../pages/home_page.dart';
+import 'login_page.dart';
 
-class RegisterPage extends StatefulWidget {
+
+class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasData) {
+          return const HomePage();
+        }
+
+        return const Register();
+      },
+    );
+  }
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class Register extends StatefulWidget {
+  const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   final auth = AuthService();
@@ -55,6 +83,34 @@ class _RegisterPageState extends State<RegisterPage> {
                     Navigator.pop(context);
                   },
                   child: const Text("Créer mon compte"),
+                ),
+
+                const SizedBox(height: 16),
+
+                OutlinedButton.icon(
+                  icon: Image.network(
+                    "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/google.png",
+                    height: 18,
+                  ),
+                  label: const Text("Continuer avec Google"),
+                  onPressed: auth.signInWithGoogle,
+                ),
+
+                const SizedBox(height: 24),
+                const Text(
+                  "Avez-vous un compte ?",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LoginPage(),
+                      ),
+                    );
+                  },
+                  child: const Text("Se connecter"),
                 ),
               ],
             ),

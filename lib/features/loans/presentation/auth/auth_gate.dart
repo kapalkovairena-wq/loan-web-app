@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login_page.dart';
+import '../pages/home_page.dart';
+
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -17,9 +19,7 @@ class AuthGate extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const Scaffold(
-            body: Center(child: Text("Dashboard KreditSch")),
-          );
+          return const HomePage();
         }
 
         return const LoginPage();

@@ -62,7 +62,7 @@ class HeroBanner extends StatelessWidget {
                               MaterialPageRoute(builder: (_) => const AuthGate()),
                             );
                           },
-                          child: const Text('Devenez client'),
+                          child: const Text('Se connecter'),
                         ),
                         const SizedBox(width: 20),
                         OutlinedButton(
@@ -73,7 +73,7 @@ class HeroBanner extends StatelessWidget {
                             );
                           },
                           child: const Text(
-                            'Registre',
+                            "S'inscrire",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

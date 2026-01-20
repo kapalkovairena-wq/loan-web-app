@@ -92,7 +92,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 const SizedBox(height: 24),
-
+                const Text(
+                  "N'avez-vous pas un compte ?",
+                  style: TextStyle(color: Colors.black54),
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
