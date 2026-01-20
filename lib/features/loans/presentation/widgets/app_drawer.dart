@@ -52,7 +52,7 @@ class AppDrawer extends StatelessWidget {
                   _go(context, const ClientProfilePage());
                 }),
 
-                _drawerItem(context, 'Historique des demandes', () {
+                _drawerItem(context, 'Voir mes demandes', () {
                   _go(context, const LoanHistoryPage());
                 }),
 

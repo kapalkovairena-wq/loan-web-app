@@ -390,26 +390,74 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
   Widget _documentPreview(String title, String url) {
     return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-          const SizedBox(height: 4),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.network(
-              url,
-              height: 100,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
+      child: InkWell(
+        onTap: () => _openDocument(context, title, url),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                url,
                 height: 100,
-                color: Colors.grey[200],
-                child: const Icon(Icons.broken_image),
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  height: 100,
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.insert_drive_file),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _openDocument(BuildContext context, String title, String url) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => Dialog(
+        insetPadding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // ===== HEADER =====
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              color: Colors.black,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+
+            // ===== CONTENT =====
+            Expanded(
+              child: InteractiveViewer(
+                child: Image.network(
+                  url,
+                  fit: BoxFit.contain,
+                  errorBuilder: (_, __, ___) =>
+                  const Center(child: Text("Impossible d'afficher le document")),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

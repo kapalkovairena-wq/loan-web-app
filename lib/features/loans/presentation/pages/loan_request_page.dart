@@ -271,7 +271,15 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
       final monthly = calculateMonthly(amount, months);
       final total = calculateTotal(amount, months);
 
+      final firebaseUser = FirebaseAuth.instance.currentUser;
+
+      if (firebaseUser == null) {
+        showError("Utilisateur non authentifié");
+        return;
+      }
+
       await supabase.from("loan_requests").insert({
+        "firebase_uid": firebaseUser.uid,
         "full_name": nameController.text,
         "email": emailController.text,
         "phone": phoneController.text,
@@ -289,6 +297,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
         "total_amount": total,
         "identity_document_url": identityUrl,
         "address_proof_url": addressUrl,
+        "loan_status": "pending",
       });
 
       if (!mounted) return;

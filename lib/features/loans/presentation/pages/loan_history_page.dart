@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
 class LoanHistoryPage extends StatefulWidget {
@@ -11,7 +12,7 @@ class LoanHistoryPage extends StatefulWidget {
 
 class _LoanHistoryPageState extends State<LoanHistoryPage> {
   final supabase = Supabase.instance.client;
-  List<dynamic> requests = [];
+  List<Map<String, dynamic>> requests = [];
 
   @override
   void initState() {
@@ -20,15 +21,19 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
   }
 
   Future<void> loadRequests() async {
-    final user = supabase.auth.currentUser;
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser == null) {
+      return;
+    }
 
     final data = await supabase
         .from('loan_requests')
         .select()
-        .eq('user_id', user!.id)
+        .eq('firebase_uid', firebaseUser.uid)
         .order('created_at', ascending: false);
 
-    setState(() => requests = data);
+    setState(() => requests = List<Map<String, dynamic>>.from(data));
   }
 
   @override
