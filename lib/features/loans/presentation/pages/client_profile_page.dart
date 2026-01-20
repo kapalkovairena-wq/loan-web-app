@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ClientProfilePage extends StatefulWidget {
   const ClientProfilePage({super.key});
@@ -19,16 +20,20 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
   }
 
   Future<void> loadProfile() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+
+    if (firebaseUser == null) return;
 
     final data = await supabase
         .from('loan_requests')
         .select()
-        .eq('user_id', user.id)
-        .single();
+        .eq('firebase_uid', firebaseUser.uid)
+        .order('created_at', ascending: false)
+        .limit(1);
 
-    setState(() => profile = data);
+    if (data.isNotEmpty) {
+      setState(() => profile = data.first);
+    }
   }
 
   @override
