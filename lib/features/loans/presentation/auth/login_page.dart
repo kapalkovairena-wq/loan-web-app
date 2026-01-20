@@ -1,18 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../widgets/auth_button.dart';
 import 'auth_service.dart';
+import 'supabase_profile_service.dart';
 import 'register_page.dart';
 import 'forgot_password_page.dart';
 import '../pages/home_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late final Stream<User?> _authStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _authStream = FirebaseAuth.instance.authStateChanges();
+
+    _authStream.listen((user) {
+      if (user != null) {
+        SupabaseProfileService.createProfile(user);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: _authStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -21,7 +41,7 @@ class LoginPage extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomePage(); // 🔁 REDIRECTION AUTO
+          return const HomePage();
         }
 
         return const Login();

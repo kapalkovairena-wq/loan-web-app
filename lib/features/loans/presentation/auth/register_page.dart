@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
+import 'supabase_profile_service.dart';
 import '../pages/home_page.dart';
 import 'login_page.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  late final Stream<User?> _authStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _authStream = FirebaseAuth.instance.authStateChanges();
+
+    _authStream.listen((user) {
+      if (user != null) {
+        SupabaseProfileService.createProfile(user);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: _authStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
