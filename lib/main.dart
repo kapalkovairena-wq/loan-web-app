@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'features/loans/presentation/pages/home_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'features/loans/presentation/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
 
   await Supabase.initialize(
     url: "https://yztryuurtkxoygpcmlmu.supabase.co",
