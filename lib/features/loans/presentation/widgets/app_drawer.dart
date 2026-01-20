@@ -10,6 +10,7 @@ import '../pages/client_profile_page.dart';
 import '../pages/loan_history_page.dart';
 import '../pages/admin_loan_page.dart';
 import '../pages/about_page.dart';
+import '../auth/logout_page.dart';
 
 import '../auth/supabase_admin_service.dart';
 
@@ -76,6 +77,12 @@ class AppDrawer extends StatelessWidget {
               _drawerItem(context, 'À propos de nous', () {
                 _go(context, const LoanExpertiseSection());
               }),
+
+              if (user != null) ...[
+                _drawerItem(context, 'Se déconnecter', () {
+                  _go(context, const LogoutPage());
+                }),
+              ],
             ],
           );
         },
