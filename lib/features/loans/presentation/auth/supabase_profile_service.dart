@@ -17,7 +17,13 @@ class SupabaseProfileService {
       url,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer Mahugnon23@hof",
+
+        // 🔐 OBLIGATOIRE POUR SUPABASE
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+
+        // 🔐 TON CONTRÔLE INTERNE
+        "x-edge-secret": "Mahugnon23",
       },
       body: jsonEncode({
         "firebase_uid": user.uid,
