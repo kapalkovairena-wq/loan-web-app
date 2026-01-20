@@ -2,7 +2,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../presentation/auth/auth_gate.dart';
 import '../widgets/input_field.dart';
 import '../widgets/footer_section.dart';
 import '../widgets/app_drawer.dart';
@@ -86,6 +88,20 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
     );
 
     return supabase.storage.from(bucket).getPublicUrl(path);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   @override
