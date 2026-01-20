@@ -15,7 +15,10 @@ class SupabaseProfileService {
 
     final response = await http.post(
       url,
-      headers: {"Content-Type": "application/json"},
+      headers: {
+        "Content-Type": "application/json",
+        "x-edge-secret": "Mahugnon23@hof",
+      },
       body: jsonEncode({
         "firebase_uid": user.uid,
         "email": email,
