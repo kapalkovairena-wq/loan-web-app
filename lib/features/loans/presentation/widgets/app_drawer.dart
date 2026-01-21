@@ -13,6 +13,7 @@ import '../pages/loan_admin_page.dart';
 import '../pages/about_page.dart';
 import '../auth/logout_page.dart';
 import '../pages/dashboard_page.dart';
+import '../pages/chat_admin_page.dart';
 
 import '../auth/supabase_admin_service.dart';
 
@@ -82,6 +83,18 @@ class AppDrawer extends StatelessWidget {
                     if (adminSnapshot.data == true) {
                       return _drawerItem(context, 'Validation des demandes', () {
                         _go(context, const LoanAdminPage());
+                      });
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+
+                FutureBuilder<bool>(
+                  future: SupabaseAdminService.isAdmin(user.email!),
+                  builder: (context, adminSnapshot) {
+                    if (adminSnapshot.data == true) {
+                      return _drawerItem(context, 'Discussions', () {
+                        _go(context, const ChatAdminPage());
                       });
                     }
                     return const SizedBox.shrink();

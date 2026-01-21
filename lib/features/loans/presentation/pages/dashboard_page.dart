@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/loan_request_page.dart';
+import '../pages/chat_user_page.dart';
 import '../auth/loan_service.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -331,16 +332,61 @@ class QuickActions extends StatelessWidget {
       child: Wrap(
         spacing: 16,
         runSpacing: 16,
-        children: const [
-          _ActionButton("➕ Nouvelle demande"),
-          _ActionButton("📄 Mes documents"),
-          _ActionButton("📊 Historique"),
-          _ActionButton("💬 Support"),
+        children: [
+          _ActionButton(
+            label: "Nouvelle demande",
+            icon: Icons.add_circle_outline,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LoanRequestPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Mes documents",
+            icon: Icons.folder_open,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LoanRequestPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Historique",
+            icon: Icons.history,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const LoanRequestPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Support",
+            icon: Icons.chat_bubble_outline,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ChatUserPage(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
   }
 }
+
 
 class _Card extends StatelessWidget {
   final String title;
@@ -390,14 +436,29 @@ class _RowItem extends StatelessWidget {
 }
 
 class _ActionButton extends StatelessWidget {
-  final String text;
-  const _ActionButton(this.text);
+  final String label;
+  final VoidCallback onPressed;
+  final IconData? icon;
+
+  const _ActionButton({
+    required this.label,
+    required this.onPressed,
+    this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      child: Text(text),
+    return OutlinedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(icon ?? Icons.arrow_forward),
+      label: Text(label),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
     );
   }
 }
+
