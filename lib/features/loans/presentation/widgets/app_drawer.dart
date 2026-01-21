@@ -11,6 +11,7 @@ import '../pages/loan_history_page.dart';
 import '../pages/admin_loan_page.dart';
 import '../pages/about_page.dart';
 import '../auth/logout_page.dart';
+import '../pages/dashboard_page.dart';
 
 import '../auth/supabase_admin_service.dart';
 
@@ -33,6 +34,12 @@ class AppDrawer extends StatelessWidget {
               _drawerItem(context, 'Page d\'accueil', () {
                 _go(context, const HomePage());
               }),
+
+              if (user != null) ...[
+                _drawerItem(context, 'Mon tableau de bord', () {
+                  _go(context, const DashboardPage());
+                }),
+              ],
 
               _drawerItem(context, 'Découvrir nos offres', () {
                 _go(context, const LoanOffersPage());

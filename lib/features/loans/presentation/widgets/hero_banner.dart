@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../presentation/auth/auth_gate.dart';
 import '../../presentation/auth/register_page.dart';
-import '../pages/home_page.dart';
+import '../pages/dashboard_page.dart';
 
 class HeroBanner extends StatelessWidget {
   const HeroBanner({super.key});
@@ -58,14 +58,14 @@ class HeroBanner extends StatelessWidget {
                     StreamBuilder<User?>(
                       stream: FirebaseAuth.instance.authStateChanges(),
                       builder: (context, snapshot) {
-                        // ✅ Si l'utilisateur est connecté → on n'affiche rien
+                        // ✅ Si l'utilisateur est connecté →
                         if (snapshot.hasData) {
                           return ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const HomePage(),
+                                  builder: (_) => const DashboardPage(),
                                 ),
                               );
                             },

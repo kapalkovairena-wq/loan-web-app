@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../pages/loan_request_page.dart';
 
 class ClientProfilePage extends StatefulWidget {
   const ClientProfilePage({super.key});
@@ -77,8 +78,11 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/loan-request');
-                },
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+                  );
+                  },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF5B400),
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
