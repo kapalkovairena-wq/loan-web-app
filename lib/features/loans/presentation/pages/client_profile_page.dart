@@ -10,6 +10,7 @@ class ClientProfilePage extends StatefulWidget {
 }
 
 class _ClientProfilePageState extends State<ClientProfilePage> {
+  bool isLoading = true;
   final supabase = Supabase.instance.client;
   Map<String, dynamic>? profile;
 
@@ -22,7 +23,10 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
   Future<void> loadProfile() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
 
-    if (firebaseUser == null) return;
+    if (firebaseUser == null) {
+      setState(() => isLoading = false);
+      return;
+    }
 
     final data = await supabase
         .from('loan_requests')
@@ -31,16 +35,62 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
         .order('created_at', ascending: false)
         .limit(1);
 
-    if (data.isNotEmpty) {
-      setState(() => profile = data.first);
-    }
+    setState(() {
+      profile = data.isNotEmpty ? data.first : null;
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (profile == null) {
+    if (isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (profile == null) {
+      return Scaffold(
+        backgroundColor: const Color(0xFFF6F7FB),
+        appBar: AppBar(
+          title: const Text("Mon profil"),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 1,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.person_outline, size: 80, color: Colors.grey),
+              const SizedBox(height: 20),
+              const Text(
+                "Profil non encore créé",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Pour compléter votre profil, veuillez effectuer\nvotre première demande de prêt.",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/loan-request');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFF5B400),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+                ),
+                child: const Text(
+                  "Faire une demande de prêt",
+                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
     }
 
