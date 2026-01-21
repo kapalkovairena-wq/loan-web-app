@@ -138,13 +138,10 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       // ================= CALL EDGE FUNCTION =================
       final response = await http.post(
-        Uri.parse(
-          'https://YOUR_PROJECT_ID.supabase.co/functions/v1/send_contract_pdf',
-        ),
+        Uri.parse('https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/send_contract_pdf'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-          'Bearer ${Supabase.instance.client.auth.currentSession!.accessToken}',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls',
         },
         body: jsonEncode({
           "clientName": data['full_name'],
