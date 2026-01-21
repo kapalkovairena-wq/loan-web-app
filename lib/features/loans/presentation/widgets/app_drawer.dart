@@ -9,6 +9,7 @@ import '../pages/loan_offers_page.dart';
 import '../pages/client_profile_page.dart';
 import '../pages/loan_history_page.dart';
 import '../pages/admin_loan_page.dart';
+import '../pages/loan_admin_page.dart';
 import '../pages/about_page.dart';
 import '../auth/logout_page.dart';
 import '../pages/dashboard_page.dart';
@@ -53,7 +54,6 @@ class AppDrawer extends StatelessWidget {
                 _go(context, const LoanSolutionSection());
               }),
 
-              // ===== UNIQUEMENT CONNECTÉ =====
               if (user != null) ...[
                 _drawerItem(context, 'Profil', () {
                   _go(context, const ClientProfilePage());
@@ -70,6 +70,18 @@ class AppDrawer extends StatelessWidget {
                     if (adminSnapshot.data == true) {
                       return _drawerItem(context, 'Admins', () {
                         _go(context, const AdminLoanPage());
+                      });
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
+
+                FutureBuilder<bool>(
+                  future: SupabaseAdminService.isAdmin(user.email!),
+                  builder: (context, adminSnapshot) {
+                    if (adminSnapshot.data == true) {
+                      return _drawerItem(context, 'Validation des demandes', () {
+                        _go(context, const LoanAdminPage());
                       });
                     }
                     return const SizedBox.shrink();

@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../presentation/auth/auth_gate.dart';
+import '../../presentation/auth/authgate.dart';
 import '../widgets/input_field.dart';
 import '../widgets/footer_section.dart';
 import '../widgets/app_drawer.dart';
