@@ -24,21 +24,23 @@ class _ChatUserPageState extends State<ChatUserPage> {
     super.dispose();
   }
 
+  // Crée une nouvelle conversation et récupère son UUID
   Future<void> createConversation() async {
     final res = await supabase
         .from('chat_conversations')
         .insert({'firebase_uid': firebaseUid})
-        .select()
+        .select('id') // <- On récupère uniquement l'UUID
         .single();
 
     setState(() => activeConversationId = res['id']);
   }
 
+  // Envoie un message pour la conversation active
   Future<void> sendMessage() async {
     if (controller.text.trim().isEmpty || activeConversationId == null) return;
 
     await supabase.from('chat_messages').insert({
-      'conversation_id': activeConversationId!,
+      'conversation_id': activeConversationId!, // <- UUID correct
       'sender_type': 'user',
       'sender_firebase_uid': firebaseUid,
       'message': controller.text.trim(),
@@ -46,7 +48,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
     controller.clear();
 
-    // Scroll automatiquement vers le dernier message
+    // Scroll automatique vers le dernier message
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
         scrollController.animateTo(
