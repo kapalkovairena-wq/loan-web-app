@@ -9,17 +9,27 @@ class ChatAdminPage extends StatefulWidget {
 }
 
 class _ChatAdminPageState extends State<ChatAdminPage> {
-  final supabase = Supabase.instance.client;
+  final SupabaseClient supabase = Supabase.instance.client;
+
   String? selectedConversationId;
-  final controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
 
   Future<void> sendAdminMessage() async {
+    if (selectedConversationId == null) return;
     if (controller.text.trim().isEmpty) return;
 
     await supabase.from('chat_messages').insert({
-      'conversation_id': selectedConversationId,
+      'conversation_id': selectedConversationId!,
       'sender_type': 'admin',
-      'sender_id': supabase.auth.currentUser!.id,
+      'sender_firebase_uid': null,
       'message': controller.text.trim(),
     });
 
@@ -29,38 +39,73 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Admin – Chats")),
+      appBar: AppBar(
+        title: const Text("Admin – Chats"),
+      ),
       body: Row(
         children: [
-          // Conversations
+          // ================= CONVERSATIONS =================
           SizedBox(
-            width: 300,
+            width: 320,
             child: StreamBuilder<List<Map<String, dynamic>>>(
               stream: supabase
                   .from('chat_conversations')
                   .stream(primaryKey: ['id'])
-                  .order('created_at'),
+                  .order('created_at', ascending: false),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return const SizedBox();
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                return ListView(
-                  children: snapshot.data!.map((conv) {
+                final conversations = snapshot.data!;
+
+                if (conversations.isEmpty) {
+                  return const Center(child: Text("Aucune discussion"));
+                }
+
+                return ListView.builder(
+                  itemCount: conversations.length,
+                  itemBuilder: (context, index) {
+                    final conv = conversations[index];
+                    final bool isSelected =
+                        selectedConversationId == conv['id'];
+
                     return ListTile(
-                      title: Text("User ${conv['user_id']}"),
-                      selected: selectedConversationId == conv['id'],
-                      onTap: () =>
-                          setState(() => selectedConversationId = conv['id']),
+                      selected: isSelected,
+                      title: Text(
+                        "User ${conv['firebase_uid']}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        conv['status'] ?? 'open',
+                        style: TextStyle(
+                          color: conv['status'] == 'closed'
+                              ? Colors.red
+                              : Colors.green,
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          selectedConversationId = conv['id'];
+                        });
+                      },
                     );
-                  }).toList(),
+                  },
                 );
               },
             ),
           ),
 
-          // Messages
+          // ================= MESSAGES =================
           Expanded(
             child: selectedConversationId == null
-                ? const Center(child: Text("Sélectionnez une discussion"))
+                ? const Center(
+              child: Text(
+                "Sélectionnez une discussion",
+                style: TextStyle(fontSize: 16),
+              ),
+            )
                 : Column(
               children: [
                 Expanded(
@@ -71,18 +116,37 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                         .eq('conversation_id', selectedConversationId!)
                         .order('created_at'),
                     builder: (context, snapshot) {
-                      if (!snapshot.hasData) return const SizedBox();
+                      if (!snapshot.hasData) {
+                        return const Center(
+                            child: CircularProgressIndicator());
+                      }
 
-                      return ListView(
-                        children: snapshot.data!.map((m) {
-                          final isAdmin =
+                      final messages = snapshot.data!;
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (scrollController.hasClients) {
+                          scrollController.jumpTo(
+                            scrollController
+                                .position.maxScrollExtent,
+                          );
+                        }
+                      });
+
+                      return ListView.builder(
+                        controller: scrollController,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          final m = messages[index];
+                          final bool isAdmin =
                               m['sender_type'] == 'admin';
+
                           return Align(
                             alignment: isAdmin
                                 ? Alignment.centerRight
                                 : Alignment.centerLeft,
                             child: Container(
-                              margin: const EdgeInsets.all(8),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 6, horizontal: 10),
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: isAdmin
@@ -94,35 +158,50 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                               child: Text(
                                 m['message'],
                                 style: TextStyle(
-                                    color: isAdmin
-                                        ? Colors.white
-                                        : Colors.black),
+                                  color: isAdmin
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
                             ),
                           );
-                        }).toList(),
+                        },
                       );
                     },
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: controller,
-                        decoration: const InputDecoration(
-                            hintText: "Réponse admin"),
+
+                // ================= INPUT =================
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    border:
+                    Border(top: BorderSide(color: Colors.grey[300]!)),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: controller,
+                          decoration: const InputDecoration(
+                            hintText: "Réponse admin...",
+                            border: OutlineInputBorder(),
+                          ),
+                          onSubmitted: (_) => sendAdminMessage(),
+                        ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: sendAdminMessage,
-                    )
-                  ],
-                )
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: const Icon(Icons.send),
+                        color: Colors.green,
+                        onPressed: sendAdminMessage,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
