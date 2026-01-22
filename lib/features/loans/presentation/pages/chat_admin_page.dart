@@ -17,11 +17,19 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
+  bool _isUserAtBottom = true;
+
   @override
   void initState() {
     super.initState();
     loadLastConversation();
     _startAutoRefresh();
+    scrollController.addListener(() {
+      if (!scrollController.hasClients) return;
+
+      // reverse: true → le bas = position 0
+      _isUserAtBottom = scrollController.offset <= 50;
+    });
   }
 
   @override
@@ -53,6 +61,17 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
       'sender_firebase_uid': null,
       'message': controller.text.trim(),
     });
+
+    await supabase.from('chat_typing').upsert({
+      'conversation_id': selectedConversationId,
+      'is_admin_typing': true,
+    });
+
+    await supabase.from('chat_typing').upsert({
+      'conversation_id': selectedConversationId,
+      'is_admin_typing': false,
+    });
+
 
     controller.clear();
 
@@ -95,6 +114,12 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
     }
   }
 
+  String formatTime(String isoDate) {
+    final date = DateTime.parse(isoDate).toLocal();
+    return "${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +146,12 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                 if (conversations.isEmpty) {
                   return const Center(child: Text("Aucune discussion"));
                 }
+
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (_isUserAtBottom && scrollController.hasClients) {
+                    scrollController.jumpTo(0);
+                  }
+                });
 
                 return ListView.builder(
                   itemCount: conversations.length,
@@ -206,13 +237,27 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                 borderRadius:
                                 BorderRadius.circular(12),
                               ),
-                              child: Text(
-                                m['message'],
-                                style: TextStyle(
-                                  color: isAdmin
-                                      ? Colors.white
-                                      : Colors.black,
-                                ),
+                              child: Column(
+                                crossAxisAlignment:
+                                isAdmin ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    m['message'],
+                                    style: TextStyle(
+                                      color: isAdmin
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    formatTime(m['created_at']),
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: isAdmin ? Colors.white : Colors.black,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -220,6 +265,33 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                       );
                     },
                   ),
+                ),
+
+                StreamBuilder<List<Map<String, dynamic>>>(
+                  stream: supabase
+                      .from('chat_typing')
+                      .stream(primaryKey: ['conversation_id'])
+                      .eq('conversation_id', selectedConversationId!),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+
+                    final typing = snapshot.data!.first['is_admin_typing'] == true;
+
+                    return typing
+                        ? const Padding(
+                      padding: EdgeInsets.only(left: 12, bottom: 6),
+                      child: Text(
+                        "Utilisateur est en train d’écrire…",
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    )
+                        : const SizedBox.shrink();
+                  },
                 ),
 
                 // ================= INPUT =================

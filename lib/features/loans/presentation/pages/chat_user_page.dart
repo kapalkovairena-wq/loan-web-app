@@ -19,11 +19,19 @@ class _ChatUserPageState extends State<ChatUserPage> {
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
+  bool _isUserAtBottom = true;
+
   @override
   void initState() {
     super.initState();
     loadLastConversation();
     _startAutoRefresh();
+    scrollController.addListener(() {
+      if (!scrollController.hasClients) return;
+
+      // reverse: true → le bas = position 0
+      _isUserAtBottom = scrollController.offset <= 50;
+    });
   }
 
   @override
@@ -91,6 +99,16 @@ class _ChatUserPageState extends State<ChatUserPage> {
       'message': controller.text.trim(),
     });
 
+    await supabase.from('chat_typing').upsert({
+      'conversation_id': activeConversationId,
+      'is_admin_typing': true,
+    });
+
+    await supabase.from('chat_typing').upsert({
+      'conversation_id': activeConversationId,
+      'is_admin_typing': false,
+    });
+
     controller.clear();
 
     // ⬇️ Scroll vers le dernier message (bas du chat)
@@ -115,6 +133,12 @@ class _ChatUserPageState extends State<ChatUserPage> {
       }
     });
   }
+
+  String formatTime(String isoDate) {
+    final date = DateTime.parse(isoDate).toLocal();
+    return "${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +172,12 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
                 final messages = snapshot.data!;
 
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (_isUserAtBottom && scrollController.hasClients) {
+                    scrollController.jumpTo(0);
+                  }
+                });
+
                 return ListView.builder(
                   reverse: true,
                   controller: scrollController,
@@ -166,10 +196,25 @@ class _ChatUserPageState extends State<ChatUserPage> {
                           color: isUser ? Colors.blueAccent : Colors.grey.shade300,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(
-                          m['message'] ?? '',
-                          style: TextStyle(
-                              color: isUser ? Colors.white : Colors.black),
+                        child: Column(
+                          crossAxisAlignment:
+                          isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              m['message'] ?? '',
+                              style: TextStyle(
+                                color: isUser ? Colors.white : Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              formatTime(m['created_at']),
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: isUser ? Colors.white70 : Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     );
@@ -178,6 +223,34 @@ class _ChatUserPageState extends State<ChatUserPage> {
               },
             ),
           ),
+
+          StreamBuilder<List<Map<String, dynamic>>>(
+            stream: supabase
+                .from('chat_typing')
+                .stream(primaryKey: ['conversation_id'])
+                .eq('conversation_id', activeConversationId!),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const SizedBox.shrink();
+              }
+
+              final typing = snapshot.data!.first['is_admin_typing'] == true;
+
+              return typing
+                  ? const Padding(
+                padding: EdgeInsets.only(left: 12, bottom: 6),
+                child: Text(
+                  "Support est en train d’écrire…",
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+                  : const SizedBox.shrink();
+            },
+          ),
+
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
