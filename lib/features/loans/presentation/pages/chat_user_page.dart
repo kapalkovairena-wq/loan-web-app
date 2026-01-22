@@ -172,12 +172,6 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
                 final messages = snapshot.data!;
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (_isUserAtBottom && scrollController.hasClients) {
-                    scrollController.jumpTo(0);
-                  }
-                });
-
                 return ListView.builder(
                   reverse: true,
                   controller: scrollController,

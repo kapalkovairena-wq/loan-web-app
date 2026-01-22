@@ -147,12 +147,6 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                   return const Center(child: Text("Aucune discussion"));
                 }
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (_isUserAtBottom && scrollController.hasClients) {
-                    scrollController.jumpTo(0);
-                  }
-                });
-
                 return ListView.builder(
                   itemCount: conversations.length,
                   itemBuilder: (context, index) {
