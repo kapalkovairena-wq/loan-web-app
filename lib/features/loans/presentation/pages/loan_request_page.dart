@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../presentation/auth/authgate.dart';
+import '../../presentation/auth/auth_loan_gate.dart';
 import '../widgets/input_field.dart';
 import '../widgets/footer_section.dart';
 import '../widgets/app_drawer.dart';
@@ -98,7 +98,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => const AuthGate()),
+          MaterialPageRoute(builder: (_) => const AuthLoanGate()),
         );
       });
     }

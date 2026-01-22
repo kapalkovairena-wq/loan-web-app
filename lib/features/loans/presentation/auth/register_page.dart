@@ -18,14 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-
     _authStream = FirebaseAuth.instance.authStateChanges();
-
-    _authStream.listen((user) {
-      if (user != null) {
-        SupabaseProfileService.createProfile(user);
-      }
-    });
   }
 
   @override
@@ -62,21 +55,68 @@ class _RegisterState extends State<Register> {
   final auth = AuthService();
   bool loading = false;
 
+  List<String> currencyCodes = [
+    'EUR',
+    'BGN',
+    'DKK',
+    'HUF',
+    'PLN',
+    'RON',
+    'SEK',
+    'CZK',
+    'GBP',
+    'CHF',
+    'NOK',
+    'ISK',
+    'RUB',
+    'UAH',
+    'RSD',
+    'BAM',
+    'ALL',
+    'MKD',
+    'MDL',
+    'BYN',
+    'GEL',
+    'AMD',
+    'AZN',
+    'TRY',
+  ];
+
+  String? selectedCurrency;
+
   Future<void> _register() async {
-    if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty) {
-      _showMessage("Veuillez remplir tous les champs", isError: true);
+    if (emailCtrl.text.isEmpty ||
+        passCtrl.text.isEmpty ||
+        selectedCurrency == null) {
+      _showMessage(
+        "Veuillez remplir tous les champs",
+        isError: true,
+      );
       return;
     }
 
     try {
       setState(() => loading = true);
 
+      // 1️⃣ Création Firebase
       await auth.registerWithEmail(
         emailCtrl.text.trim(),
         passCtrl.text.trim(),
       );
 
-      _showMessage("Compte créé avec succès");
+      // 2️⃣ Création du profil Supabase
+      await SupabaseProfileService.createProfile(
+        FirebaseAuth.instance.currentUser!,
+        currency: selectedCurrency!, // ✅ SÛR
+      );
+
+      // 3️⃣ Redirection
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+        );
+      }
 
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
@@ -165,6 +205,26 @@ class _RegisterState extends State<Register> {
                   ),
 
                   const SizedBox(height: 24),
+
+            DropdownButtonFormField<String>(
+              value: selectedCurrency,
+              decoration: const InputDecoration(
+                labelText: "Devise",
+                border: OutlineInputBorder(),
+              ),
+              items: currencyCodes.map((currency) {
+                return DropdownMenuItem(
+                  value: currency,
+                  child: Text(currency),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedCurrency = value;
+                });
+              },
+            ),
+            const SizedBox(height: 24),
 
                   TextField(
                     controller: emailCtrl,

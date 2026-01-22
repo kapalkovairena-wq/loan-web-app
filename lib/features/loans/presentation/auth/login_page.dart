@@ -15,6 +15,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late final Stream<User?> _authStream;
+  String? selectedCurrency;
 
   @override
   void initState() {
@@ -24,7 +25,10 @@ class _LoginPageState extends State<LoginPage> {
 
     _authStream.listen((user) {
       if (user != null) {
-        SupabaseProfileService.createProfile(user);
+        SupabaseProfileService.createProfile(
+          user,
+          currency: selectedCurrency!,
+        );
       }
     });
   }

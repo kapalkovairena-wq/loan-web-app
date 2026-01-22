@@ -14,6 +14,7 @@ class AuthGate extends StatefulWidget {
 class _AuthGateState extends State<AuthGate> {
   late final Stream<User?> _authStream;
   bool _profileCreated = false; // pour éviter plusieurs appels
+  String? selectedCurrency;
 
   @override
   void initState() {
@@ -24,7 +25,10 @@ class _AuthGateState extends State<AuthGate> {
     _authStream.listen((user) async {
       if (user != null && !_profileCreated) {
         try {
-          await SupabaseProfileService.createProfile(user);
+          await SupabaseProfileService.createProfile(
+            user,
+            currency: selectedCurrency!,
+          );
           _profileCreated = true;
           print("Profil Supabase créé avec succès pour ${user.uid}");
         } catch (e) {

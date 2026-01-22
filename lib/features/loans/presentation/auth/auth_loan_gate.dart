@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'supabase_profile_service.dart';
-import 'loginpage.dart';
+import 'login_loan_page.dart';
 import '../pages/loan_request_page.dart';
 
-class AuthGate extends StatefulWidget {
-  const AuthGate({super.key});
+class AuthLoanGate extends StatefulWidget {
+  const AuthLoanGate({super.key});
 
   @override
-  State<AuthGate> createState() => _AuthGateState();
+  State<AuthLoanGate> createState() => _AuthLoanGateState();
 }
 
-class _AuthGateState extends State<AuthGate> {
+class _AuthLoanGateState extends State<AuthLoanGate> {
   late final Stream<User?> _authStream;
   bool _profileCreated = false; // pour éviter plusieurs appels
+  String? selectedCurrency;
 
   @override
   void initState() {
@@ -24,7 +25,10 @@ class _AuthGateState extends State<AuthGate> {
     _authStream.listen((user) async {
       if (user != null && !_profileCreated) {
         try {
-          await SupabaseProfileService.createProfile(user);
+          await SupabaseProfileService.createProfile(
+            user,
+            currency: selectedCurrency!,
+          );
           _profileCreated = true;
           print("Profil Supabase créé avec succès pour ${user.uid}");
         } catch (e) {
@@ -52,7 +56,7 @@ class _AuthGateState extends State<AuthGate> {
           return const LoanRequestPage();
         }
 
-        return const LoginPage();
+        return const LoginLoanPage();
       },
     );
   }

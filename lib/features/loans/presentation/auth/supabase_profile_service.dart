@@ -3,7 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SupabaseProfileService {
-  static Future<void> createProfile(User user) async {
+  static Future<void> createProfile(
+      User user, {
+        required String currency,
+      }) async {
     final url = Uri.parse(
       "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/create-profile",
     );
@@ -29,6 +32,7 @@ class SupabaseProfileService {
         "firebase_uid": user.uid,
         "email": email,
         "provider": provider,
+        "currency": currency,
       }),
     );
 

@@ -2,31 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
 import 'supabase_profile_service.dart';
-import 'registerpage.dart';
-import 'forgot_password_page.dart';
 import '../pages/loan_request_page.dart';
+import 'login_loan_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterLoanPage extends StatefulWidget {
+  const RegisterLoanPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterLoanPage> createState() => _RegisterLoanPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterLoanPageState extends State<RegisterLoanPage> {
   late final Stream<User?> _authStream;
+  String? selectedCurrency;
 
   @override
   void initState() {
     super.initState();
-
     _authStream = FirebaseAuth.instance.authStateChanges();
-
-    _authStream.listen((user) {
-      if (user != null) {
-        SupabaseProfileService.createProfile(user);
-      }
-    });
   }
 
   @override
@@ -44,49 +37,106 @@ class _LoginPageState extends State<LoginPage> {
           return const LoanRequestPage();
         }
 
-        return const Login();
+        return const Register();
       },
     );
   }
 }
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   final auth = AuthService();
   bool loading = false;
 
-  Future<void> _login() async {
-    if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty) {
-      _showMessage("Veuillez remplir tous les champs", isError: true);
+  List<String> currencyCodes = [
+    'EUR',
+    'BGN',
+    'DKK',
+    'HUF',
+    'PLN',
+    'RON',
+    'SEK',
+    'CZK',
+    'GBP',
+    'CHF',
+    'NOK',
+    'ISK',
+    'RUB',
+    'UAH',
+    'RSD',
+    'BAM',
+    'ALL',
+    'MKD',
+    'MDL',
+    'BYN',
+    'GEL',
+    'AMD',
+    'AZN',
+    'TRY',
+  ];
+
+  String? selectedCurrency;
+
+  Future<void> _register() async {
+    if (emailCtrl.text.isEmpty ||
+        passCtrl.text.isEmpty ||
+        selectedCurrency == null) {
+      _showMessage(
+        "Veuillez remplir tous les champs",
+        isError: true,
+      );
       return;
     }
 
     try {
       setState(() => loading = true);
-      await auth.signInWithEmail(
+
+      // 1️⃣ Création Firebase
+      final user = await auth.registerWithEmail(
         emailCtrl.text.trim(),
         passCtrl.text.trim(),
       );
+
+      // 2️⃣ Création du profil Supabase
+      await SupabaseProfileService.createProfile(
+        FirebaseAuth.instance.currentUser!,
+        currency: selectedCurrency!, // ✅ SÛR
+      );
+
+      // 3️⃣ Redirection
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+        );
+      }
+
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      if (e.code == 'email-already-in-use') {
         _showMessage(
-          "Aucun compte trouvé. Veuillez vous inscrire.",
+          "Ce compte existe déjà. Veuillez vous connecter.",
           isError: true,
         );
-      } else if (e.code == 'wrong-password') {
-        _showMessage("Mot de passe incorrect", isError: true);
       } else if (e.code == 'invalid-email') {
         _showMessage("Email invalide", isError: true);
+      } else if (e.code == 'weak-password') {
+        _showMessage(
+          "Mot de passe trop faible (min. 6 caractères)",
+          isError: true,
+        );
       } else {
-        _showMessage("Erreur de connexion", isError: true);
+        _showMessage(
+          "Erreur lors de la création du compte",
+          isError: true,
+        );
       }
     } finally {
       setState(() => loading = false);
@@ -143,7 +193,7 @@ class _LoginState extends State<Login> {
                   const SizedBox(height: 32),
 
                   const Text(
-                    "Connexion",
+                    "Créer un compte",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -151,13 +201,34 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 6),
                   const Text(
-                    "Accédez à votre espace client",
+                    "Rejoignez KreditSch en quelques secondes",
                     style: TextStyle(color: Colors.black54),
                   ),
 
                   const SizedBox(height: 24),
 
-                  TextField(
+          DropdownButtonFormField<String>(
+            value: selectedCurrency,
+            decoration: const InputDecoration(
+              labelText: "Devise",
+              border: OutlineInputBorder(),
+            ),
+            items: currencyCodes.map((currency) {
+              return DropdownMenuItem(
+                value: currency,
+                child: Text(currency),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedCurrency = value;
+              });
+            },
+          ),
+            const SizedBox(height: 24),
+
+
+          TextField(
                     controller: emailCtrl,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
@@ -177,36 +248,20 @@ class _LoginState extends State<Login> {
                     ),
                   ),
 
-                  const SizedBox(height: 12),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ForgotPasswordPage(),
-                          ),
-                        );
-                      },
-                      child: const Text("Mot de passe oublié ?"),
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
 
                   ElevatedButton(
-                    onPressed: loading ? null : _login,
+                    onPressed: loading ? null : _register,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     child: loading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Se connecter"),
+                        : const Text("Créer mon compte"),
                   ),
 
                   const SizedBox(height: 16),
+
                   const Divider(),
 
                   OutlinedButton.icon(
@@ -220,7 +275,7 @@ class _LoginState extends State<Login> {
                         await auth.signInWithGoogle();
                       } catch (_) {
                         _showMessage(
-                          "Erreur lors de la connexion Google",
+                          "Erreur lors de l'inscription Google",
                           isError: true,
                         );
                       }
@@ -233,7 +288,7 @@ class _LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Pas encore de compte ?",
+                        "Déjà un compte ?",
                         style: TextStyle(color: Colors.black54),
                       ),
                       TextButton(
@@ -241,11 +296,11 @@ class _LoginState extends State<Login> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const RegisterPage(),
+                              builder: (_) => const LoginLoanPage(),
                             ),
                           );
                         },
-                        child: const Text("Créer un compte"),
+                        child: const Text("Se connecter"),
                       ),
                     ],
                   ),

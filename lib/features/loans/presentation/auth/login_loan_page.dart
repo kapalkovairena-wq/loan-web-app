@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'auth_service.dart';
 import 'supabase_profile_service.dart';
+import 'register_loan_page.dart';
+import 'forgot_password_page.dart';
 import '../pages/loan_request_page.dart';
-import 'loginpage.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class LoginLoanPage extends StatefulWidget {
+  const LoginLoanPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginLoanPage> createState() => _LoginLoanPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _LoginLoanPageState extends State<LoginLoanPage> {
   late final Stream<User?> _authStream;
+  String? selectedCurrency;
 
   @override
   void initState() {
@@ -23,7 +25,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     _authStream.listen((user) {
       if (user != null) {
-        SupabaseProfileService.createProfile(user);
+        SupabaseProfileService.createProfile(
+          user,
+          currency: selectedCurrency!,
+        );
       }
     });
   }
@@ -43,26 +48,26 @@ class _RegisterPageState extends State<RegisterPage> {
           return const LoanRequestPage();
         }
 
-        return const Register();
+        return const Login();
       },
     );
   }
 }
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<Login> createState() => _LoginState();
 }
 
-class _RegisterState extends State<Register> {
+class _LoginState extends State<Login> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   final auth = AuthService();
   bool loading = false;
 
-  Future<void> _register() async {
+  Future<void> _login() async {
     if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty) {
       _showMessage("Veuillez remplir tous les champs", isError: true);
       return;
@@ -70,32 +75,22 @@ class _RegisterState extends State<Register> {
 
     try {
       setState(() => loading = true);
-
-      await auth.registerWithEmail(
+      await auth.signInWithEmail(
         emailCtrl.text.trim(),
         passCtrl.text.trim(),
       );
-
-      _showMessage("Compte créé avec succès");
-
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
+      if (e.code == 'user-not-found') {
         _showMessage(
-          "Ce compte existe déjà. Veuillez vous connecter.",
+          "Aucun compte trouvé. Veuillez vous inscrire.",
           isError: true,
         );
+      } else if (e.code == 'wrong-password') {
+        _showMessage("Mot de passe incorrect", isError: true);
       } else if (e.code == 'invalid-email') {
         _showMessage("Email invalide", isError: true);
-      } else if (e.code == 'weak-password') {
-        _showMessage(
-          "Mot de passe trop faible (min. 6 caractères)",
-          isError: true,
-        );
       } else {
-        _showMessage(
-          "Erreur lors de la création du compte",
-          isError: true,
-        );
+        _showMessage("Erreur de connexion", isError: true);
       }
     } finally {
       setState(() => loading = false);
@@ -152,7 +147,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 32),
 
                   const Text(
-                    "Créer un compte",
+                    "Connexion",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -160,7 +155,7 @@ class _RegisterState extends State<Register> {
                   ),
                   const SizedBox(height: 6),
                   const Text(
-                    "Rejoignez KreditSch en quelques secondes",
+                    "Accédez à votre espace client",
                     style: TextStyle(color: Colors.black54),
                   ),
 
@@ -186,20 +181,36 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
+
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                      child: const Text("Mot de passe oublié ?"),
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
 
                   ElevatedButton(
-                    onPressed: loading ? null : _register,
+                    onPressed: loading ? null : _login,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     child: loading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Créer mon compte"),
+                        : const Text("Se connecter"),
                   ),
 
                   const SizedBox(height: 16),
-
                   const Divider(),
 
                   OutlinedButton.icon(
@@ -213,7 +224,7 @@ class _RegisterState extends State<Register> {
                         await auth.signInWithGoogle();
                       } catch (_) {
                         _showMessage(
-                          "Erreur lors de l'inscription Google",
+                          "Erreur lors de la connexion Google",
                           isError: true,
                         );
                       }
@@ -226,7 +237,7 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Déjà un compte ?",
+                        "Pas encore de compte ?",
                         style: TextStyle(color: Colors.black54),
                       ),
                       TextButton(
@@ -234,11 +245,11 @@ class _RegisterState extends State<Register> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const LoginPage(),
+                              builder: (_) => const RegisterLoanPage(),
                             ),
                           );
                         },
-                        child: const Text("Se connecter"),
+                        child: const Text("Créer un compte"),
                       ),
                     ],
                   ),
