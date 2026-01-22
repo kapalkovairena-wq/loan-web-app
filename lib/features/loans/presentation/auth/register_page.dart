@@ -268,14 +268,48 @@ class _RegisterState extends State<Register> {
                       height: 18,
                     ),
                     label: const Text("Continuer avec Google"),
-                    onPressed: () async {
+                    onPressed: loading
+                        ? null
+                        : () async {
+                      if (selectedCurrency == null) {
+                        _showMessage(
+                          "Veuillez sélectionner une devise",
+                          isError: true,
+                        );
+                        return;
+                      }
+
                       try {
+                        setState(() => loading = true);
+
+                        // 1️⃣ Google Sign-In
                         await auth.signInWithGoogle();
-                      } catch (_) {
+
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user == null) {
+                          throw Exception("Utilisateur non authentifié");
+                        }
+
+                        // 2️⃣ Création du profil Supabase
+                        await SupabaseProfileService.createProfile(
+                          user,
+                          currency: selectedCurrency!, // ✅ TRANSMISE
+                        );
+
+                        // 3️⃣ Redirection
+                        if (mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (_) => const HomePage()),
+                          );
+                        }
+                      } catch (e) {
                         _showMessage(
                           "Erreur lors de l'inscription Google",
                           isError: true,
                         );
+                      } finally {
+                        setState(() => loading = false);
                       }
                     },
                   ),
