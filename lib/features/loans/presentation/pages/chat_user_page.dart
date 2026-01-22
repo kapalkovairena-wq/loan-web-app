@@ -18,10 +18,40 @@ class _ChatUserPageState extends State<ChatUserPage> {
   final ScrollController scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    loadLastConversation();
+  }
+
+  @override
   void dispose() {
     controller.dispose();
     scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> loadLastConversation() async {
+    final res = await supabase
+        .from('chat_conversations')
+        .select('id')
+        .eq('firebase_uid', firebaseUid)
+        .order('created_at', ascending: false)
+        .limit(1)
+        .single();
+
+    if (res != null) {
+      setState(() => activeConversationId = res['id']);
+    }
+  }
+
+  Future<void> createNewConversation() async {
+    final res = await supabase
+        .from('chat_conversations')
+        .insert({'firebase_uid': firebaseUid})
+        .select('id')
+        .single();
+
+    setState(() => activeConversationId = res['id']);
   }
 
   // Crée une nouvelle conversation et récupère son UUID
@@ -67,9 +97,9 @@ class _ChatUserPageState extends State<ChatUserPage> {
         appBar: AppBar(title: const Text("Support")),
         body: Center(
           child: ElevatedButton(
-            onPressed: createConversation,
+            onPressed: createNewConversation,
             child: const Text("Nouvelle discussion"),
-          ),
+          )
         ),
       );
     }

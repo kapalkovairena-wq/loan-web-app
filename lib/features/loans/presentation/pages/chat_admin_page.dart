@@ -16,6 +16,12 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
   final ScrollController scrollController = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    loadLastConversation();
+  }
+
+  @override
   void dispose() {
     controller.dispose();
     scrollController.dispose();
@@ -34,6 +40,33 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
     });
 
     controller.clear();
+
+    // Scroll automatique vers le bas
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+
+  Future<void> loadLastConversation() async {
+    final res = await supabase
+        .from('chat_conversations')
+        .select('id')
+        .order('created_at', ascending: false)
+        .limit(1)
+        .maybeSingle();
+
+    if (res != null) {
+      setState(() {
+        selectedConversationId = res['id'];
+      });
+    }
   }
 
   @override
