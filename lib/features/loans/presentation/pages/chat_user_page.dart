@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ChatUserPage extends StatefulWidget {
@@ -12,6 +13,7 @@ class ChatUserPage extends StatefulWidget {
 class _ChatUserPageState extends State<ChatUserPage> {
   final SupabaseClient supabase = Supabase.instance.client;
   final String firebaseUid = FirebaseAuth.instance.currentUser!.uid;
+  Timer? _refreshTimer;
 
   String? activeConversationId;
   final TextEditingController controller = TextEditingController();
@@ -21,13 +23,26 @@ class _ChatUserPageState extends State<ChatUserPage> {
   void initState() {
     super.initState();
     loadLastConversation();
+    _startAutoRefresh();
   }
 
   @override
   void dispose() {
+    _refreshTimer?.cancel();
     controller.dispose();
     scrollController.dispose();
     super.dispose();
+  }
+
+  void _startAutoRefresh() {
+    _refreshTimer = Timer.periodic(
+      const Duration(seconds: 1),
+          (_) {
+        if (mounted) {
+          setState(() {});
+        }
+      },
+    );
   }
 
   Future<void> loadLastConversation() async {
