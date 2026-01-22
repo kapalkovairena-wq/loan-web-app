@@ -56,6 +56,17 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
 
     controller.clear();
 
+    // ⬇️ Scroll vers le dernier message (bas du chat)
+    await Future.delayed(const Duration(milliseconds: 100));
+
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0, // IMPORTANT car ListView reverse: true
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+
     // Scroll automatique vers le bas
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (scrollController.hasClients) {
