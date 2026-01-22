@@ -11,49 +11,59 @@ class ChatAdminPage extends StatefulWidget {
 
 class _ChatAdminPageState extends State<ChatAdminPage> {
   final SupabaseClient supabase = Supabase.instance.client;
-  Timer? _refreshTimer;
 
   String? selectedConversationId;
+
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
-  bool _isUserAtBottom = true;
-
-  @override
-  void initState() {
-    super.initState();
-    loadLastConversation();
-    _startAutoRefresh();
-    scrollController.addListener(() {
-      if (!scrollController.hasClients) return;
-
-      // reverse: true → le bas = position 0
-      _isUserAtBottom = scrollController.offset <= 50;
-    });
-  }
+  Timer? _typingTimer;
+  bool _isTyping = false;
 
   @override
   void dispose() {
-    _refreshTimer?.cancel();
+    _typingTimer?.cancel();
     controller.dispose();
     scrollController.dispose();
     super.dispose();
   }
 
-  void _startAutoRefresh() {
-    _refreshTimer = Timer.periodic(
-      const Duration(seconds: 1),
-          (_) {
-        if (mounted) {
-          setState(() {});
-        }
-      },
-    );
+  /* ---------------- TYPING ADMIN ---------------- */
+
+  void _onAdminTyping(String value) {
+    if (selectedConversationId == null) return;
+
+    if (!_isTyping) {
+      _isTyping = true;
+      supabase.from('chat_typing').upsert({
+        'conversation_id': selectedConversationId,
+        'is_admin_typing': true,
+      });
+    }
+
+    _typingTimer?.cancel();
+    _typingTimer = Timer(const Duration(seconds: 2), () {
+      _isTyping = false;
+      supabase.from('chat_typing').upsert({
+        'conversation_id': selectedConversationId,
+        'is_admin_typing': false,
+      });
+    });
   }
 
+  /* ---------------- SEND MESSAGE ---------------- */
+
   Future<void> sendAdminMessage() async {
-    if (selectedConversationId == null) return;
-    if (controller.text.trim().isEmpty) return;
+    if (selectedConversationId == null ||
+        controller.text.trim().isEmpty) return;
+
+    _typingTimer?.cancel();
+    _isTyping = false;
+
+    await supabase.from('chat_typing').upsert({
+      'conversation_id': selectedConversationId,
+      'is_admin_typing': false,
+    });
 
     await supabase.from('chat_messages').insert({
       'conversation_id': selectedConversationId!,
@@ -62,55 +72,15 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
       'message': controller.text.trim(),
     });
 
-    await supabase.from('chat_typing').upsert({
-      'conversation_id': selectedConversationId,
-      'is_admin_typing': true,
-    });
-
-    await supabase.from('chat_typing').upsert({
-      'conversation_id': selectedConversationId,
-      'is_admin_typing': false,
-    });
-
-
     controller.clear();
 
-    // ⬇️ Scroll vers le dernier message (bas du chat)
     await Future.delayed(const Duration(milliseconds: 100));
-
     if (scrollController.hasClients) {
       scrollController.animateTo(
-        0, // IMPORTANT car ListView reverse: true
+        0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
       );
-    }
-
-    // Scroll automatique vers le bas
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (scrollController.hasClients) {
-        scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-
-  Future<void> loadLastConversation() async {
-    final res = await supabase
-        .from('chat_conversations')
-        .select('id')
-        .order('created_at', ascending: false)
-        .limit(1)
-        .maybeSingle();
-
-    if (res != null) {
-      setState(() {
-        selectedConversationId = res['id'];
-      });
     }
   }
 
@@ -119,16 +89,15 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
     return "${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
   }
 
+  /* ---------------- UI ---------------- */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Admin – Chats"),
-      ),
+      appBar: AppBar(title: const Text("Admin – Chats")),
       body: Row(
         children: [
-          // ================= CONVERSATIONS =================
+          /* ================= CONVERSATIONS ================= */
           SizedBox(
             width: 320,
             child: StreamBuilder<List<Map<String, dynamic>>>(
@@ -142,7 +111,6 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                 }
 
                 final conversations = snapshot.data!;
-
                 if (conversations.isEmpty) {
                   return const Center(child: Text("Aucune discussion"));
                 }
@@ -151,7 +119,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                   itemCount: conversations.length,
                   itemBuilder: (context, index) {
                     final conv = conversations[index];
-                    final bool isSelected =
+                    final isSelected =
                         selectedConversationId == conv['id'];
 
                     return ListTile(
@@ -181,7 +149,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
             ),
           ),
 
-          // ================= MESSAGES =================
+          /* ================= MESSAGES ================= */
           Expanded(
             child: selectedConversationId == null
                 ? const Center(
@@ -197,7 +165,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                     stream: supabase
                         .from('chat_messages')
                         .stream(primaryKey: ['id'])
-                        .eq('conversation_id', selectedConversationId!)
+                        .eq('conversation_id',
+                        selectedConversationId!)
                         .order('created_at', ascending: false),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
@@ -213,7 +182,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           final m = messages[index];
-                          final bool isAdmin =
+                          final isAdmin =
                               m['sender_type'] == 'admin';
 
                           return Align(
@@ -232,8 +201,9 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                 BorderRadius.circular(12),
                               ),
                               child: Column(
-                                crossAxisAlignment:
-                                isAdmin ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                crossAxisAlignment: isAdmin
+                                    ? CrossAxisAlignment.end
+                                    : CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     m['message'],
@@ -248,7 +218,9 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                     formatTime(m['created_at']),
                                     style: TextStyle(
                                       fontSize: 11,
-                                      color: isAdmin ? Colors.white : Colors.black,
+                                      color: isAdmin
+                                          ? Colors.white70
+                                          : Colors.black54,
                                     ),
                                   ),
                                 ],
@@ -261,21 +233,27 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                   ),
                 ),
 
+                /* -------- USER TYPING -------- */
                 StreamBuilder<List<Map<String, dynamic>>>(
                   stream: supabase
                       .from('chat_typing')
                       .stream(primaryKey: ['conversation_id'])
-                      .eq('conversation_id', selectedConversationId!),
+                      .eq('conversation_id',
+                      selectedConversationId!),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    if (!snapshot.hasData ||
+                        snapshot.data!.isEmpty) {
                       return const SizedBox.shrink();
                     }
 
-                    final typing = snapshot.data!.first['is_admin_typing'] == true;
+                    final isUserTyping =
+                        snapshot.data!.first['is_user_typing'] ==
+                            true;
 
-                    return typing
+                    return isUserTyping
                         ? const Padding(
-                      padding: EdgeInsets.only(left: 12, bottom: 6),
+                      padding: EdgeInsets.only(
+                          left: 12, bottom: 6),
                       child: Text(
                         "Utilisateur est en train d’écrire…",
                         style: TextStyle(
@@ -288,23 +266,26 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                   },
                 ),
 
-                // ================= INPUT =================
+                /* ================= INPUT ================= */
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    border:
-                    Border(top: BorderSide(color: Colors.grey[300]!)),
+                    border: Border(
+                      top:
+                      BorderSide(color: Colors.grey.shade300),
+                    ),
                   ),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: controller,
+                          onChanged: _onAdminTyping,
+                          onSubmitted: (_) => sendAdminMessage(),
                           decoration: const InputDecoration(
                             hintText: "Réponse admin...",
                             border: OutlineInputBorder(),
                           ),
-                          onSubmitted: (_) => sendAdminMessage(),
                         ),
                       ),
                       const SizedBox(width: 8),
