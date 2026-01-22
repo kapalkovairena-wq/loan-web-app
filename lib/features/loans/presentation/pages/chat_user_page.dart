@@ -18,7 +18,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
-
+  Timer? _refreshTimer;
   Timer? _typingTimer;
   bool _isTyping = false;
 
@@ -26,6 +26,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
   void initState() {
     super.initState();
     loadLastConversation();
+    _startAutoRefresh();
   }
 
   @override
@@ -33,8 +34,11 @@ class _ChatUserPageState extends State<ChatUserPage> {
     _typingTimer?.cancel();
     controller.dispose();
     scrollController.dispose();
+    _refreshTimer?.cancel();
     super.dispose();
   }
+
+  void _startAutoRefresh() { _refreshTimer = Timer.periodic( const Duration(seconds: 1), (_) { if (mounted) { setState(() {}); } }, ); }
 
   /* ---------------- CONVERSATION ---------------- */
 

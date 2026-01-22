@@ -16,17 +16,26 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
 
   final TextEditingController controller = TextEditingController();
   final ScrollController scrollController = ScrollController();
-
+  Timer? _refreshTimer;
   Timer? _typingTimer;
   bool _isTyping = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _startAutoRefresh();
+  }
 
   @override
   void dispose() {
     _typingTimer?.cancel();
     controller.dispose();
     scrollController.dispose();
+    _refreshTimer?.cancel();
     super.dispose();
   }
+
+  void _startAutoRefresh() { _refreshTimer = Timer.periodic( const Duration(seconds: 1), (_) { if (mounted) { setState(() {}); } }, ); }
 
   /* ---------------- TYPING ADMIN ---------------- */
 
