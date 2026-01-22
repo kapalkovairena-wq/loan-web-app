@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 import '../pages/loan_request_page.dart';
 import '../pages/chat_user_page.dart';
+import '../pages/bank_details_page.dart';
 import '../auth/loan_service.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -93,6 +97,10 @@ class _MobileLayout extends StatelessWidget {
       children: const [
         LoanStatusCard(),
         SizedBox(height: 20),
+        BankDetailsCard(),
+        SizedBox(height: 20),
+        RepaymentBankCard(),
+        SizedBox(height: 20),
         LoanSimulationCard(),
         SizedBox(height: 20),
         LastRequestCard(),
@@ -115,6 +123,14 @@ class _WebLayout extends StatelessWidget {
         Row(
           children: const [
             Expanded(child: LoanStatusCard()),
+            SizedBox(width: 24),
+            Expanded(child: RepaymentBankCard()),
+          ],
+        ),
+        const SizedBox(height: 24),
+        Row(
+          children: const [
+            Expanded(child: BankDetailsCard()),
             SizedBox(width: 24),
             Expanded(child: LoanSimulationCard()),
           ],
@@ -346,13 +362,13 @@ class QuickActions extends StatelessWidget {
             },
           ),
           _ActionButton(
-            label: "Mes documents",
+            label: "Mes coordonnées bancaires",
             icon: Icons.folder_open,
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const LoanRequestPage(),
+                  builder: (_) => const BankDetailsPage(),
                 ),
               );
             },
@@ -462,3 +478,163 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
+class BankDetailsCard extends StatefulWidget {
+  const BankDetailsCard({super.key});
+
+  @override
+  State<BankDetailsCard> createState() => _BankDetailsCardState();
+}
+
+class _BankDetailsCardState extends State<BankDetailsCard> {
+  final SupabaseClient supabase = Supabase.instance.client;
+  final String firebaseUid = FirebaseAuth.instance.currentUser!.uid;
+
+  bool loading = true;
+  Map<String, dynamic>? data;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final res = await supabase
+        .from('profiles')
+        .select(
+      'receiver_full_name, iban, bic, bank_name, bank_address',
+    )
+        .eq('firebase_uid', firebaseUid)
+        .maybeSingle();
+
+    setState(() {
+      data = res;
+      loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const _Card(
+        title: "Coordonnées bancaires",
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (data == null ||
+        data!['iban'] == null ||
+        (data!['iban'] as String).isEmpty) {
+      return _Card(
+        title: "Coordonnées bancaires",
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              "Aucune information bancaire enregistrée",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "Veuillez renseigner vos coordonnées pour recevoir les fonds.",
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return _Card(
+      title: "Coordonnées bancaires",
+      child: Column(
+        children: [
+          _RowItem("Receveur", data!['receiver_full_name'] ?? '—'),
+          _RowItem("IBAN", data!['iban'] ?? '—'),
+          _RowItem("BIC", data!['bic'] ?? '—'),
+          _RowItem("Banque", data!['bank_name'] ?? '—'),
+          _RowItem("Adresse", data!['bank_address'] ?? '—'),
+        ],
+      ),
+    );
+  }
+}
+
+class RepaymentBankCard extends StatefulWidget {
+  const RepaymentBankCard({super.key});
+
+  @override
+  State<RepaymentBankCard> createState() => _RepaymentBankCardState();
+}
+
+class _RepaymentBankCardState extends State<RepaymentBankCard> {
+  final SupabaseClient supabase = Supabase.instance.client;
+  final String firebaseUid = FirebaseAuth.instance.currentUser!.uid;
+
+  bool loading = true;
+  Map<String, dynamic>? data;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final res = await supabase
+        .from('user_financial_accounts')
+        .select(
+      'receiver_full_name, iban, bic, bank_name, bank_address',
+    )
+        .eq('firebase_uid', firebaseUid)
+        .eq('is_active', true)
+        .maybeSingle();
+
+    setState(() {
+      data = res;
+      loading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return const _Card(
+        title: "Informations de remboursement",
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (data == null) {
+      return _Card(
+        title: "Informations de remboursement",
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              "Aucune information de remboursement disponible",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "Veuillez contacter le support pour obtenir les coordonnées de remboursement.",
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return _Card(
+      title: "Informations de remboursement",
+      child: Column(
+        children: [
+          _RowItem("Receveur", data!['receiver_full_name'] ?? '—'),
+          _RowItem("IBAN", data!['iban'] ?? '—'),
+          _RowItem("BIC", data!['bic'] ?? '—'),
+          _RowItem("Banque", data!['bank_name'] ?? '—'),
+          _RowItem("Adresse", data!['bank_address'] ?? '—'),
+        ],
+      ),
+    );
+  }
+}
