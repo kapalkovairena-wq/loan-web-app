@@ -162,7 +162,7 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                         .from('chat_messages')
                         .stream(primaryKey: ['id'])
                         .eq('conversation_id', selectedConversationId!)
-                        .order('created_at'),
+                        .order('created_at', ascending: false),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return const Center(
@@ -171,16 +171,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
 
                       final messages = snapshot.data!;
 
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (scrollController.hasClients) {
-                          scrollController.jumpTo(
-                            scrollController
-                                .position.maxScrollExtent,
-                          );
-                        }
-                      });
-
                       return ListView.builder(
+                        reverse: true,
                         controller: scrollController,
                         itemCount: messages.length,
                         itemBuilder: (context, index) {

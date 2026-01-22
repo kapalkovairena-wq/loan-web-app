@@ -129,7 +129,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
                   .from('chat_messages')
                   .stream(primaryKey: ['id'])
                   .eq('conversation_id', activeConversationId!)
-                  .order('created_at'),
+                  .order('created_at', ascending: false),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
@@ -137,15 +137,8 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
                 final messages = snapshot.data!;
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (scrollController.hasClients) {
-                    scrollController.jumpTo(
-                      scrollController.position.maxScrollExtent,
-                    );
-                  }
-                });
-
                 return ListView.builder(
+                  reverse: true,
                   controller: scrollController,
                   itemCount: messages.length,
                   itemBuilder: (context, i) {

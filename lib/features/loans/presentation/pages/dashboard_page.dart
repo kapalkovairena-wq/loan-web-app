@@ -6,6 +6,8 @@ import '../pages/loan_request_page.dart';
 import '../pages/chat_user_page.dart';
 import '../pages/bank_details_page.dart';
 import '../auth/loan_service.dart';
+import '../pages/loan_history_page.dart';
+import '../pages/client_profile_page.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -350,6 +352,18 @@ class QuickActions extends StatelessWidget {
         runSpacing: 16,
         children: [
           _ActionButton(
+            label: "Profil",
+            icon: Icons.person,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ClientProfilePage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
             label: "Nouvelle demande",
             icon: Icons.add_circle_outline,
             onPressed: () {
@@ -374,13 +388,13 @@ class QuickActions extends StatelessWidget {
             },
           ),
           _ActionButton(
-            label: "Historique",
+            label: "Historique des demandes",
             icon: Icons.history,
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => const LoanRequestPage(),
+                  builder: (_) => const LoanHistoryPage(),
                 ),
               );
             },

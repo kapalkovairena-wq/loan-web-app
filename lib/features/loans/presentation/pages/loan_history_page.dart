@@ -109,7 +109,7 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
                 "Profession": data['profession'],
                 "Source de revenus": data['income_source'],
                 "Montant demandé": "${data['amount']} FCFA",
-                "Durée": "${data['duration']} mois",
+                "Durée": "${data['duration_months']} mois",
               },
             ),
 
@@ -118,7 +118,7 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
               "Récapitulatif du crédit",
               {
                 "Mensualité": "${data['monthly_payment']} FCFA",
-                "Intérêts": "${data['interest']} FCFA",
+                "Intérêts": "${data['total_interest']} FCFA",
                 "Total à rembourser": "${data['total_amount']} FCFA",
               },
             ),

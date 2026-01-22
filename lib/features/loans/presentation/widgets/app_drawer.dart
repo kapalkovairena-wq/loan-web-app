@@ -8,8 +8,6 @@ import '../pages/loan_simulation_page.dart';
 import '../pages/contact_page.dart';
 import '../pages/loan_solution_section.dart';
 import '../pages/loan_offers_page.dart';
-import '../pages/client_profile_page.dart';
-import '../pages/loan_history_page.dart';
 import '../pages/about_page.dart';
 import '../auth/logout_page.dart';
 import '../pages/dashboard_page.dart';
@@ -55,27 +53,17 @@ class AppDrawer extends StatelessWidget {
                 ),
               ],
 
-              _drawerItem(context, 'Découvrir nos offres', () {
-                _go(context, const LoanOffersPage());
-              }),
-
               _drawerItem(context, 'Demander un prêt', () {
                 _go(context, const LoanSimulationPage());
+              }),
+
+              _drawerItem(context, 'Découvrir nos offres', () {
+                _go(context, const LoanOffersPage());
               }),
 
               _drawerItem(context, 'Investissement', () {
                 _go(context, const LoanSolutionSection());
               }),
-
-              if (user != null) ...[
-                _drawerItem(context, 'Profil', () {
-                  _go(context, const ClientProfilePage());
-                }),
-
-                _drawerItem(context, 'Voir mes demandes', () {
-                  _go(context, const LoanHistoryPage());
-                }),
-              ],
 
               _drawerItem(context, 'Contact', () {
                 _go(context, const ContactPage());
