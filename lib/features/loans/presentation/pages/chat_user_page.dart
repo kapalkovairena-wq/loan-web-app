@@ -300,8 +300,11 @@ class _ChatUserPageState extends State<ChatUserPage> {
                 Expanded(
                   child: TextField(
                     controller: controller,
+                    maxLines: null,                // ← autorise plusieurs lignes
+                    minLines: 1,
+                    keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.newline, // ← Entrée = nouvelle ligne
                     onChanged: _onUserTyping,
-                    onSubmitted: (_) => sendMessage(),
                     decoration: const InputDecoration(
                       hintText: "Votre message...",
                       border: OutlineInputBorder(),

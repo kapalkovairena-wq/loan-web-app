@@ -401,10 +401,13 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
           Expanded(
             child: TextField(
               controller: controller,
+              maxLines: null,                // ← autorise plusieurs lignes
+              minLines: 1,
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.newline, // ← Entrée = nouvelle ligne
               onChanged: _onAdminTyping,
-              onSubmitted: (_) => sendAdminMessage(),
               decoration: const InputDecoration(
-                hintText: "Réponse admin...",
+                hintText: "Réponse support...",
                 border: OutlineInputBorder(),
               ),
             ),
