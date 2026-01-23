@@ -173,8 +173,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
   Widget _buildConversations() {
     return StreamBuilder<List<Map<String, dynamic>>>(
       stream: supabase
-          .from('chat_conversations')
-          .stream(primaryKey: ['id'])
+          .from('admin_conversations_view')
+          .stream(primaryKey: ['conversation_id'])
           .order('created_at', ascending: false),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -191,35 +191,49 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
           itemBuilder: (context, index) {
             final conv = conversations[index];
             final isSelected = selectedConversationId == conv['id'];
+            final displayName = conv['receiver_full_name'] != ''
+                ? conv['receiver_full_name']
+                : conv['email'];
 
             return ListTile(
               selected: isSelected,
               title: Text(
-                "User ${conv['firebase_uid']}",
+                displayName,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
+              subtitle: Text(
+                conv['email'],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 12),
+              ),
               trailing: conv['unread_by_admin'] > 0
-                  ? CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.red,
+                  ? Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Text(
                   conv['unread_by_admin'].toString(),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               )
                   : null,
               onTap: () async {
                 setState(() {
-                  selectedConversationId = conv['id'];
+                  selectedConversationId = conv['conversation_id'];
                 });
 
-                await supabase.from('chat_conversations').update({
-                  'unread_by_admin': 0,
-                }).eq('id', conv['id']);
+                await supabase
+                    .from('chat_conversations')
+                    .update({'unread_by_admin': 0})
+                    .eq('id', conv['conversation_id']);
 
                 await markMessagesReadByAdmin();
               },
