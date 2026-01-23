@@ -39,4 +39,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/loan_team.jpg
+    - assets/images/
+    - assets/pdf/

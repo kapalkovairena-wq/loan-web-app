@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 import 'dart:typed_data';
-import 'package:flutter/services.dart';
 
 class AdminLoanPage extends StatefulWidget {
   const AdminLoanPage({super.key});
@@ -87,176 +86,74 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       final dateOfPayment = dateOfRequest.add(const Duration(days: 15));
       final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
 
-      final flagImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/germany_flag.png'))
-            .buffer
-            .asUint8List(),
-      );
-
-      final justiceImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/justice_balance.png'))
-            .buffer
-            .asUint8List(),
-      );
-
-      final footerImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/courthouse_footer.png'))
-            .buffer
-            .asUint8List(),
-      );
-
-
       pdf.addPage(
         pw.Page(
           pageFormat: PdfPageFormat.a4,
-          margin: const pw.EdgeInsets.all(32),
           build: (context) {
-            return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-
-                // ================= EN-TÊTE =================
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Image(flagImage, height: 40),
-                    pw.Image(justiceImage, height: 40),
-                  ],
-                ),
-
-                pw.SizedBox(height: 10),
-                pw.Divider(),
-
-                pw.Center(
-                  child: pw.Column(
+            return pw.Padding(
+              padding: const pw.EdgeInsets.all(32),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  // ===== EN-TETE =====
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text(
-                        'PRIVATER DARLEHENSVERTRAG',
-                        style: pw.TextStyle(
-                          fontSize: 20,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
-                      ),
-                      pw.SizedBox(height: 6),
-                      pw.Text(
-                        'Gemäß Bürgerliches Gesetzbuch (BGB)',
-                        style: pw.TextStyle(fontSize: 12),
-                      ),
-                      pw.SizedBox(height: 6),
-                      pw.Text(
-                        'Dieser Vertrag unterliegt dem deutschen Recht (§ 488 BGB).',
-                        style: pw.TextStyle(fontSize: 10),
-                      ),
+                      pw.Text("Privater Darlehensvertrag", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+                      pw.Text("🇩🇪 ⚖️", style: pw.TextStyle(fontSize: 22)),
                     ],
                   ),
-                ),
+                  pw.SizedBox(height: 24),
 
-                pw.SizedBox(height: 16),
-                pw.Divider(),
+                  // ===== PRETEUR =====
+                  pw.Text("Prêteur:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text("Frau NICOLE ASTRID"),
+                  pw.Text("Adresse: Linienstraße 213, 10119 Berlin, Deutschland"),
+                  pw.Text("Téléphone: +49 1577 4851991"),
+                  pw.SizedBox(height: 16),
 
-                // ================= PARTIES =================
-                pw.Text('Zwischen den Unterzeichnenden:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  // ===== EMPRUNTEUR =====
+                  pw.Text("Emprunteur:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(loanData['full_name']),
+                  pw.Text("Adresse: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}"),
+                  pw.Text("Téléphone: ${loanData['phone']}"),
+                  pw.Text("Email: ${loanData['email']}"),
+                  pw.SizedBox(height: 16),
 
-                pw.SizedBox(height: 10),
+                  // ===== DETAILS DU PRÊT =====
+                  pw.Text("Détails du prêt:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text("Montant: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}"),
+                  pw.Text("Durée: ${loanData['duration_months']} mois"),
+                  pw.Text("Taux d'intérêt annuel: ${loanData['annual_rate'] ?? 3} %"),
+                  pw.Text("Date de versement: ${dateOfPayment.toLocal().toIso8601String().split('T').first}"),
+                  pw.Text("Date de début: ${dateOfPayment.toLocal().toIso8601String().split('T').first}"),
+                  pw.Text("Remboursement: mensuel chaque 5ème jour du mois, à partir de ${startMonth.toLocal().toIso8601String().split('T').first}"),
+                  pw.Text("Mode de versement: virement bancaire"),
+                  pw.SizedBox(height: 16),
 
-                pw.Text('Der Darlehensgeber'),
-                pw.Text('Name: ${profileData['receiver_full_name'] ?? ''}'),
-                pw.Text('Email: ${profileData['email']}'),
-                pw.Text('IBAN: ${profileData['iban'] ?? ''}'),
-                pw.Text('BIC: ${profileData['bic'] ?? ''}'),
+                  // ===== CONDITIONS =====
+                  pw.Text("Conditions générales:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Bullet(text: "Aucun collatéral n'est exigé."),
+                  pw.Bullet(text: "Le remboursement doit être effectué selon l'échéancier."),
+                  pw.Bullet(text: "Tout retard de paiement peut entraîner des mesures légales."),
+                  pw.Bullet(text: "Le présent contrat est régi par le droit allemand."),
 
-                pw.SizedBox(height: 10),
+                  pw.Spacer(),
+                  pw.Divider(),
+                  pw.Text("Berlin, ${now.toLocal().toIso8601String().split('T').first}"),
+                  pw.SizedBox(height: 16),
+                  pw.Text("______________________________        ______________________________"),
+                  pw.Text("Signature du prêteur                      Signature de l'emprunteur"),
 
-                pw.Text('Der Darlehensnehmer'),
-                pw.Text('Name: ${loanData['full_name']}'),
-                pw.Text('Adresse: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
-                pw.Text('Email: ${loanData['email']}'),
-                pw.Text('Téléphone: ${loanData['phone']}'),
+                  pw.Spacer(),
 
-                pw.SizedBox(height: 16),
-                pw.Divider(),
-
-                // ================= ARTICLES =================
-                _article('Artikel 1 – Objekt',
-                    'Dieses Vertragsziel ist die Gewährung eines privaten Darlehens.'
-                ),
-
-                _article('Artikel 2 – Darlehensbetrag',
-                    'Darlehensbetrag: ${loanData['amount']} EUR'
-                ),
-
-                _article('Artikel 3 – Auszahlung',
-                    'Auszahlung per Banküberweisung am ${dateOfPayment.toLocal().toString().split(" ").first}.'
-                ),
-
-                _article('Artikel 4 – Laufzeit',
-                    'Dauer: ${loanData['duration_months']} Monate.'
-                ),
-
-                _article('Artikel 5 – Zinssatz',
-                    'Jährlicher Zinssatz: ${loanData['annual_rate'] ?? 3} %.'
-                ),
-
-                _article('Artikel 6 – Rückzahlung',
-                    'Monatliche Zahlung am 5. jedes Monats.'
-                ),
-
-                _article('Artikel 7 – Vorzeitige Rückzahlung',
-                    'Gemäß § 500 BGB ohne Strafgebühren.'
-                ),
-
-                _article('Artikel 8 – Zahlungsverzug',
-                    'Verzugszinsen gemäß § 288 BGB.'
-                ),
-
-                _article('Artikel 9 – Garantien',
-                    'Keine Garantie vereinbart.'
-                ),
-
-                _article('Artikel 10 – Solvenzerklärung',
-                    'Der Darlehensnehmer erklärt zahlungsfähig zu sein.'
-                ),
-
-                _article('Artikel 11 – Vertraulichkeit',
-                    'Alle Vertragsinformationen bleiben vertraulich.'
-                ),
-
-                _article('Artikel 12 – Anwendbares Recht',
-                    'Ausschließlich deutsches Recht.'
-                ),
-
-                _article('Artikel 13 – Gerichtsstand',
-                    'Gerichtsstand ist der Wohnsitz des Darlehensgebers.'
-                ),
-
-                _article('Artikel 14 – Schlussbestimmungen',
-                    'Der Vertrag wird in zwei Originalen erstellt.'
-                ),
-
-                pw.Spacer(),
-
-                // ================= SIGNATURES =================
-                pw.Divider(),
-                pw.Text('Ort, Datum: ________________________'),
-                pw.SizedBox(height: 24),
-
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text('Darlehensgeber\n______________________'),
-                    pw.Image(footerImage, height: 40),
-                    pw.Text('Darlehensnehmer\n______________________'),
-                  ],
-                ),
-
-                pw.SizedBox(height: 16),
-                pw.Center(
-                  child: pw.Text(
-                    'KreditSch © ${DateTime.now().year}',
-                    style: pw.TextStyle(fontSize: 9),
+                  pw.Divider(),
+                  pw.Text(
+                    "KreditSch © ${DateTime.now().year}",
+                    style: const pw.TextStyle(fontSize: 10),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
@@ -292,19 +189,6 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       );
     }
   }
-
-  pw.Widget _article(String title, String content) {
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.SizedBox(height: 8),
-        pw.Text(title, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-        pw.SizedBox(height: 4),
-        pw.Text(content),
-      ],
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
