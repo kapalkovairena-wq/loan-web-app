@@ -77,11 +77,14 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     setState(() => filteredRequests = tmp);
   }
 
-
-  Future<void> sendContract(Map<String, dynamic> data) async {
+  Future<void> sendContract(Map<String, dynamic> loanData, Map<String, dynamic> profileData) async {
     try {
-      // ================= PDF =================
       final pdf = pw.Document();
+
+      final now = DateTime.now();
+      final dateOfRequest = DateTime.parse(loanData['created_at']);
+      final dateOfPayment = dateOfRequest.add(const Duration(days: 15));
+      final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
 
       pdf.addPage(
         pw.Page(
@@ -92,32 +95,55 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
               child: pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
-                  pw.Text(
-                    "CONTRAT DE PRÊT",
-                    style: pw.TextStyle(
-                      fontSize: 26,
-                      fontWeight: pw.FontWeight.bold,
-                    ),
+                  // ===== EN-TETE =====
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text("Privater Darlehensvertrag", style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
+                      pw.Text("🇩🇪 ⚖️", style: pw.TextStyle(fontSize: 22)),
+                    ],
                   ),
-                  pw.SizedBox(height: 20),
+                  pw.SizedBox(height: 24),
 
-                  pw.Text("Client :", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text(data['full_name']),
-                  pw.Text(data['email']),
+                  // ===== PRETEUR =====
+                  pw.Text("Prêteur:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text("Frau NICOLE ASTRID"),
+                  pw.Text("Adresse: Linienstraße 213, 10119 Berlin, Deutschland"),
+                  pw.Text("Téléphone: +49 1577 4851991"),
                   pw.SizedBox(height: 16),
 
-                  pw.Text("Détails du prêt :", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text("Montant : ${data['amount']} FCFA"),
-                  pw.Text("Durée : ${data['duration_months']} mois"),
-                  pw.Text("Taux annuel : 3 %"),
+                  // ===== EMPRUNTEUR =====
+                  pw.Text("Emprunteur:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(loanData['full_name']),
+                  pw.Text("Adresse: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}"),
+                  pw.Text("Téléphone: ${loanData['phone']}"),
+                  pw.Text("Email: ${loanData['email']}"),
                   pw.SizedBox(height: 16),
 
-                  pw.Text("Conditions générales :", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                  pw.Text(
-                    "• Le remboursement doit être effectué selon l’échéancier.\n"
-                        "• Aucun frais d’assurance.\n"
-                        "• Tout retard peut entraîner des mesures contractuelles.\n",
-                  ),
+                  // ===== DETAILS DU PRÊT =====
+                  pw.Text("Détails du prêt:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text("Montant: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}"),
+                  pw.Text("Durée: ${loanData['duration_months']} mois"),
+                  pw.Text("Taux d'intérêt annuel: ${loanData['annual_rate'] ?? 3} %"),
+                  pw.Text("Date de versement: ${dateOfPayment.toLocal().toIso8601String().split('T').first}"),
+                  pw.Text("Date de début: ${dateOfPayment.toLocal().toIso8601String().split('T').first}"),
+                  pw.Text("Remboursement: mensuel chaque 5ème jour du mois, à partir de ${startMonth.toLocal().toIso8601String().split('T').first}"),
+                  pw.Text("Mode de versement: virement bancaire"),
+                  pw.SizedBox(height: 16),
+
+                  // ===== CONDITIONS =====
+                  pw.Text("Conditions générales:", style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Bullet(text: "Aucun collatéral n'est exigé."),
+                  pw.Bullet(text: "Le remboursement doit être effectué selon l'échéancier."),
+                  pw.Bullet(text: "Tout retard de paiement peut entraîner des mesures légales."),
+                  pw.Bullet(text: "Le présent contrat est régi par le droit allemand."),
+
+                  pw.Spacer(),
+                  pw.Divider(),
+                  pw.Text("Berlin, ${now.toLocal().toIso8601String().split('T').first}"),
+                  pw.SizedBox(height: 16),
+                  pw.Text("______________________________        ______________________________"),
+                  pw.Text("Signature du prêteur                      Signature de l'emprunteur"),
 
                   pw.Spacer(),
 
@@ -136,17 +162,16 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       Uint8List pdfBytes = await pdf.save();
       final pdfBase64 = base64Encode(pdfBytes);
 
-      // ================= CALL EDGE FUNCTION =================
       final response = await http.post(
         Uri.parse('https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/send_contract_pdf'),
         headers: {
           'Content-Type': 'application/json',
-          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "apikey": "VOTRE_API_KEY",
+          "Authorization": "Bearer VOTRE_API_KEY",
         },
         body: jsonEncode({
-          "clientName": data['full_name'],
-          "clientEmail": data['email'],
+          "clientName": loanData['full_name'],
+          "clientEmail": loanData['email'],
           "pdfBase64": pdfBase64,
         }),
       );
@@ -275,7 +300,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Email: ${data['email']}"),
-            Text("Montant: ${data['amount']} FCFA"),
+            Text("Montant: ${data['amount']}"),
             Text("Durée: ${data['duration_months']} mois"),
             Text("Pays: ${data['country']}"),
             const SizedBox(height: 6),
@@ -316,47 +341,53 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     );
   }
 
-  void _showDetailsDialog(Map<String, dynamic> data) {
+  void _showDetailsDialog(Map<String, dynamic> loanData) async {
+    final profile = await supabase
+        .from('profiles')
+        .select()
+        .eq('firebase_uid', loanData['firebase_uid'])
+        .single() as Map<String, dynamic>?;
+
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Détails - ${data['full_name']}"),
+        title: Text("Détails - ${loanData['full_name']}"),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _section("Informations personnelles", {
-                "Email": data['email'],
-                "Téléphone": data['phone'],
-                "Adresse": data['address'],
-                "Ville": data['city'],
-                "Pays": data['country'],
+                "Email": loanData['email'],
+                "Téléphone": loanData['phone'],
+                "Adresse": loanData['address'],
+                "Ville": loanData['city'] ?? "",
+                "Pays": loanData['country'] ?? "",
               }),
               _section("Informations financières", {
-                "Montant demandé": "${data['amount']} FCFA",
-                "Durée": "${data['duration_months']} mois",
-                "Source revenus": data['income_source'],
-                "Profession": data['profession'],
+                "Montant demandé": "${loanData['amount']} ${profile?['currency'] ?? 'EUR'}",
+                "Durée": "${loanData['duration_months']} mois",
+                "Source revenus": loanData['income_source'] ?? "",
+                "Profession": loanData['profession'] ?? "",
               }),
               _section("Calculs crédit", {
-                "Mensualité": "${data['monthly_payment']} FCFA",
-                "Intérêts": "${data['total_interest']} FCFA",
-                "Total à rembourser": "${data['total_amount']} FCFA",
+                "Mensualité": "${loanData['monthly_payment']} ${profile?['currency'] ?? 'EUR'}",
+                "Intérêts": "${loanData['total_interest']} ${profile?['currency'] ?? 'EUR'}",
+                "Total à rembourser": "${loanData['total_amount']} ${profile?['currency'] ?? 'EUR'}",
               }),
               const SizedBox(height: 12),
               const Text("Documents soumis", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 6),
               Row(
                 children: [
-                  _documentPreview("Pièce identité", data['identity_document_url']),
+                  _documentPreview("Pièce identité", loanData['identity_document_url']),
                   const SizedBox(width: 8),
-                  _documentPreview("Justificatif domicile", data['address_proof_url']),
+                  _documentPreview("Justificatif domicile", loanData['address_proof_url']),
                 ],
               ),
               const SizedBox(height: 12),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => sendContract(data),
+                  onPressed: () => sendContract(loanData, profile ?? {}),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                   child: const Text("Envoyer contrat PDF", style: TextStyle(color: Colors.white)),
                 ),
