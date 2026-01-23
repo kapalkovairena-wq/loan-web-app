@@ -29,13 +29,36 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
   @override
   void dispose() {
     _typingTimer?.cancel();
+    _refreshTimer?.cancel();
     controller.dispose();
     scrollController.dispose();
-    _refreshTimer?.cancel();
     super.dispose();
   }
 
-  void _startAutoRefresh() { _refreshTimer = Timer.periodic( const Duration(seconds: 1), (_) { if (mounted) { setState(() {}); } }, ); }
+  void _startAutoRefresh() {
+    _refreshTimer = Timer.periodic(
+      const Duration(seconds: 1),
+          (_) {
+        if (mounted) setState(() {});
+      },
+    );
+  }
+
+  /* ---------------- READ BY ADMIN ---------------- */
+
+  Future<void> markMessagesReadByAdmin() async {
+    if (selectedConversationId == null) return;
+
+    await supabase
+        .from('chat_messages')
+        .update({
+      'read_by_admin': true,
+      'read_at': DateTime.now().toIso8601String(),
+    })
+        .eq('conversation_id', selectedConversationId!)
+        .eq('sender_type', 'user')
+        .eq('read_by_admin', false);
+  }
 
   /* ---------------- TYPING ADMIN ---------------- */
 
@@ -102,212 +125,265 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Admin – Chats")),
-      body: Row(
-        children: [
-          /* ================= CONVERSATIONS ================= */
-          SizedBox(
-            width: 320,
-            child: StreamBuilder<List<Map<String, dynamic>>>(
-              stream: supabase
-                  .from('chat_conversations')
-                  .stream(primaryKey: ['id'])
-                  .order('created_at', ascending: false),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 800;
 
-                final conversations = snapshot.data!;
-                if (conversations.isEmpty) {
-                  return const Center(child: Text("Aucune discussion"));
-                }
-
-                return ListView.builder(
-                  itemCount: conversations.length,
-                  itemBuilder: (context, index) {
-                    final conv = conversations[index];
-                    final isSelected =
-                        selectedConversationId == conv['id'];
-
-                    return ListTile(
-                      selected: isSelected,
-                      title: Text(
-                        "User ${conv['firebase_uid']}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        conv['status'] ?? 'open',
-                        style: TextStyle(
-                          color: conv['status'] == 'closed'
-                              ? Colors.red
-                              : Colors.green,
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          selectedConversationId = conv['id'];
-                        });
-                      },
-                    );
-                  },
-                );
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Admin – Chats"),
+            leading: isMobile && selectedConversationId != null
+                ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                setState(() => selectedConversationId = null);
               },
+            )
+                : null,
+          ),
+          body: isMobile
+              ? _buildMobileLayout()
+              : _buildDesktopLayout(),
+        );
+      },
+    );
+  }
+
+  /* ---------------- DESKTOP ---------------- */
+
+  Widget _buildDesktopLayout() {
+    return Row(
+      children: [
+        SizedBox(width: 320, child: _buildConversations()),
+        Expanded(child: _buildChat()),
+      ],
+    );
+  }
+
+  /* ---------------- MOBILE ---------------- */
+
+  Widget _buildMobileLayout() {
+    return selectedConversationId == null
+        ? _buildConversations()
+        : _buildChat();
+  }
+
+  /* ---------------- CONVERSATIONS ---------------- */
+
+  Widget _buildConversations() {
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: supabase
+          .from('chat_conversations')
+          .stream(primaryKey: ['id'])
+          .order('created_at', ascending: false),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final conversations = snapshot.data!;
+        if (conversations.isEmpty) {
+          return const Center(child: Text("Aucune discussion"));
+        }
+
+        return ListView.builder(
+          itemCount: conversations.length,
+          itemBuilder: (context, index) {
+            final conv = conversations[index];
+            final isSelected = selectedConversationId == conv['id'];
+
+            return ListTile(
+              selected: isSelected,
+              title: Text(
+                "User ${conv['firebase_uid']}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: conv['unread_by_admin'] > 0
+                  ? CircleAvatar(
+                radius: 12,
+                backgroundColor: Colors.red,
+                child: Text(
+                  conv['unread_by_admin'].toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+              )
+                  : null,
+              onTap: () async {
+                setState(() {
+                  selectedConversationId = conv['id'];
+                });
+
+                await supabase.from('chat_conversations').update({
+                  'unread_by_admin': 0,
+                }).eq('id', conv['id']);
+
+                await markMessagesReadByAdmin();
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /* ---------------- CHAT ---------------- */
+
+  Widget _buildChat() {
+    if (selectedConversationId == null) {
+      return const Center(
+        child: Text("Sélectionnez une discussion"),
+      );
+    }
+
+    return Column(
+      children: [
+        Expanded(
+          child: StreamBuilder<List<Map<String, dynamic>>>(
+            stream: supabase
+                .from('chat_messages')
+                .stream(primaryKey: ['id'])
+                .eq('conversation_id', selectedConversationId!)
+                .order('created_at', ascending: false),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                    child: CircularProgressIndicator());
+              }
+
+              final messages = snapshot.data!;
+              if (messages.isNotEmpty &&
+                  messages.first['sender_type'] == 'user') {
+                markMessagesReadByAdmin();
+              }
+
+              return ListView.builder(
+                reverse: true,
+                controller: scrollController,
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final m = messages[index];
+                  final isAdmin = m['sender_type'] == 'admin';
+
+                  return Align(
+                    alignment:
+                    isAdmin ? Alignment.centerRight : Alignment.centerLeft,
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: isAdmin
+                            ? Colors.green
+                            : Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: isAdmin
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            m['message'],
+                            style: TextStyle(
+                              color: isAdmin
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                formatTime(m['created_at']),
+                                style: const TextStyle(fontSize: 11),
+                              ),
+                              if (isAdmin) ...[
+                                const SizedBox(width: 4),
+                                Icon(
+                                  m['read_by_user'] == true
+                                      ? Icons.done_all
+                                      : Icons.done,
+                                  size: 16,
+                                  color: m['read_by_user'] == true
+                                      ? Colors.blue
+                                      : Colors.grey,
+                                ),
+                              ]
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+        _buildTypingIndicator(),
+        _buildInput(),
+      ],
+    );
+  }
+
+  Widget _buildTypingIndicator() {
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: supabase
+          .from('chat_typing')
+          .stream(primaryKey: ['conversation_id'])
+          .eq('conversation_id', selectedConversationId!),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        final isUserTyping =
+            snapshot.data!.first['is_user_typing'] == true;
+
+        return isUserTyping
+            ? const Padding(
+          padding: EdgeInsets.only(left: 12, bottom: 6),
+          child: Text(
+            "Utilisateur est en train d’écrire…",
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              color: Colors.grey,
             ),
           ),
+        )
+            : const SizedBox.shrink();
+      },
+    );
+  }
 
-          /* ================= MESSAGES ================= */
+  Widget _buildInput() {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey.shade300)),
+      ),
+      child: Row(
+        children: [
           Expanded(
-            child: selectedConversationId == null
-                ? const Center(
-              child: Text(
-                "Sélectionnez une discussion",
-                style: TextStyle(fontSize: 16),
+            child: TextField(
+              controller: controller,
+              onChanged: _onAdminTyping,
+              onSubmitted: (_) => sendAdminMessage(),
+              decoration: const InputDecoration(
+                hintText: "Réponse admin...",
+                border: OutlineInputBorder(),
               ),
-            )
-                : Column(
-              children: [
-                Expanded(
-                  child: StreamBuilder<List<Map<String, dynamic>>>(
-                    stream: supabase
-                        .from('chat_messages')
-                        .stream(primaryKey: ['id'])
-                        .eq('conversation_id',
-                        selectedConversationId!)
-                        .order('created_at', ascending: false),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                            child: CircularProgressIndicator());
-                      }
-
-                      final messages = snapshot.data!;
-
-                      return ListView.builder(
-                        reverse: true,
-                        controller: scrollController,
-                        itemCount: messages.length,
-                        itemBuilder: (context, index) {
-                          final m = messages[index];
-                          final isAdmin =
-                              m['sender_type'] == 'admin';
-
-                          return Align(
-                            alignment: isAdmin
-                                ? Alignment.centerRight
-                                : Alignment.centerLeft,
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  vertical: 6, horizontal: 10),
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: isAdmin
-                                    ? Colors.green
-                                    : Colors.grey.shade300,
-                                borderRadius:
-                                BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: isAdmin
-                                    ? CrossAxisAlignment.end
-                                    : CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    m['message'],
-                                    style: TextStyle(
-                                      color: isAdmin
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    formatTime(m['created_at']),
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                      color: isAdmin
-                                          ? Colors.white70
-                                          : Colors.black54,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-
-                /* -------- USER TYPING -------- */
-                StreamBuilder<List<Map<String, dynamic>>>(
-                  stream: supabase
-                      .from('chat_typing')
-                      .stream(primaryKey: ['conversation_id'])
-                      .eq('conversation_id',
-                      selectedConversationId!),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData ||
-                        snapshot.data!.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-
-                    final isUserTyping =
-                        snapshot.data!.first['is_user_typing'] ==
-                            true;
-
-                    return isUserTyping
-                        ? const Padding(
-                      padding: EdgeInsets.only(
-                          left: 12, bottom: 6),
-                      child: Text(
-                        "Utilisateur est en train d’écrire…",
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    )
-                        : const SizedBox.shrink();
-                  },
-                ),
-
-                /* ================= INPUT ================= */
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top:
-                      BorderSide(color: Colors.grey.shade300),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: controller,
-                          onChanged: _onAdminTyping,
-                          onSubmitted: (_) => sendAdminMessage(),
-                          decoration: const InputDecoration(
-                            hintText: "Réponse admin...",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: const Icon(Icons.send),
-                        color: Colors.green,
-                        onPressed: sendAdminMessage,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
+          ),
+          const SizedBox(width: 8),
+          IconButton(
+            icon: const Icon(Icons.send),
+            color: Colors.green,
+            onPressed: sendAdminMessage,
           ),
         ],
       ),

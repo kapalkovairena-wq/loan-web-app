@@ -32,13 +32,20 @@ class _ChatUserPageState extends State<ChatUserPage> {
   @override
   void dispose() {
     _typingTimer?.cancel();
+    _refreshTimer?.cancel();
     controller.dispose();
     scrollController.dispose();
-    _refreshTimer?.cancel();
     super.dispose();
   }
 
-  void _startAutoRefresh() { _refreshTimer = Timer.periodic( const Duration(seconds: 1), (_) { if (mounted) { setState(() {}); } }, ); }
+  void _startAutoRefresh() {
+    _refreshTimer = Timer.periodic(
+      const Duration(seconds: 1),
+          (_) {
+        if (mounted) setState(() {});
+      },
+    );
+  }
 
   /* ---------------- CONVERSATION ---------------- */
 
@@ -53,6 +60,27 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
     if (res != null) {
       setState(() => activeConversationId = res['id']);
+      await markMessagesReadByUser();
+    }
+  }
+
+  Future<void> markMessagesReadByUser() async {
+    if (activeConversationId == null) return;
+
+    await supabase
+        .from('chat_messages')
+        .update({
+      'read_by_user': true,
+      'read_at': DateTime.now().toIso8601String(),
+    })
+        .eq('conversation_id', activeConversationId!)
+        .eq('sender_type', 'admin')
+        .eq('read_by_user', false);
+  }
+
+  void onNewMessage(Map message) {
+    if (message['sender_type'] == 'admin') {
+      markMessagesReadByUser();
     }
   }
 
@@ -146,7 +174,6 @@ class _ChatUserPageState extends State<ChatUserPage> {
       appBar: AppBar(title: const Text("Chat support")),
       body: Column(
         children: [
-          /* -------- MESSAGES -------- */
           Expanded(
             child: StreamBuilder<List<Map<String, dynamic>>>(
               stream: supabase
@@ -160,6 +187,10 @@ class _ChatUserPageState extends State<ChatUserPage> {
                 }
 
                 final messages = snapshot.data!;
+
+                if (messages.isNotEmpty) {
+                  onNewMessage(messages.first);
+                }
 
                 return ListView.builder(
                   reverse: true,
@@ -193,15 +224,32 @@ class _ChatUserPageState extends State<ChatUserPage> {
                               ),
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              formatTime(m['created_at']),
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: isUser
-                                    ? Colors.white70
-                                    : Colors.black54,
-                              ),
-                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  formatTime(m['created_at']),
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: isUser
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                  ),
+                                ),
+                                if (isUser) ...[
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    m['read_by_admin'] == true
+                                        ? Icons.done_all
+                                        : Icons.done,
+                                    size: 16,
+                                    color: m['read_by_admin'] == true
+                                        ? Colors.blue
+                                        : Colors.white70,
+                                  ),
+                                ]
+                              ],
+                            )
                           ],
                         ),
                       ),
