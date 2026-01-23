@@ -88,19 +88,19 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
 
       final flagImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/germany_flag.png'))
+        (await rootBundle.load('assets/pdf/flag.png'))
             .buffer
             .asUint8List(),
       );
 
       final justiceImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/justice_balance.png'))
+        (await rootBundle.load('assets/pdf/balance.png'))
             .buffer
             .asUint8List(),
       );
 
       final footerImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/courthouse_footer.png'))
+        (await rootBundle.load('assets/pdf/footer.png'))
             .buffer
             .asUint8List(),
       );
@@ -111,7 +111,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           margin: const pw.EdgeInsets.all(32),
           footer: (context) => pw.Center(
             child: pw.Text(
-              'KreditSch © ${DateTime.now().year} — Page ${context.pageNumber}',
+              'KreditSch © ${DateTime.now().year} - Page ${context.pageNumber}',
               style: pw.TextStyle(fontSize: 9),
             ),
           ),
@@ -230,59 +230,59 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Divider(),
 
       // ================= ARTICLES =================
-      _article('Artikel 1 – Objekt',
+      _article('Artikel 1 - Objekt',
           'Dieses Vertragsziel ist die Gewährung eines privaten Darlehens.'
       ),
 
-      _article('Artikel 2 – Darlehensbetrag',
+      _article('Artikel 2 - Darlehensbetrag',
           'Darlehensbetrag: ${loanData['amount']} EUR'
       ),
 
-      _article('Artikel 3 – Auszahlung',
+      _article('Artikel 3 - Auszahlung',
           'Auszahlung per Banküberweisung am ${dateOfPayment.toLocal().toString().split(" ").first}.'
       ),
 
-      _article('Artikel 4 – Laufzeit',
+      _article('Artikel 4 - Laufzeit',
           'Dauer: ${loanData['duration_months']} Monate.'
       ),
 
-      _article('Artikel 5 – Zinssatz',
+      _article('Artikel 5 - Zinssatz',
           'Jährlicher Zinssatz: ${loanData['annual_rate'] ?? 3} %.'
       ),
 
-      _article('Artikel 6 – Rückzahlung',
+      _article('Artikel 6 - Rückzahlung',
           'Monatliche Zahlung am 5. jedes Monats.'
       ),
 
-      _article('Artikel 7 – Vorzeitige Rückzahlung',
+      _article('Artikel 7 - Vorzeitige Rückzahlung',
           'Gemäß § 500 BGB ohne Strafgebühren.'
       ),
 
-      _article('Artikel 8 – Zahlungsverzug',
+      _article('Artikel 8 - Zahlungsverzug',
           'Verzugszinsen gemäß § 288 BGB.'
       ),
 
-      _article('Artikel 9 – Garantien',
+      _article('Artikel 9 - Garantien',
           'Keine Garantie vereinbart.'
       ),
 
-      _article('Artikel 10 – Solvenzerklärung',
+      _article('Artikel 10 - Solvenzerklärung',
           'Der Darlehensnehmer erklärt zahlungsfähig zu sein.'
       ),
 
-      _article('Artikel 11 – Vertraulichkeit',
+      _article('Artikel 11 - Vertraulichkeit',
           'Alle Vertragsinformationen bleiben vertraulich.'
       ),
 
-      _article('Artikel 12 – Anwendbares Recht',
+      _article('Artikel 12 - Anwendbares Recht',
           'Ausschließlich deutsches Recht.'
       ),
 
-      _article('Artikel 13 – Gerichtsstand',
+      _article('Artikel 13 - Gerichtsstand',
           'Gerichtsstand ist der Wohnsitz des Darlehensgebers.'
       ),
 
-      _article('Artikel 14 – Schlussbestimmungen',
+      _article('Artikel 14 - Schlussbestimmungen',
           'Der Vertrag wird in zwei Originalen erstellt.'
       ),
 
