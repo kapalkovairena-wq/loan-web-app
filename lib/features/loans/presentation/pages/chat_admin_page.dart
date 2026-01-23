@@ -399,16 +399,27 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              controller: controller,
-              maxLines: null,                // ← autorise plusieurs lignes
-              minLines: 1,
-              keyboardType: TextInputType.multiline,
-              textInputAction: TextInputAction.newline, // ← Entrée = nouvelle ligne
-              onChanged: _onAdminTyping,
-              decoration: const InputDecoration(
-                hintText: "Réponse support...",
-                border: OutlineInputBorder(),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxHeight: 140, // ← hauteur max du champ
+              ),
+              child: Scrollbar(
+                thumbVisibility: true, // visible sur desktop
+                child: TextField(
+                  controller: controller,
+                  enableInteractiveSelection: true,
+                  maxLines: null,
+                  minLines: 1,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  onChanged: _onAdminTyping,
+                  decoration: const InputDecoration(
+                    hintText: "Réponse support...",
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.all(12),
+                  ),
+                ),
               ),
             ),
           ),
