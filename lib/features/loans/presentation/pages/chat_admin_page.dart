@@ -197,10 +197,26 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
 
             return ListTile(
               selected: isSelected,
-              title: Text(
-                displayName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+              title: Row(
+                children: [
+                  if (conv['unread_by_admin'] > 0)
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.only(right: 6),
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  Expanded(
+                    child: Text(
+                      displayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
               subtitle: Text(
                 conv['email'],
