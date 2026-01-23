@@ -105,160 +105,26 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
             .asUint8List(),
       );
 
-
       pdf.addPage(
-        pw.Page(
+        pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
           margin: const pw.EdgeInsets.all(32),
-          build: (context) {
-            return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-
-                // ================= EN-TÊTE =================
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Image(flagImage, height: 40),
-                    pw.Image(justiceImage, height: 40),
-                  ],
-                ),
-
-                pw.SizedBox(height: 10),
-                pw.Divider(),
-
-                pw.Center(
-                  child: pw.Column(
-                    children: [
-                      pw.Text(
-                        'PRIVATER DARLEHENSVERTRAG',
-                        style: pw.TextStyle(
-                          fontSize: 20,
-                          fontWeight: pw.FontWeight.bold,
-                        ),
-                      ),
-                      pw.SizedBox(height: 6),
-                      pw.Text(
-                        'Gemäß Bürgerliches Gesetzbuch (BGB)',
-                        style: pw.TextStyle(fontSize: 12),
-                      ),
-                      pw.SizedBox(height: 6),
-                      pw.Text(
-                        'Dieser Vertrag unterliegt dem deutschen Recht (§ 488 BGB).',
-                        style: pw.TextStyle(fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ),
-
-                pw.SizedBox(height: 16),
-                pw.Divider(),
-
-                // ================= PARTIES =================
-                pw.Text('Zwischen den Unterzeichnenden:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-
-                pw.SizedBox(height: 10),
-
-                pw.Text('Der Darlehensgeber'),
-                pw.Text('Name: ${profileData['receiver_full_name'] ?? ''}'),
-                pw.Text('Email: ${profileData['email']}'),
-                pw.Text('IBAN: ${profileData['iban'] ?? ''}'),
-                pw.Text('BIC: ${profileData['bic'] ?? ''}'),
-
-                pw.SizedBox(height: 10),
-
-                pw.Text('Der Darlehensnehmer'),
-                pw.Text('Name: ${loanData['full_name']}'),
-                pw.Text('Adresse: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
-                pw.Text('Email: ${loanData['email']}'),
-                pw.Text('Téléphone: ${loanData['phone']}'),
-
-                pw.SizedBox(height: 16),
-                pw.Divider(),
-
-                // ================= ARTICLES =================
-                _article('Artikel 1 – Objekt',
-                    'Dieses Vertragsziel ist die Gewährung eines privaten Darlehens.'
-                ),
-
-                _article('Artikel 2 – Darlehensbetrag',
-                    'Darlehensbetrag: ${loanData['amount']} EUR'
-                ),
-
-                _article('Artikel 3 – Auszahlung',
-                    'Auszahlung per Banküberweisung am ${dateOfPayment.toLocal().toString().split(" ").first}.'
-                ),
-
-                _article('Artikel 4 – Laufzeit',
-                    'Dauer: ${loanData['duration_months']} Monate.'
-                ),
-
-                _article('Artikel 5 – Zinssatz',
-                    'Jährlicher Zinssatz: ${loanData['annual_rate'] ?? 3} %.'
-                ),
-
-                _article('Artikel 6 – Rückzahlung',
-                    'Monatliche Zahlung am 5. jedes Monats.'
-                ),
-
-                _article('Artikel 7 – Vorzeitige Rückzahlung',
-                    'Gemäß § 500 BGB ohne Strafgebühren.'
-                ),
-
-                _article('Artikel 8 – Zahlungsverzug',
-                    'Verzugszinsen gemäß § 288 BGB.'
-                ),
-
-                _article('Artikel 9 – Garantien',
-                    'Keine Garantie vereinbart.'
-                ),
-
-                _article('Artikel 10 – Solvenzerklärung',
-                    'Der Darlehensnehmer erklärt zahlungsfähig zu sein.'
-                ),
-
-                _article('Artikel 11 – Vertraulichkeit',
-                    'Alle Vertragsinformationen bleiben vertraulich.'
-                ),
-
-                _article('Artikel 12 – Anwendbares Recht',
-                    'Ausschließlich deutsches Recht.'
-                ),
-
-                _article('Artikel 13 – Gerichtsstand',
-                    'Gerichtsstand ist der Wohnsitz des Darlehensgebers.'
-                ),
-
-                _article('Artikel 14 – Schlussbestimmungen',
-                    'Der Vertrag wird in zwei Originalen erstellt.'
-                ),
-
-                pw.Spacer(),
-
-                // ================= SIGNATURES =================
-                pw.Divider(),
-                pw.Text('Ort, Datum: ________________________'),
-                pw.SizedBox(height: 24),
-
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text('Darlehensgeber\n______________________'),
-                    pw.Image(footerImage, height: 40),
-                    pw.Text('Darlehensnehmer\n______________________'),
-                  ],
-                ),
-
-                pw.SizedBox(height: 16),
-                pw.Center(
-                  child: pw.Text(
-                    'KreditSch © ${DateTime.now().year}',
-                    style: pw.TextStyle(fontSize: 9),
-                  ),
-                ),
-              ],
-            );
-          },
+          footer: (context) => pw.Center(
+            child: pw.Text(
+              'KreditSch © ${DateTime.now().year} — Page ${context.pageNumber}',
+              style: pw.TextStyle(fontSize: 9),
+            ),
+          ),
+          build: (context) => [
+            ..._buildContractContent(
+              loanData,
+              profileData,
+              flagImage,
+              justiceImage,
+              footerImage,
+              dateOfPayment,
+            ),
+          ],
         ),
       );
 
@@ -291,6 +157,151 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
         SnackBar(content: Text("❌ Erreur : $e")),
       );
     }
+  }
+
+  List<pw.Widget> _buildContractContent(
+      Map<String, dynamic> loanData,
+      Map<String, dynamic> profileData,
+      pw.ImageProvider flagImage,
+      pw.ImageProvider justiceImage,
+      pw.ImageProvider footerImage,
+      DateTime dateOfPayment,
+      ) {
+    return [
+      // ===== HEADER =====
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Image(flagImage, height: 40),
+          pw.Image(justiceImage, height: 40),
+        ],
+      ),
+
+      pw.SizedBox(height: 10),
+      pw.Divider(),
+
+      pw.Center(
+        child: pw.Column(
+          children: [
+            pw.Text(
+              'PRIVATER DARLEHENSVERTRAG',
+              style: pw.TextStyle(
+                fontSize: 20,
+                fontWeight: pw.FontWeight.bold,
+              ),
+            ),
+            pw.SizedBox(height: 6),
+            pw.Text(
+              'Gemäß Bürgerliches Gesetzbuch (BGB)',
+              style: pw.TextStyle(fontSize: 12),
+            ),
+            pw.SizedBox(height: 6),
+            pw.Text(
+              'Dieser Vertrag unterliegt dem deutschen Recht (§ 488 BGB).',
+              style: pw.TextStyle(fontSize: 10),
+            ),
+          ],
+        ),
+      ),
+
+      pw.SizedBox(height: 16),
+      pw.Divider(),
+
+      // ================= PARTIES =================
+      pw.Text('Zwischen den Unterzeichnenden:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+
+      pw.SizedBox(height: 10),
+
+      pw.Text('Der Darlehensgeber'),
+      pw.Text('Name: ${profileData['receiver_full_name'] ?? ''}'),
+      pw.Text('Email: ${profileData['email']}'),
+      pw.Text('IBAN: ${profileData['iban'] ?? ''}'),
+      pw.Text('BIC: ${profileData['bic'] ?? ''}'),
+
+      pw.SizedBox(height: 10),
+
+      pw.Text('Der Darlehensnehmer'),
+      pw.Text('Name: ${loanData['full_name']}'),
+      pw.Text('Adresse: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
+      pw.Text('Email: ${loanData['email']}'),
+      pw.Text('Téléphone: ${loanData['phone']}'),
+
+      pw.SizedBox(height: 16),
+      pw.Divider(),
+
+      // ================= ARTICLES =================
+      _article('Artikel 1 – Objekt',
+          'Dieses Vertragsziel ist die Gewährung eines privaten Darlehens.'
+      ),
+
+      _article('Artikel 2 – Darlehensbetrag',
+          'Darlehensbetrag: ${loanData['amount']} EUR'
+      ),
+
+      _article('Artikel 3 – Auszahlung',
+          'Auszahlung per Banküberweisung am ${dateOfPayment.toLocal().toString().split(" ").first}.'
+      ),
+
+      _article('Artikel 4 – Laufzeit',
+          'Dauer: ${loanData['duration_months']} Monate.'
+      ),
+
+      _article('Artikel 5 – Zinssatz',
+          'Jährlicher Zinssatz: ${loanData['annual_rate'] ?? 3} %.'
+      ),
+
+      _article('Artikel 6 – Rückzahlung',
+          'Monatliche Zahlung am 5. jedes Monats.'
+      ),
+
+      _article('Artikel 7 – Vorzeitige Rückzahlung',
+          'Gemäß § 500 BGB ohne Strafgebühren.'
+      ),
+
+      _article('Artikel 8 – Zahlungsverzug',
+          'Verzugszinsen gemäß § 288 BGB.'
+      ),
+
+      _article('Artikel 9 – Garantien',
+          'Keine Garantie vereinbart.'
+      ),
+
+      _article('Artikel 10 – Solvenzerklärung',
+          'Der Darlehensnehmer erklärt zahlungsfähig zu sein.'
+      ),
+
+      _article('Artikel 11 – Vertraulichkeit',
+          'Alle Vertragsinformationen bleiben vertraulich.'
+      ),
+
+      _article('Artikel 12 – Anwendbares Recht',
+          'Ausschließlich deutsches Recht.'
+      ),
+
+      _article('Artikel 13 – Gerichtsstand',
+          'Gerichtsstand ist der Wohnsitz des Darlehensgebers.'
+      ),
+
+      _article('Artikel 14 – Schlussbestimmungen',
+          'Der Vertrag wird in zwei Originalen erstellt.'
+      ),
+
+      pw.Spacer(),
+
+      // ================= SIGNATURES =================
+      pw.Divider(),
+      pw.Text('Ort, Datum: ________________________'),
+      pw.SizedBox(height: 24),
+
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text('Darlehensgeber\n______________________'),
+          pw.Image(footerImage, height: 40),
+          pw.Text('Darlehensnehmer\n______________________'),
+        ],
+      ),
+    ];
   }
 
   pw.Widget _article(String title, String content) {
