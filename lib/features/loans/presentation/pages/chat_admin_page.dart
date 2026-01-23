@@ -315,8 +315,11 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                             ? CrossAxisAlignment.end
                             : CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          SelectableText(
                             m['message'],
+                            enableInteractiveSelection: true,
+                            showCursor: false,
+                            cursorWidth: 1,
                             style: TextStyle(
                               color: isAdmin
                                   ? Colors.white

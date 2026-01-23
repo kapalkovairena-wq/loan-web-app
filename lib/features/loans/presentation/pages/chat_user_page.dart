@@ -216,8 +216,11 @@ class _ChatUserPageState extends State<ChatUserPage> {
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            SelectableText(
                               m['message'] ?? '',
+                              enableInteractiveSelection: true,
+                              showCursor: false,
+                              cursorWidth: 1,
                               style: TextStyle(
                                 color:
                                 isUser ? Colors.white : Colors.black,
