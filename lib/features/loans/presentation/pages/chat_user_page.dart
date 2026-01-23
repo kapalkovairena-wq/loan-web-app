@@ -244,8 +244,8 @@ class _ChatUserPageState extends State<ChatUserPage> {
                                         : Icons.done,
                                     size: 16,
                                     color: m['read_by_admin'] == true
-                                        ? Colors.blue
-                                        : Colors.white70,
+                                        ? Colors.yellow
+                                        : Colors.brown,
                                   ),
                                 ]
                               ],

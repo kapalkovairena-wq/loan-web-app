@@ -309,8 +309,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
                                       : Icons.done,
                                   size: 16,
                                   color: m['read_by_user'] == true
-                                      ? Colors.blue
-                                      : Colors.grey,
+                                      ? Colors.yellow
+                                      : Colors.brown,
                                 ),
                               ]
                             ],
