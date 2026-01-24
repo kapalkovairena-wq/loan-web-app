@@ -167,6 +167,9 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.ImageProvider footerImage,
       DateTime dateOfPayment,
       ) {
+    final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
+    final now = DateTime.now();
+
     return [
       // ===== HEADER =====
       pw.Row(
@@ -213,84 +216,117 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.SizedBox(height: 10),
 
       pw.Text('Der Darlehensgeber'),
-      pw.Text('Name: ${profileData['receiver_full_name'] ?? ''}'),
-      pw.Text('Email: ${profileData['email']}'),
-      pw.Text('IBAN: ${profileData['iban'] ?? ''}'),
-      pw.Text('BIC: ${profileData['bic'] ?? ''}'),
+      pw.Text("Vor- und Nachname: Frau NICOLE ASTRID"),
+      pw.Text("Anschrift: Linienstraße 213, 10119 Berlin, Deutschland"),
+      pw.Text("Telefonnummer: +49 1577 4851991"),
+      pw.SizedBox(height: 5),
+      pw.Text("Nachfolgend „Darlehensgeber“ genannt"),
 
       pw.SizedBox(height: 10),
 
       pw.Text('Der Darlehensnehmer'),
-      pw.Text('Name: ${loanData['full_name']}'),
-      pw.Text('Adresse: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
-      pw.Text('Email: ${loanData['email']}'),
-      pw.Text('Téléphone: ${loanData['phone']}'),
+      pw.Text('Vor- und Nachname : Herr/Frau ${loanData['full_name']}'),
+      pw.Text('Anschrift: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
+      pw.Text('E-Mail: ${loanData['email']}'),
+      pw.Text('Telefonnummer: ${loanData['phone']}'),
+      pw.SizedBox(height: 5),
+      pw.Text("Nachfolgend „Darlehensnehmer“ genannt"),
+
+      pw.SizedBox(height: 16),
+      pw.Divider(),
+
+      pw.Text('Präambel:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      pw.SizedBox(height: 10),
+      pw.Text("Der Darlehensgeber erklärt sich bereit, dem Darlehensnehmer ein privates Darlehen zu gewähren, und der Darlehensnehmer erklärt sich bereit, dieses Darlehen zu den nachstehenden Bedingungen anzunehmen, gemäß den Bestimmungen der §§ 488 ff. des Bürgerlichen Gesetzbuches (BGB)."),
 
       pw.SizedBox(height: 16),
       pw.Divider(),
 
       // ================= ARTICLES =================
-      _article('Artikel 1 - Objekt',
-          'Dieses Vertragsziel ist die Gewährung eines privaten Darlehens.'
+      _article('Artikel 1 - Vertragsgegenstand',
+          'Gegenstand dieses Vertrages ist die Gewährung eines privaten Gelddarlehens durch den Darlehensgeber an den Darlehensnehmer, welches der Darlehensnehmer gemäß den nachfolgenden Bestimmungen zurückzuzahlen verpflichtet ist.'
       ),
 
       _article('Artikel 2 - Darlehensbetrag',
-          'Darlehensbetrag: ${loanData['amount']} EUR'
+          'Der Darlehensgeber gewährt dem Darlehensnehmer ein Darlehen in Höhe von:'
+          'Darlehensbetrag: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}'
       ),
 
-      _article('Artikel 3 - Auszahlung',
-          'Auszahlung per Banküberweisung am ${dateOfPayment.toLocal().toString().split(" ").first}.'
+      _article('Artikel 3 - Auszahlung des Darlehens',
+          'Die Auszahlung des Darlehens erfolgt durch Banküberweisung.'
+          'Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}'
+          'Die Zahlungen erfolgen auf folgendes Konto des Darlehensnehmer:'
+          'IBAN: ${profileData['iban']}'
+          'BIC: ${profileData['bic']}'
+          'Name der Bank: ${profileData['bank_name']}'
+          'Bankadresse: ${profileData['bank_address']}'
       ),
 
-      _article('Artikel 4 - Laufzeit',
-          'Dauer: ${loanData['duration_months']} Monate.'
+      _article('Artikel 4 - Laufzeit des Darlehens',
+          'Laufzeit: ${loanData['duration_months']} Monate.'
+              'Beginn: ${dateOfPayment.toLocal().toIso8601String().split('T').first}'
       ),
 
       _article('Artikel 5 - Zinssatz',
-          'Jährlicher Zinssatz: ${loanData['annual_rate'] ?? 3} %.'
+          'Verzinsliches Darlehen'
+          'Jährlicher Zinssatz: 3 %.'
+          'Die Zinsen werden auf den jeweils verbleibenden Darlehenssaldo berechnet.'
+          'Der Zinssatz entspricht den Vorschriften zur Sittenwidrigkeit und zum Wucher gemäß § 138 BGB.'
       ),
 
-      _article('Artikel 6 - Rückzahlung',
-          'Monatliche Zahlung am 5. jedes Monats.'
+      _article('Artikel 6 - Rückzahlungsmodalitäten',
+      'Die Rückzahlung erfolgt wie folgt:'
+          '- Monatliche Raten'
+          '- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}'
+          'Zahlungstermin: jeweils am 5 eines Monats'
+          'Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}'
       ),
 
       _article('Artikel 7 - Vorzeitige Rückzahlung',
-          'Gemäß § 500 BGB ohne Strafgebühren.'
+          'Gemäß § 500 BGB ist der Darlehensnehmer berechtigt, das Darlehen jederzeit ganz oder teilweise vorzeitig zurückzuzahlen, ohne dass hierfür eine Vorfälligkeitsentschädigung anfällt, sofern nichts anderes schriftlich vereinbart wurde.'
       ),
 
       _article('Artikel 8 - Zahlungsverzug',
-          'Verzugszinsen gemäß § 288 BGB.'
+          'Im Falle des Zahlungsverzugs:'
+          '- können Verzugszinsen gemäß § 288 BGB erhoben werden;'
+          'ist der Darlehensgeber berechtigt, die sofortige Rückzahlung des gesamten noch offenen Darlehensbetrages zu verlangen.'
       ),
 
-      _article('Artikel 9 - Garantien',
-          'Keine Garantie vereinbart.'
+      _article('Artikel 9 - Sicherheiten',
+          'Zur Sicherung der Rückzahlung stellt der Darlehensnehmer folgende Sicherheiten:'
+          'Keine Sicherheiten'
       ),
 
-      _article('Artikel 10 - Solvenzerklärung',
-          'Der Darlehensnehmer erklärt zahlungsfähig zu sein.'
+      _article('Artikel 10 - Bonitätserklärung',
+          'Der Darlehensnehmer erklärt:'
+          '- rechtlich voll geschäftsfähig zu sein;'
+          '- sich nicht in einer Situation der Überschuldung zu befinden;'
+          '- sämtliche Angaben wahrheitsgemäß gemacht zu haben.'
+          'Jede falsche Erklärung kann zur sofortigen Kündigung dieses Vertrages führen.'
       ),
 
       _article('Artikel 11 - Vertraulichkeit',
-          'Alle Vertragsinformationen bleiben vertraulich.'
+          'Die Vertragsparteien verpflichten sich, sämtliche Informationen im Zusammenhang mit diesem Vertrag vertraulich zu behandeln, sofern keine gesetzliche Offenlegungspflicht besteht.'
       ),
 
       _article('Artikel 12 - Anwendbares Recht',
-          'Ausschließlich deutsches Recht.'
+          'Dieser Vertrag unterliegt ausschließlich dem Recht der Bundesrepublik Deutschland, insbesondere den Bestimmungen des Bürgerlichen Gesetzbuches (BGB).'
       ),
 
       _article('Artikel 13 - Gerichtsstand',
-          'Gerichtsstand ist der Wohnsitz des Darlehensgebers.'
+          'Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist – soweit gesetzlich zulässig – ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.'
       ),
 
       _article('Artikel 14 - Schlussbestimmungen',
-          'Der Vertrag wird in zwei Originalen erstellt.'
+          'Sollte eine Bestimmung dieses Vertrages ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (§ 306 BGB).'
+          'Dieser Vertrag wird in zwei gleichlautenden Originalausfertigungen erstellt, eine für jede Vertragspartei.'
       ),
 
       pw.Spacer(),
 
       // ================= SIGNATURES =================
       pw.Divider(),
-      pw.Text('Ort, Datum: ________________________'),
+      pw.Text('Ort, Datum: Berlin, ${now.toLocal().toIso8601String().split('T').first}'),
       pw.SizedBox(height: 24),
 
       pw.Row(
