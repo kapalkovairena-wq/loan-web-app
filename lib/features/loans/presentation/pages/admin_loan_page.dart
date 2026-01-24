@@ -215,29 +215,31 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       pw.SizedBox(height: 10),
 
-      pw.Text('Der Darlehensgeber'),
-      pw.Text("**Vor- und Nachname**: Frau NICOLE ASTRID"),
-      pw.Text("**Anschrift**: Linienstraße 213, 10119 Berlin, Deutschland"),
-      pw.Text("**Telefonnummer**: +49 1577 4851991"),
-      pw.SizedBox(height: 5),
-      pw.Text("Nachfolgend Darlehensgeber genannt"),
+    pw.Row(
+    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+    children: [
+      _article('Der Darlehensgeber',
+          "**Vor- und Nachname**: Frau NICOLE ASTRID\n"
+              "**Anschrift**: Linienstraße 213, 10119 Berlin, Deutschland\n"
+              "**Telefonnummer**: +49 1577 4851991\n"
+              "Nachfolgend Darlehensgeber genannt\n"
+      ),
 
-      pw.SizedBox(height: 20),
-
-      pw.Text('Der Darlehensnehmer'),
-      pw.Text('**Vor- und Nachname**: Herr/Frau ${loanData['full_name']}'),
-      pw.Text('**Anschrift**: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
-      pw.Text('**E-Mail**: ${loanData['email']}'),
-      pw.Text('**Telefonnummer**: ${loanData['phone']}'),
-      pw.SizedBox(height: 5),
-      pw.Text("Nachfolgend Darlehensnehmer genannt"),
-
+      _article('Der Darlehensnehmer',
+         '**Vor- und Nachname**: Herr/Frau ${loanData['full_name']}\n'
+             '**Anschrift**: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}\n'
+             '**E-Mail**: ${loanData['email']}\n'
+             '**Telefonnummer**: ${loanData['phone']}\n\n'
+             "Nachfolgend Darlehensnehmer genannt"
+      ),
+    ],
+    ),
       pw.SizedBox(height: 16),
       pw.Divider(),
 
-      pw.Text('Präambel:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-      pw.SizedBox(height: 10),
-      pw.Text("Der Darlehensgeber erklärt sich bereit, dem Darlehensnehmer ein privates Darlehen zu gewähren, und der Darlehensnehmer erklärt sich bereit, dieses Darlehen zu den nachstehenden Bedingungen anzunehmen, gemäß den Bestimmungen der §§ 488 ff. des Bürgerlichen Gesetzbuches (BGB)."),
+      _article('Präambel',
+          '__Der Darlehensgeber erklärt sich bereit, dem Darlehensnehmer ein privates Darlehen zu gewähren, und der Darlehensnehmer erklärt sich bereit, dieses Darlehen zu den nachstehenden Bedingungen anzunehmen, gemäß den Bestimmungen der §§ 488 ff. des Bürgerlichen Gesetzbuches (BGB).__'
+      ),
 
       pw.SizedBox(height: 16),
       pw.Divider(),
