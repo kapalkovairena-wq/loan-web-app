@@ -2,158 +2,166 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../auth/supabase_admin_service.dart';
-
 import '../../presentation/auth/auth_gate.dart';
 import '../../presentation/auth/register_page.dart';
 import '../pages/dashboard_page.dart';
 import '../pages/admin_dashboard_page.dart';
-
 
 class HeroBanner extends StatelessWidget {
   const HeroBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return LayoutBuilder(
-        builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final height = 450.0; // tu peux garder la hauteur fixe ou la rendre relative
+      builder: (context, constraints) {
+        // Détecte le type d'appareil
+        final isMobile = constraints.maxWidth < 600;
+        final isTablet = constraints.maxWidth >= 600 && constraints.maxWidth < 1200;
 
-          return SizedBox(
-            width: width,
-            height: height,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                /// Image de fond adaptée sans rognage
-                Image.network(
-                  'https://images.unsplash.com/photo-1523958203904-cdcb402031fd',
-                  fit: BoxFit.contain, // ← adapté à largeur ET hauteur
-                  alignment: Alignment.center,
-                ),
+        // Hauteur adaptable selon device
+        double height = isMobile ? 350 : isTablet ? 400 : 450;
 
-                /// Overlay sombre
-                Container(
-                  color: Colors.black.withOpacity(0.4),
-                ),
+        // Largeur maximale du texte
+        double textMaxWidth = isMobile ? constraints.maxWidth * 0.9 : 500;
 
-                /// Texte
-                Padding(
-                  padding: const EdgeInsets.all(40),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 500),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Des services de prêts\npour développer votre entreprise',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
+        return SizedBox(
+          height: height,
+          width: double.infinity,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              /// Image de fond
+              Image.network(
+                'https://images.unsplash.com/photo-1523958203904-cdcb402031fd',
+                fit: BoxFit.cover,
+              ),
+
+              /// Overlay sombre
+              Container(
+                color: Colors.black.withOpacity(0.4),
+              ),
+
+              /// Texte
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: isMobile ? 16 : 40,
+                    vertical: isMobile ? 16 : 40),
+                child: Align(
+                  alignment: isMobile ? Alignment.center : Alignment.centerLeft,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: textMaxWidth),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Des services de prêts\npour développer votre entreprise',
+                          textAlign: isMobile ? TextAlign.center : TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isMobile ? 24 : 32,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 20),
-                          const Text(
-                            'Une solution moderne, simple et sécurisée pour gérer vos prêts et investissements.',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Une solution moderne, simple et sécurisée pour gérer vos prêts et investissements.',
+                          textAlign: isMobile ? TextAlign.center : TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isMobile ? 14 : 16,
                           ),
-                    const SizedBox(height: 30),
+                        ),
+                        const SizedBox(height: 30),
 
-                    StreamBuilder<User?>(
-                      stream: FirebaseAuth.instance.authStateChanges(),
-                      builder: (context, snapshot) {
-                        final user = snapshot.data;
+                        StreamBuilder<User?>(
+                          stream: FirebaseAuth.instance.authStateChanges(),
+                          builder: (context, snapshot) {
+                            final user = snapshot.data;
 
-                        // ⏳ Chargement
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        }
-
-                        // ❌ Utilisateur non connecté
-                        if (user == null) {
-                          return Row(
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (_) => const AuthGate()),
-                                  );
-                                },
-                                child: const Text('Se connecter'),
-                              ),
-                              const SizedBox(width: 20),
-                              OutlinedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (_) => const RegisterPage()),
-                                  );
-                                },
-                                child: const Text(
-                                  "S'inscrire",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-
-                        // ✅ Utilisateur connecté → on vérifie s’il est admin
-                        return FutureBuilder<bool>(
-                          future: SupabaseAdminService.isAdmin(user.email!), // email maintenant sûr
-                          builder: (context, adminSnapshot) {
-                            if (adminSnapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
                               return const CircularProgressIndicator();
                             }
 
-                            // 👑 Admin
-                            if (adminSnapshot.data == true) {
-                              return ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const AdminDashboardPage(),
+                            if (user == null) {
+                              return Row(
+                                mainAxisAlignment: isMobile
+                                    ? MainAxisAlignment.center
+                                    : MainAxisAlignment.start,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (_) => const AuthGate()),
+                                      );
+                                    },
+                                    child: const Text('Se connecter'),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (_) => const RegisterPage()),
+                                      );
+                                    },
+                                    child: const Text(
+                                      "S'inscrire",
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                                  );
-                                },
-                                child: const Text('Accéder à l’espace admin'),
+                                  ),
+                                ],
                               );
                             }
 
-                            // 👤 Utilisateur normal
-                            return ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const DashboardPage(),
-                                  ),
+                            return FutureBuilder<bool>(
+                              future: SupabaseAdminService.isAdmin(user.email!),
+                              builder: (context, adminSnapshot) {
+                                if (adminSnapshot.connectionState == ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                if (adminSnapshot.data == true) {
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const AdminDashboardPage(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text('Accéder à l’espace admin'),
+                                  );
+                                }
+
+                                return ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => const DashboardPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text('Accéder à mon espace'),
                                 );
                               },
-                              child: const Text('Accéder à mon espace'),
                             );
                           },
-                        );
-                      },
-                    ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
-          );
-        },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
