@@ -176,7 +176,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
           pw.Image(flagImage, height: 40),
-          pw.Image(justiceImage, height: 40),
+          pw.Image(justiceImage, height: 60),
         ],
       ),
 
@@ -214,7 +214,9 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Text('Zwischen den Unterzeichnenden:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
 
       pw.SizedBox(height: 10),
-
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
       pw.Text('Der Darlehensgeber'),
       pw.Text("Vor- und Nachname: Frau NICOLE ASTRID"),
       pw.Text("Anschrift: Linienstraße 213, 10119 Berlin, Deutschland"),
@@ -222,7 +224,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.SizedBox(height: 5),
       pw.Text("Nachfolgend Darlehensgeber genannt"),
 
-      pw.SizedBox(height: 10),
+      pw.SizedBox(height: 20),
 
       pw.Text('Der Darlehensnehmer'),
       pw.Text('Vor- und Nachname : Herr/Frau ${loanData['full_name']}'),
@@ -231,6 +233,9 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Text('Telefonnummer: ${loanData['phone']}'),
       pw.SizedBox(height: 5),
       pw.Text("Nachfolgend Darlehensnehmer genannt"),
+
+        ],
+      ),
 
       pw.SizedBox(height: 16),
       pw.Divider(),
