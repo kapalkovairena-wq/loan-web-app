@@ -576,7 +576,7 @@ class _BankDetailsCardState extends State<BankDetailsCard> {
     }
 
     return _Card(
-      title: "Coordonnées bancaires",
+      title: "Vos coordonnées bancaires",
       child: Column(
         children: [
           _RowItem("Receveur", data!['receiver_full_name'] ?? '—'),
@@ -616,7 +616,6 @@ class _RepaymentBankCardState extends State<RepaymentBankCard> {
         .select(
       'receiver_full_name, iban, bic, bank_name, bank_address',
     )
-        .eq('firebase_uid', firebaseUid)
         .eq('is_active', true)
         .maybeSingle();
 

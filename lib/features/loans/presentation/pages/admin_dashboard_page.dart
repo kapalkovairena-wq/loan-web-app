@@ -158,7 +158,7 @@ class QuickActions extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AdminFinancialAccountPage(firebaseUid:firebaseUid),
+                  builder: (_) => AdminFinancialAccountPage(),
                 ),
               );
             },

@@ -3,17 +3,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 class AdminFinancialAccountPage extends StatefulWidget {
-  final String firebaseUid;
-
-  const AdminFinancialAccountPage({
-    super.key,
-    required this.firebaseUid,
-  });
+  const AdminFinancialAccountPage({super.key});
 
   @override
   State<AdminFinancialAccountPage> createState() =>
       _AdminFinancialAccountPageState();
 }
+
 
 class _AdminFinancialAccountPageState
     extends State<AdminFinancialAccountPage> {
@@ -39,7 +35,6 @@ class _AdminFinancialAccountPageState
     final response = await supabase
         .from('user_financial_accounts')
         .select()
-        .eq('firebase_uid', widget.firebaseUid)
         .eq('is_active', true)
         .maybeSingle();
 
@@ -58,16 +53,14 @@ class _AdminFinancialAccountPageState
     setState(() => _loading = true);
 
     try {
-      // Désactiver ancien compte actif
+      // 1️⃣ Désactiver TOUT ancien compte actif
       await supabase
           .from('user_financial_accounts')
           .update({'is_active': false})
-          .eq('firebase_uid', widget.firebaseUid)
           .eq('is_active', true);
 
-      // Insérer nouveau
+      // 2️⃣ Insérer le nouveau compte global
       await supabase.from('user_financial_accounts').insert({
-        'firebase_uid': widget.firebaseUid,
         'receiver_full_name': _receiverController.text.trim(),
         'iban': _ibanController.text.trim(),
         'bic': _bicController.text.trim(),
