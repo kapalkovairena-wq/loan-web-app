@@ -94,13 +94,13 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       );
 
       final justiceImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/balance.png'))
+        (await rootBundle.load('assets/pdf/justice_balance.png'))
             .buffer
             .asUint8List(),
       );
 
       final footerImage = pw.MemoryImage(
-        (await rootBundle.load('assets/pdf/footer.png'))
+        (await rootBundle.load('assets/pdf/courthouse_footer.png'))
             .buffer
             .asUint8List(),
       );
