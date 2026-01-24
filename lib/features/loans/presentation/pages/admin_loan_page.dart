@@ -214,28 +214,23 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Text('Zwischen den Unterzeichnenden:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
 
       pw.SizedBox(height: 10),
-      pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-        children: [
+
       pw.Text('Der Darlehensgeber'),
-      pw.Text("Vor- und Nachname: Frau NICOLE ASTRID"),
-      pw.Text("Anschrift: Linienstraße 213, 10119 Berlin, Deutschland"),
-      pw.Text("Telefonnummer: +49 1577 4851991"),
+      pw.Text("**Vor- und Nachname**: Frau NICOLE ASTRID"),
+      pw.Text("**Anschrift**: Linienstraße 213, 10119 Berlin, Deutschland"),
+      pw.Text("**Telefonnummer**: +49 1577 4851991"),
       pw.SizedBox(height: 5),
       pw.Text("Nachfolgend Darlehensgeber genannt"),
 
       pw.SizedBox(height: 20),
 
       pw.Text('Der Darlehensnehmer'),
-      pw.Text('Vor- und Nachname : Herr/Frau ${loanData['full_name']}'),
-      pw.Text('Anschrift: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
-      pw.Text('E-Mail: ${loanData['email']}'),
-      pw.Text('Telefonnummer: ${loanData['phone']}'),
+      pw.Text('**Vor- und Nachname**: Herr/Frau ${loanData['full_name']}'),
+      pw.Text('**Anschrift**: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}'),
+      pw.Text('**E-Mail**: ${loanData['email']}'),
+      pw.Text('**Telefonnummer**: ${loanData['phone']}'),
       pw.SizedBox(height: 5),
       pw.Text("Nachfolgend Darlehensnehmer genannt"),
-
-        ],
-      ),
 
       pw.SizedBox(height: 16),
       pw.Divider(),
@@ -323,8 +318,8 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       ),
 
       _article('Artikel 14 - Schlussbestimmungen',
-          'Sollte eine Bestimmung dieses Vertrages ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (§ 306 BGB).\n'
-          'Dieser Vertrag wird in zwei gleichlautenden Originalausfertigungen erstellt, eine für jede Vertragspartei.'
+          '__Sollte eine Bestimmung dieses Vertrages ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (§ 306 BGB).__\n'
+          '__Dieser Vertrag wird in zwei gleichlautenden Originalausfertigungen erstellt, eine für jede Vertragspartei.__'
       ),
 
       pw.Spacer(),
@@ -350,11 +345,89 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.SizedBox(height: 8),
-        pw.Text(title, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        pw.Text(
+          title,
+          style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+        ),
         pw.SizedBox(height: 4),
-        pw.Text(content),
+        pw.RichText(
+          text: pw.TextSpan(
+            children: parseFormattedText(
+              content,
+              normalStyle: const pw.TextStyle(fontSize: 12),
+              boldStyle: pw.TextStyle(
+                fontSize: 12,
+                fontWeight: pw.FontWeight.bold,
+              ),
+              italicStyle: pw.TextStyle(
+                fontSize: 12,
+                fontStyle: pw.FontStyle.italic,
+              ),
+            ),
+          ),
+        ),
       ],
     );
+  }
+
+  List<pw.TextSpan> parseFormattedText(
+      String text, {
+        pw.TextStyle? normalStyle,
+        pw.TextStyle? boldStyle,
+        pw.TextStyle? italicStyle,
+      }) {
+    final spans = <pw.TextSpan>[];
+
+    final regex = RegExp(r'(\*\*(.*?)\*\*|__(.*?)__)');
+    int lastIndex = 0;
+
+    for (final match in regex.allMatches(text)) {
+      // Texte normal avant la balise
+      if (match.start > lastIndex) {
+        spans.add(
+          pw.TextSpan(
+            text: text.substring(lastIndex, match.start),
+            style: normalStyle,
+          ),
+        );
+      }
+
+      // **gras**
+      if (match.group(2) != null) {
+        spans.add(
+          pw.TextSpan(
+            text: match.group(2),
+            style: boldStyle ??
+                pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          ),
+        );
+      }
+
+      // __italique__
+      if (match.group(3) != null) {
+        spans.add(
+          pw.TextSpan(
+            text: match.group(3),
+            style: italicStyle ??
+                pw.TextStyle(fontStyle: pw.FontStyle.italic),
+          ),
+        );
+      }
+
+      lastIndex = match.end;
+    }
+
+    // Texte restant
+    if (lastIndex < text.length) {
+      spans.add(
+        pw.TextSpan(
+          text: text.substring(lastIndex),
+          style: normalStyle,
+        ),
+      );
+    }
+
+    return spans;
   }
 
 
