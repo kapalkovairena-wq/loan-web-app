@@ -244,77 +244,77 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       // ================= ARTICLES =================
       _article('Artikel 1 - Vertragsgegenstand',
-          'Gegenstand dieses Vertrages ist die Gewährung eines privaten Gelddarlehens durch den Darlehensgeber an den Darlehensnehmer, welches der Darlehensnehmer gemäß den nachfolgenden Bestimmungen zurückzuzahlen verpflichtet ist.'
+          '__Gegenstand dieses Vertrages ist die Gewährung eines privaten Gelddarlehens durch den Darlehensgeber an den Darlehensnehmer, welches der Darlehensnehmer gemäß den nachfolgenden Bestimmungen zurückzuzahlen verpflichtet ist.__'
       ),
 
       _article('Artikel 2 - Darlehensbetrag',
-          'Der Darlehensgeber gewährt dem Darlehensnehmer ein Darlehen in Höhe von:\n'
-          'Darlehensbetrag: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}'
+          '__Der Darlehensgeber gewährt dem Darlehensnehmer ein Darlehen in Höhe von:__\n'
+          '__Darlehensbetrag: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}__'
       ),
 
       _article('Artikel 3 - Auszahlung des Darlehens',
-          'Die Auszahlung des Darlehens erfolgt durch Banküberweisung.\n'
-          'Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}\n'
-          'Die Zahlungen erfolgen auf folgendes Konto des Darlehensnehmer:\n'
-          'IBAN: ${profileData['iban']}\n'
-          'BIC: ${profileData['bic']}\n'
-          'Name der Bank: ${profileData['bank_name']}\n'
-          'Bankadresse: ${profileData['bank_address']}\n'
+          '__Die Auszahlung des Darlehens erfolgt durch Banküberweisung.__\n'
+          '__Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}__\n'
+          '__Die Zahlungen erfolgen auf folgendes Konto des Darlehensnehmer:__\n'
+          '__IBAN: ${profileData['iban']}__\n'
+          '__BIC: ${profileData['bic']}__\n'
+          '__Name der Bank: ${profileData['bank_name']}__\n'
+          '__Bankadresse: ${profileData['bank_address']}__\n'
       ),
 
       _article('Artikel 4 - Laufzeit des Darlehens',
-          'Laufzeit: ${loanData['duration_months']} Monate.\n'
-              'Beginn: ${dateOfPayment.toLocal().toIso8601String().split('T').first}'
+          '__Laufzeit: ${loanData['duration_months']} Monate.__\n'
+              '__Beginn: ${dateOfPayment.toLocal().toIso8601String().split('T').first}__'
       ),
 
       _article('Artikel 5 - Zinssatz',
-          'Verzinsliches Darlehen\n'
-          'Jährlicher Zinssatz: 3 %.\n'
-          'Die Zinsen werden auf den jeweils verbleibenden Darlehenssaldo berechnet.\n'
-          'Der Zinssatz entspricht den Vorschriften zur Sittenwidrigkeit und zum Wucher gemäß § 138 BGB.'
+          '__Verzinsliches Darlehen__\n'
+          '__Jährlicher Zinssatz: 3 %.__\n'
+          '__Die Zinsen werden auf den jeweils verbleibenden Darlehenssaldo berechnet.__\n'
+          '__Der Zinssatz entspricht den Vorschriften zur Sittenwidrigkeit und zum Wucher gemäß § 138 BGB.__'
       ),
 
       _article('Artikel 6 - Rückzahlungsmodalitäten',
-      'Die Rückzahlung erfolgt wie folgt:\n'
-          '- Monatliche Raten\n'
-          '- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}\n'
-          'Zahlungstermin: jeweils am 5 eines Monats\n'
-          'Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}'
+      '__Die Rückzahlung erfolgt wie folgt:__\n'
+          '__- Monatliche Raten__\n'
+          '__- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}__\n'
+          '__Zahlungstermin: jeweils am 5 eines Monats__\n'
+          '__Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}__'
       ),
 
       _article('Artikel 7 - Vorzeitige Rückzahlung',
-          'Gemäß § 500 BGB ist der Darlehensnehmer berechtigt, das Darlehen jederzeit ganz oder teilweise vorzeitig zurückzuzahlen, ohne dass hierfür eine Vorfälligkeitsentschädigung anfällt, sofern nichts anderes schriftlich vereinbart wurde.'
+          '__Gemäß § 500 BGB ist der Darlehensnehmer berechtigt, das Darlehen jederzeit ganz oder teilweise vorzeitig zurückzuzahlen, ohne dass hierfür eine Vorfälligkeitsentschädigung anfällt, sofern nichts anderes schriftlich vereinbart wurde.__'
       ),
 
       _article('Artikel 8 - Zahlungsverzug',
-          'Im Falle des Zahlungsverzugs:\n'
-          '- können Verzugszinsen gemäß § 288 BGB erhoben werden;\n'
-          'ist der Darlehensgeber berechtigt, die sofortige Rückzahlung des gesamten noch offenen Darlehensbetrages zu verlangen.'
+          '__Im Falle des Zahlungsverzugs:__\n'
+          '__- können Verzugszinsen gemäß § 288 BGB erhoben werden;__\n'
+          '__ist der Darlehensgeber berechtigt, die sofortige Rückzahlung des gesamten noch offenen Darlehensbetrages zu verlangen.__'
       ),
 
       _article('Artikel 9 - Sicherheiten',
-          'Zur Sicherung der Rückzahlung stellt der Darlehensnehmer folgende Sicherheiten:\n'
-          'Keine Sicherheiten'
+          '__Zur Sicherung der Rückzahlung stellt der Darlehensnehmer folgende Sicherheiten:__\n'
+          '__Keine Sicherheiten__'
       ),
 
       _article('Artikel 10 - Bonitätserklärung',
-          'Der Darlehensnehmer erklärt:\n'
-          '- rechtlich voll geschäftsfähig zu sein;\n'
-          '- sich nicht in einer Situation der Überschuldung zu befinden;\n'
-          '- sämtliche Angaben wahrheitsgemäß gemacht zu haben.\n'
-          'Jede falsche Erklärung kann zur sofortigen Kündigung dieses Vertrages führen.'
+          '__Der Darlehensnehmer erklärt:__\n'
+          '__- rechtlich voll geschäftsfähig zu sein;__\n'
+          '__- sich nicht in einer Situation der Überschuldung zu befinden;__\n'
+          '__- sämtliche Angaben wahrheitsgemäß gemacht zu haben.__\n'
+          '__Jede falsche Erklärung kann zur sofortigen Kündigung dieses Vertrages führen.__'
       ),
 
       _article('Artikel 11 - Vertraulichkeit',
-          'Die Vertragsparteien verpflichten sich, sämtliche Informationen im Zusammenhang mit diesem Vertrag vertraulich zu behandeln, sofern keine gesetzliche Offenlegungspflicht besteht.'
+          '__Die Vertragsparteien verpflichten sich, sämtliche Informationen im Zusammenhang mit diesem Vertrag vertraulich zu behandeln, sofern keine gesetzliche Offenlegungspflicht besteht.__'
       ),
 
       _article('Artikel 12 - Anwendbares Recht',
-          'Dieser Vertrag unterliegt ausschließlich dem Recht der Bundesrepublik Deutschland, insbesondere den Bestimmungen des Bürgerlichen Gesetzbuches (BGB).'
+          '__Dieser Vertrag unterliegt ausschließlich dem Recht der Bundesrepublik Deutschland, insbesondere den Bestimmungen des Bürgerlichen Gesetzbuches (BGB).__'
       ),
 
       _article('Artikel 13 - Gerichtsstand',
-          'Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist - soweit gesetzlich zulässig - ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.'
+          '__Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist - soweit gesetzlich zulässig - ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.__'
       ),
 
       _article('Artikel 14 - Schlussbestimmungen',
@@ -378,11 +378,11 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       }) {
     final spans = <pw.TextSpan>[];
 
-    final regex = RegExp(r'(\*\*(.*?)\*\*|__(.*?)__)');
+    final regex = RegExp(r'(\*\*(.+?)\*\*|__(.+?)__)');
     int lastIndex = 0;
 
     for (final match in regex.allMatches(text)) {
-      // Texte normal avant la balise
+      // Texte normal avant
       if (match.start > lastIndex) {
         spans.add(
           pw.TextSpan(
@@ -392,7 +392,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
         );
       }
 
-      // **gras**
+      // **GRAS**
       if (match.group(2) != null) {
         spans.add(
           pw.TextSpan(
@@ -403,8 +403,8 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
         );
       }
 
-      // __italique__
-      if (match.group(3) != null) {
+      // __ITALIQUE__
+      else if (match.group(3) != null) {
         spans.add(
           pw.TextSpan(
             text: match.group(3),
