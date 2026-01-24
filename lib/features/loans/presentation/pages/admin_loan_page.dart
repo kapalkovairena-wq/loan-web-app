@@ -82,10 +82,8 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     try {
       final pdf = pw.Document();
 
-      final now = DateTime.now();
       final dateOfRequest = DateTime.parse(loanData['created_at']);
       final dateOfPayment = dateOfRequest.add(const Duration(days: 15));
-      final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
 
       final flagImage = pw.MemoryImage(
         (await rootBundle.load('assets/pdf/flag.png'))
@@ -105,12 +103,26 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
             .asUint8List(),
       );
 
+      final SigneImage = pw.MemoryImage(
+        (await rootBundle.load('assets/pdf/signe.png'))
+            .buffer
+            .asUint8List(),
+      );
+
+      final TimImage = pw.MemoryImage(
+        (await rootBundle.load('assets/pdf/tim.png'))
+            .buffer
+            .asUint8List(),
+      );
+
       final content = await _buildContractContent(
         loanData,
         profileData,
         flagImage,
         justiceImage,
         footerImage,
+        SigneImage,
+        TimImage,
         dateOfPayment,
       );
 
@@ -120,7 +132,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 80),
           footer: (context) => pw.Center(
             child: pw.Text(
-              'KreditSch © ${DateTime.now().year} - Page ${context.pageNumber}',
+              'KreditSch © ${DateTime.now().year} - Seite ${context.pageNumber}',
               style: pw.TextStyle(fontSize: 9),
             ),
           ),
@@ -171,6 +183,8 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.ImageProvider flagImage,
       pw.ImageProvider justiceImage,
       pw.ImageProvider footerImage,
+      pw.ImageProvider SigneImage,
+      pw.ImageProvider TimImage,
       DateTime dateOfPayment,
       ) async {
     final crimsonRegular =
@@ -195,6 +209,11 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       fontSize: 12,
     );
 
+    final titleStyle2 = pw.TextStyle(
+      font: crimsonBold,
+      fontSize: 15,
+    );
+
     final headerTitleStyle = pw.TextStyle(
       font: crimsonBold,
       fontSize: 20,
@@ -202,12 +221,12 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
     final subtitleStyle = pw.TextStyle(
       font: crimsonItalic,
-      fontSize: 12,
+      fontSize: 15,
     );
 
     final smallItalicStyle = pw.TextStyle(
       font: crimsonItalic,
-      fontSize: 10,
+      fontSize: 12,
     );
 
     final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
@@ -251,7 +270,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Divider(),
 
       // ================= PARTIES =================
-      pw.Text('Zwischen den Unterzeichnenden:', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      pw.Text('Zwischen den Unterzeichnenden:', style: titleStyle2),
 
       pw.SizedBox(height: 10),
 
@@ -453,15 +472,33 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       // ================= SIGNATURES =================
       pw.Divider(),
-      pw.Text('Ort, Datum: Berlin, ${now.toLocal().toIso8601String().split('T').first}'),
-      pw.SizedBox(height: 24),
-
+      pw.Image(TimImage, height: 100),
+      pw.SizedBox(height: 10),
       pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
           pw.Text('Darlehensgeber\n______________________'),
           pw.Image(footerImage, height: 40),
           pw.Text('Darlehensnehmer\n______________________'),
+        ],
+      ),
+
+      pw.SizedBox(height: 10),
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Image(SigneImage, height: 80),
+          pw.Text(''),
+          pw.Text(''),
+        ],
+      ),
+
+      pw.SizedBox(height: 40),
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text(''),
+          pw.Text('Berlin, ${now.toLocal().toIso8601String().split('T').first}'),
         ],
       ),
     ];
