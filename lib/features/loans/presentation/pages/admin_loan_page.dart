@@ -105,26 +105,26 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
             .asUint8List(),
       );
 
+      final content = await _buildContractContent(
+        loanData,
+        profileData,
+        flagImage,
+        justiceImage,
+        footerImage,
+        dateOfPayment,
+      );
+
       pdf.addPage(
         pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
-          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 80),
+          margin: const pw.EdgeInsets.fromLTRB(32, 80, 32, 80),
           footer: (context) => pw.Center(
             child: pw.Text(
               'KreditSch © ${DateTime.now().year} - Page ${context.pageNumber}',
               style: pw.TextStyle(fontSize: 9),
             ),
           ),
-          build: (context) => [
-            ..._buildContractContent(
-              loanData,
-              profileData,
-              flagImage,
-              justiceImage,
-              footerImage,
-              dateOfPayment,
-            ),
-          ],
+          build: (context) => content,
         ),
       );
 
@@ -159,14 +159,57 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     }
   }
 
-  List<pw.Widget> _buildContractContent(
+  Future<pw.Font> loadFont(String path) async {
+    final data = await rootBundle.load(path);
+    return pw.Font.ttf(data);
+  }
+
+
+  Future<List<pw.Widget>> _buildContractContent(
       Map<String, dynamic> loanData,
       Map<String, dynamic> profileData,
       pw.ImageProvider flagImage,
       pw.ImageProvider justiceImage,
       pw.ImageProvider footerImage,
       DateTime dateOfPayment,
-      ) {
+      ) async {
+    final crimsonRegular =
+        await loadFont('assets/fonts/CrimsonText-Regular.ttf');
+
+    final crimsonBold =
+        await loadFont('assets/fonts/CrimsonText-Bold.ttf');
+
+    final crimsonItalic =
+        await loadFont('assets/fonts/CrimsonText-Italic.ttf');
+
+    final crimsonBoldItalic =
+        await loadFont('assets/fonts/CrimsonText-BoldItalic.ttf');
+
+    final baseStyle = pw.TextStyle(
+      font: crimsonRegular,
+      fontSize: 11,
+    );
+
+    final titleStyle = pw.TextStyle(
+      font: crimsonBold,
+      fontSize: 12,
+    );
+
+    final headerTitleStyle = pw.TextStyle(
+      font: crimsonBold,
+      fontSize: 20,
+    );
+
+    final subtitleStyle = pw.TextStyle(
+      font: crimsonItalic,
+      fontSize: 12,
+    );
+
+    final smallItalicStyle = pw.TextStyle(
+      font: crimsonItalic,
+      fontSize: 10,
+    );
+
     final startMonth = DateTime(dateOfPayment.year, dateOfPayment.month + 1, 5);
     final now = DateTime.now();
 
@@ -188,20 +231,17 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           children: [
             pw.Text(
               'PRIVATER DARLEHENSVERTRAG',
-              style: pw.TextStyle(
-                fontSize: 20,
-                fontWeight: pw.FontWeight.bold,
-              ),
+              style: headerTitleStyle,
             ),
             pw.SizedBox(height: 6),
             pw.Text(
               'Gemäß Bürgerliches Gesetzbuch (BGB)',
-              style: pw.TextStyle(fontSize: 12),
+              style: subtitleStyle,
             ),
             pw.SizedBox(height: 6),
             pw.Text(
               'Dieser Vertrag unterliegt dem deutschen Recht (§ 488 BGB).',
-              style: pw.TextStyle(fontSize: 10),
+              style: smallItalicStyle,
             ),
           ],
         ),
@@ -221,8 +261,13 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       _article('Der Darlehensgeber',
           "**Vor- und Nachname**: Frau NICOLE ASTRID\n"
               "**Anschrift**: Linienstraße 213, 10119 Berlin, Deutschland\n"
-              "**Telefonnummer**: +49 1577 4851991\n"
-              "Nachfolgend Darlehensgeber genannt\n"
+              "**Telefonnummer**: +49 1577 4851991\n\n"
+              "Nachfolgend Darlehensgeber genannt",
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Der Darlehensnehmer',
@@ -230,7 +275,12 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
              '**Anschrift**: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}\n'
              '**E-Mail**: ${loanData['email']}\n'
              '**Telefonnummer**: ${loanData['phone']}\n\n'
-             "Nachfolgend Darlehensnehmer genannt"
+             "Nachfolgend Darlehensnehmer genannt",
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
     ],
     ),
@@ -238,7 +288,12 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Divider(),
 
       _article('Präambel',
-          '__Der Darlehensgeber erklärt sich bereit, dem Darlehensnehmer ein privates Darlehen zu gewähren, und der Darlehensnehmer erklärt sich bereit, dieses Darlehen zu den nachstehenden Bedingungen anzunehmen, gemäß den Bestimmungen der §§ 488 ff. des Bürgerlichen Gesetzbuches (BGB).__'
+          '__Der Darlehensgeber erklärt sich bereit, dem Darlehensnehmer ein privates Darlehen zu gewähren, und der Darlehensnehmer erklärt sich bereit, dieses Darlehen zu den nachstehenden Bedingungen anzunehmen, gemäß den Bestimmungen der §§ 488 ff. des Bürgerlichen Gesetzbuches (BGB).__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       pw.SizedBox(height: 16),
@@ -246,12 +301,22 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       // ================= ARTICLES =================
       _article('Artikel 1 - Vertragsgegenstand',
-          '__Gegenstand dieses Vertrages ist die Gewährung eines privaten Gelddarlehens durch den Darlehensgeber an den Darlehensnehmer, welches der Darlehensnehmer gemäß den nachfolgenden Bestimmungen zurückzuzahlen verpflichtet ist.__'
+          '__Gegenstand dieses Vertrages ist die Gewährung eines privaten Gelddarlehens durch den Darlehensgeber an den Darlehensnehmer, welches der Darlehensnehmer gemäß den nachfolgenden Bestimmungen zurückzuzahlen verpflichtet ist.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 2 - Darlehensbetrag',
           '__Der Darlehensgeber gewährt dem Darlehensnehmer ein Darlehen in Höhe von:__\n'
-          '__Darlehensbetrag: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}__'
+          '__Darlehensbetrag: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 3 - Auszahlung des Darlehens',
@@ -261,19 +326,34 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           '__IBAN: ${profileData['iban']}__\n'
           '__BIC: ${profileData['bic']}__\n'
           '__Name der Bank: ${profileData['bank_name']}__\n'
-          '__Bankadresse: ${profileData['bank_address']}__\n'
+          '__Bankadresse: ${profileData['bank_address']}__\n',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 4 - Laufzeit des Darlehens',
           '__Laufzeit: ${loanData['duration_months']} Monate.__\n'
-              '__Beginn: ${dateOfPayment.toLocal().toIso8601String().split('T').first}__'
+              '__Beginn: ${dateOfPayment.toLocal().toIso8601String().split('T').first}__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 5 - Zinssatz',
           '__Verzinsliches Darlehen__\n'
           '__Jährlicher Zinssatz: 3 %.__\n'
           '__Die Zinsen werden auf den jeweils verbleibenden Darlehenssaldo berechnet.__\n'
-          '__Der Zinssatz entspricht den Vorschriften zur Sittenwidrigkeit und zum Wucher gemäß § 138 BGB.__'
+          '__Der Zinssatz entspricht den Vorschriften zur Sittenwidrigkeit und zum Wucher gemäß § 138 BGB.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 6 - Rückzahlungsmodalitäten',
@@ -281,22 +361,42 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           '__- Monatliche Raten__\n'
           '__- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}__\n'
           '__Zahlungstermin: jeweils am 5 eines Monats__\n'
-          '__Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}__'
+          '__Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 7 - Vorzeitige Rückzahlung',
-          '__Gemäß § 500 BGB ist der Darlehensnehmer berechtigt, das Darlehen jederzeit ganz oder teilweise vorzeitig zurückzuzahlen, ohne dass hierfür eine Vorfälligkeitsentschädigung anfällt, sofern nichts anderes schriftlich vereinbart wurde.__'
+          '__Gemäß § 500 BGB ist der Darlehensnehmer berechtigt, das Darlehen jederzeit ganz oder teilweise vorzeitig zurückzuzahlen, ohne dass hierfür eine Vorfälligkeitsentschädigung anfällt, sofern nichts anderes schriftlich vereinbart wurde.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 8 - Zahlungsverzug',
           '__Im Falle des Zahlungsverzugs:__\n'
           '__- können Verzugszinsen gemäß § 288 BGB erhoben werden;__\n'
-          '__ist der Darlehensgeber berechtigt, die sofortige Rückzahlung des gesamten noch offenen Darlehensbetrages zu verlangen.__'
+          '__ist der Darlehensgeber berechtigt, die sofortige Rückzahlung des gesamten noch offenen Darlehensbetrages zu verlangen.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 9 - Sicherheiten',
           '__Zur Sicherung der Rückzahlung stellt der Darlehensnehmer folgende Sicherheiten:__\n'
-          '__Keine Sicherheiten__'
+          '__Keine Sicherheiten__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 10 - Bonitätserklärung',
@@ -304,24 +404,49 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           '__- rechtlich voll geschäftsfähig zu sein;__\n'
           '__- sich nicht in einer Situation der Überschuldung zu befinden;__\n'
           '__- sämtliche Angaben wahrheitsgemäß gemacht zu haben.__\n'
-          '__Jede falsche Erklärung kann zur sofortigen Kündigung dieses Vertrages führen.__'
+          '__Jede falsche Erklärung kann zur sofortigen Kündigung dieses Vertrages führen.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 11 - Vertraulichkeit',
-          '__Die Vertragsparteien verpflichten sich, sämtliche Informationen im Zusammenhang mit diesem Vertrag vertraulich zu behandeln, sofern keine gesetzliche Offenlegungspflicht besteht.__'
+          '__Die Vertragsparteien verpflichten sich, sämtliche Informationen im Zusammenhang mit diesem Vertrag vertraulich zu behandeln, sofern keine gesetzliche Offenlegungspflicht besteht.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 12 - Anwendbares Recht',
-          '__Dieser Vertrag unterliegt ausschließlich dem Recht der Bundesrepublik Deutschland, insbesondere den Bestimmungen des Bürgerlichen Gesetzbuches (BGB).__'
+          '__Dieser Vertrag unterliegt ausschließlich dem Recht der Bundesrepublik Deutschland, insbesondere den Bestimmungen des Bürgerlichen Gesetzbuches (BGB).__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 13 - Gerichtsstand',
-          '__Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist - soweit gesetzlich zulässig - ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.__'
+          '__Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist - soweit gesetzlich zulässig - ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       _article('Artikel 14 - Schlussbestimmungen',
           '__Sollte eine Bestimmung dieses Vertrages ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (§ 306 BGB).__\n'
-          '__Dieser Vertrag wird in zwei gleichlautenden Originalausfertigungen erstellt, eine für jede Vertragspartei.__'
+          '__Dieser Vertrag wird in zwei gleichlautenden Originalausfertigungen erstellt, eine für jede Vertragspartei.__',
+        titleStyle: titleStyle,
+        normalStyle: baseStyle,
+        boldFont: crimsonBold,
+        italicFont: crimsonItalic,
+        boldItalicFont: crimsonBoldItalic,
       ),
 
       pw.Spacer(),
@@ -342,29 +467,37 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     ];
   }
 
-  pw.Widget _article(String title, String content) {
+  pw.Widget _article(
+      String title,
+      String content, {
+        required pw.TextStyle titleStyle,
+        required pw.TextStyle normalStyle,
+        required pw.Font boldFont,
+        required pw.Font italicFont,
+        required pw.Font boldItalicFont,
+      }) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.SizedBox(height: 8),
+
+        // Titre
         pw.Text(
           title,
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+          style: titleStyle,
         ),
+
         pw.SizedBox(height: 4),
+
+        // Contenu formaté
         pw.RichText(
           text: pw.TextSpan(
             children: parseFormattedText(
               content,
-              normalStyle: const pw.TextStyle(fontSize: 12),
-              boldStyle: pw.TextStyle(
-                fontSize: 12,
-                fontWeight: pw.FontWeight.bold,
-              ),
-              italicStyle: pw.TextStyle(
-                fontSize: 12,
-                fontStyle: pw.FontStyle.italic,
-              ),
+              normalStyle: normalStyle,
+              boldFont: boldFont,
+              italicFont: italicFont,
+              boldItalicFont: boldItalicFont,
             ),
           ),
         ),
@@ -374,13 +507,18 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
   List<pw.TextSpan> parseFormattedText(
       String text, {
-        pw.TextStyle? normalStyle,
-        pw.TextStyle? boldStyle,
-        pw.TextStyle? italicStyle,
+        required pw.TextStyle normalStyle,
+        required pw.Font boldFont,
+        required pw.Font italicFont,
+        required pw.Font boldItalicFont,
       }) {
     final spans = <pw.TextSpan>[];
 
-    final regex = RegExp(r'(\*\*(.+?)\*\*|__(.+?)__)');
+    final regex = RegExp(
+      r'(\*\*\*(.+?)\*\*\*|\*\*(.+?)\*\*|__(.+?)__)',
+      dotAll: true,
+    );
+
     int lastIndex = 0;
 
     for (final match in regex.allMatches(text)) {
@@ -394,24 +532,32 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
         );
       }
 
-      // **GRAS**
+      // *** GRAS + ITALIQUE ***
       if (match.group(2) != null) {
         spans.add(
           pw.TextSpan(
             text: match.group(2),
-            style: boldStyle ??
-                pw.TextStyle(fontWeight: pw.FontWeight.bold),
+            style: normalStyle.copyWith(font: boldItalicFont),
           ),
         );
       }
 
-      // __ITALIQUE__
+      // ** GRAS **
       else if (match.group(3) != null) {
         spans.add(
           pw.TextSpan(
             text: match.group(3),
-            style: italicStyle ??
-                pw.TextStyle(fontStyle: pw.FontStyle.italic),
+            style: normalStyle.copyWith(font: boldFont),
+          ),
+        );
+      }
+
+      // __ ITALIQUE __
+      else if (match.group(4) != null) {
+        spans.add(
+          pw.TextSpan(
+            text: match.group(4),
+            style: normalStyle.copyWith(font: italicFont),
           ),
         );
       }
