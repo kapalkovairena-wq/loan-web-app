@@ -477,9 +477,9 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          pw.Text('Darlehensgeber\n______________________'),
+          pw.Text('Darlehensgeber'),
           pw.Image(footerImage, height: 40),
-          pw.Text('Darlehensnehmer\n______________________'),
+          pw.Text('Darlehensnehmer'),
         ],
       ),
 
@@ -490,6 +490,15 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           pw.Image(SigneImage, height: 80),
           pw.Text(''),
           pw.Text(''),
+        ],
+      ),
+
+      pw.SizedBox(height: 10),
+      pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text('Frau NICOLE ASTRID', style: titleStyle2),
+          pw.Text('Herr/Frau ${loanData['full_name']}', style: titleStyle2),
         ],
       ),
 
