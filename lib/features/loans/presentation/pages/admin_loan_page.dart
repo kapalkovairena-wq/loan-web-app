@@ -220,7 +220,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Text("Anschrift: Linienstraße 213, 10119 Berlin, Deutschland"),
       pw.Text("Telefonnummer: +49 1577 4851991"),
       pw.SizedBox(height: 5),
-      pw.Text("Nachfolgend „Darlehensgeber“ genannt"),
+      pw.Text("Nachfolgend Darlehensgeber genannt"),
 
       pw.SizedBox(height: 10),
 
@@ -230,7 +230,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Text('E-Mail: ${loanData['email']}'),
       pw.Text('Telefonnummer: ${loanData['phone']}'),
       pw.SizedBox(height: 5),
-      pw.Text("Nachfolgend „Darlehensnehmer“ genannt"),
+      pw.Text("Nachfolgend Darlehensnehmer genannt"),
 
       pw.SizedBox(height: 16),
       pw.Divider(),
@@ -248,37 +248,37 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       ),
 
       _article('Artikel 2 - Darlehensbetrag',
-          'Der Darlehensgeber gewährt dem Darlehensnehmer ein Darlehen in Höhe von:'
+          'Der Darlehensgeber gewährt dem Darlehensnehmer ein Darlehen in Höhe von:\n'
           'Darlehensbetrag: ${loanData['amount']} ${profileData['currency'] ?? 'EUR'}'
       ),
 
       _article('Artikel 3 - Auszahlung des Darlehens',
-          'Die Auszahlung des Darlehens erfolgt durch Banküberweisung.'
-          'Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}'
-          'Die Zahlungen erfolgen auf folgendes Konto des Darlehensnehmer:'
-          'IBAN: ${profileData['iban']}'
-          'BIC: ${profileData['bic']}'
-          'Name der Bank: ${profileData['bank_name']}'
-          'Bankadresse: ${profileData['bank_address']}'
+          'Die Auszahlung des Darlehens erfolgt durch Banküberweisung.\n'
+          'Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}\n'
+          'Die Zahlungen erfolgen auf folgendes Konto des Darlehensnehmer:\n'
+          'IBAN: ${profileData['iban']}\n'
+          'BIC: ${profileData['bic']}\n'
+          'Name der Bank: ${profileData['bank_name']}\n'
+          'Bankadresse: ${profileData['bank_address']}\n'
       ),
 
       _article('Artikel 4 - Laufzeit des Darlehens',
-          'Laufzeit: ${loanData['duration_months']} Monate.'
+          'Laufzeit: ${loanData['duration_months']} Monate.\n'
               'Beginn: ${dateOfPayment.toLocal().toIso8601String().split('T').first}'
       ),
 
       _article('Artikel 5 - Zinssatz',
-          'Verzinsliches Darlehen'
-          'Jährlicher Zinssatz: 3 %.'
-          'Die Zinsen werden auf den jeweils verbleibenden Darlehenssaldo berechnet.'
+          'Verzinsliches Darlehen\n'
+          'Jährlicher Zinssatz: 3 %.\n'
+          'Die Zinsen werden auf den jeweils verbleibenden Darlehenssaldo berechnet.\n'
           'Der Zinssatz entspricht den Vorschriften zur Sittenwidrigkeit und zum Wucher gemäß § 138 BGB.'
       ),
 
       _article('Artikel 6 - Rückzahlungsmodalitäten',
-      'Die Rückzahlung erfolgt wie folgt:'
-          '- Monatliche Raten'
-          '- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}'
-          'Zahlungstermin: jeweils am 5 eines Monats'
+      'Die Rückzahlung erfolgt wie folgt:\n'
+          '- Monatliche Raten\n'
+          '- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}\n'
+          'Zahlungstermin: jeweils am 5 eines Monats\n'
           'Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}'
       ),
 
@@ -287,21 +287,21 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       ),
 
       _article('Artikel 8 - Zahlungsverzug',
-          'Im Falle des Zahlungsverzugs:'
-          '- können Verzugszinsen gemäß § 288 BGB erhoben werden;'
+          'Im Falle des Zahlungsverzugs:\n'
+          '- können Verzugszinsen gemäß § 288 BGB erhoben werden;\n'
           'ist der Darlehensgeber berechtigt, die sofortige Rückzahlung des gesamten noch offenen Darlehensbetrages zu verlangen.'
       ),
 
       _article('Artikel 9 - Sicherheiten',
-          'Zur Sicherung der Rückzahlung stellt der Darlehensnehmer folgende Sicherheiten:'
+          'Zur Sicherung der Rückzahlung stellt der Darlehensnehmer folgende Sicherheiten:\n'
           'Keine Sicherheiten'
       ),
 
       _article('Artikel 10 - Bonitätserklärung',
-          'Der Darlehensnehmer erklärt:'
-          '- rechtlich voll geschäftsfähig zu sein;'
-          '- sich nicht in einer Situation der Überschuldung zu befinden;'
-          '- sämtliche Angaben wahrheitsgemäß gemacht zu haben.'
+          'Der Darlehensnehmer erklärt:\n'
+          '- rechtlich voll geschäftsfähig zu sein;\n'
+          '- sich nicht in einer Situation der Überschuldung zu befinden;\n'
+          '- sämtliche Angaben wahrheitsgemäß gemacht zu haben.\n'
           'Jede falsche Erklärung kann zur sofortigen Kündigung dieses Vertrages führen.'
       ),
 
@@ -314,11 +314,11 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       ),
 
       _article('Artikel 13 - Gerichtsstand',
-          'Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist – soweit gesetzlich zulässig – ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.'
+          'Für alle Streitigkeiten aus oder im Zusammenhang mit diesem Vertrag ist - soweit gesetzlich zulässig - ausschließlich das für den Wohnsitz des Darlehensgebers zuständige Gericht zuständig.'
       ),
 
       _article('Artikel 14 - Schlussbestimmungen',
-          'Sollte eine Bestimmung dieses Vertrages ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (§ 306 BGB).'
+          'Sollte eine Bestimmung dieses Vertrages ganz oder teilweise unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt (§ 306 BGB).\n'
           'Dieser Vertrag wird in zwei gleichlautenden Originalausfertigungen erstellt, eine für jede Vertragspartei.'
       ),
 
