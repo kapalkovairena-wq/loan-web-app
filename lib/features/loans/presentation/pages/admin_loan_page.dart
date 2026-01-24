@@ -270,7 +270,13 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Divider(),
 
       // ================= PARTIES =================
-      pw.Text('Zwischen den Unterzeichnenden:', style: titleStyle2),
+      pw.Center(
+        child: pw.Column(
+          children: [
+            pw.Text('Zwischen den Unterzeichnenden:', style: titleStyle2),
+          ],
+        ),
+      ),
 
       pw.SizedBox(height: 10),
 
@@ -278,9 +284,9 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
     children: [
       _article('Der Darlehensgeber',
-          "**Vor- und Nachname**: Frau NICOLE ASTRID\n"
-              "**Anschrift**: Linienstraße 213, 10119 Berlin, Deutschland\n"
-              "**Telefonnummer**: +49 1577 4851991\n\n"
+          "Vor- und Nachname: Frau NICOLE ASTRID\n"
+              "Anschrift: Linienstraße 213, 10119 Berlin, Deutschland\n"
+              "Telefonnummer: +49 1577 4851991\n\n"
               "Nachfolgend Darlehensgeber genannt",
         titleStyle: titleStyle,
         normalStyle: baseStyle,
@@ -290,10 +296,10 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       ),
 
       _article('Der Darlehensnehmer',
-         '**Vor- und Nachname**: Herr/Frau ${loanData['full_name']}\n'
-             '**Anschrift**: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}\n'
-             '**E-Mail**: ${loanData['email']}\n'
-             '**Telefonnummer**: ${loanData['phone']}\n\n'
+         'Vor- und Nachname: Herr/Frau ${loanData['full_name']}\n'
+             'Anschrift: ${loanData['address']}, ${loanData['city'] ?? ''}, ${loanData['country']}\n'
+             'E-Mail: ${loanData['email']}\n'
+             'Telefonnummer: ${loanData['phone']}\n\n'
              "Nachfolgend Darlehensnehmer genannt",
         titleStyle: titleStyle,
         normalStyle: baseStyle,
@@ -340,7 +346,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       _article('Artikel 3 - Auszahlung des Darlehens',
           '__Die Auszahlung des Darlehens erfolgt durch Banküberweisung.__\n'
-          '__Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}__\n'
+          '__Auszahlungsdatum: ${dateOfPayment.toLocal().toIso8601String().split('T').first}__\n\n'
           '__Die Zahlungen erfolgen auf folgendes Konto des Darlehensnehmer:__\n'
           '__IBAN: ${profileData['iban']}__\n'
           '__BIC: ${profileData['bic']}__\n'
@@ -380,7 +386,9 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           '__- Monatliche Raten__\n'
           '__- Höhe jeder Rate: ${loanData['monthly_payment']} ${profileData['currency'] ?? 'EUR'}__\n'
           '__Zahlungstermin: jeweils am 5 eines Monats__\n'
-          '__Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}__',
+          '__Beginn : ${startMonth.toLocal().toIso8601String().split('T').first}__\n\n'
+        'Die Zahlungen erfolgen auf das Konto des aktuell zuständigen Kundendienstes, der Sie während des laufenden Vorgangs betreut und die jeweilige Transaktion überprüft.\n'
+        "Die entsprechenden Zahlungsinformationen sind im Dashboard unserer Website https://www.kreditsch.de abrufbar.",
         titleStyle: titleStyle,
         normalStyle: baseStyle,
         boldFont: crimsonBold,
@@ -472,7 +480,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       // ================= SIGNATURES =================
       pw.Divider(),
-      pw.Image(TimImage, height: 100),
+      pw.Image(TimImage, height: 200),
       pw.SizedBox(height: 10),
       pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
