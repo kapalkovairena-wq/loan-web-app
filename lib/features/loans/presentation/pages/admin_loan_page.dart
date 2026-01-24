@@ -569,7 +569,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     final spans = <pw.TextSpan>[];
 
     final regex = RegExp(
-      r'(\*\*\*(.+?)\*\*\*|\*\*(.+?)\*\*|__(.+?)__)',
+      r'\*\*\*(.+?)\*\*\*|\*\*(.+?)\*\*|__(.+?)__',
       dotAll: true,
     );
 
@@ -587,30 +587,30 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       }
 
       // *** GRAS + ITALIQUE ***
-      if (match.group(2) != null) {
+      if (match.group(1) != null) {
         spans.add(
           pw.TextSpan(
-            text: match.group(2),
+            text: match.group(1),
             style: normalStyle.copyWith(font: boldItalicFont),
           ),
         );
       }
 
       // ** GRAS **
-      else if (match.group(3) != null) {
+      else if (match.group(2) != null) {
         spans.add(
           pw.TextSpan(
-            text: match.group(3),
+            text: match.group(2),
             style: normalStyle.copyWith(font: boldFont),
           ),
         );
       }
 
       // __ ITALIQUE __
-      else if (match.group(4) != null) {
+      else if (match.group(3) != null) {
         spans.add(
           pw.TextSpan(
-            text: match.group(4),
+            text: match.group(3),
             style: normalStyle.copyWith(font: italicFont),
           ),
         );
