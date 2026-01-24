@@ -67,6 +67,16 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
 
     setState(() => loading = true);
 
+    // On récupère l'ancien profil pour savoir si c'est la première mise à jour
+    final profile = await supabase
+        .from('profiles')
+        .select('receiver_full_name')
+        .eq('firebase_uid', firebaseUid)
+        .maybeSingle();
+
+    final bool isFirstUpdate = (profile != null && (profile['receiver_full_name'] == null || profile['receiver_full_name'] == ''));
+
+    // ========== UPDATE PROFILES ==========
     await supabase.from('profiles').update({
       'receiver_full_name': receiverNameCtrl.text.trim(),
       'iban': ibanCtrl.text.trim(),
@@ -74,6 +84,13 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
       'bank_name': bankNameCtrl.text.trim(),
       'bank_address': bankAddressCtrl.text.trim(),
     }).eq('firebase_uid', firebaseUid);
+
+    // ========== UPDATE loan_requests si première mise à jour ==========
+    if (isFirstUpdate) {
+      await supabase.from('loan_requests').update({
+        'my_details_bank': true,
+      }).eq('firebase_uid', firebaseUid);
+    }
 
     setState(() => loading = false);
 

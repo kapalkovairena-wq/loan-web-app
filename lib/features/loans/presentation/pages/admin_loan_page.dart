@@ -129,7 +129,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pdf.addPage(
         pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
-          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 80),
+          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 32),
           footer: (context) => pw.Center(
             child: pw.Text(
               'KreditSch © ${DateTime.now().year} - Seite ${context.pageNumber}',
@@ -829,12 +829,62 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
               ),
               const SizedBox(height: 12),
               Center(
-                child: ElevatedButton(
-                  onPressed: () => sendContract(loanData, profile ?? {}),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                  child: const Text("Envoyer contrat PDF", style: TextStyle(color: Colors.white)),
+                child: Column(
+                  children: [
+                    // ===== Payment Bank Toggle =====
+                    FutureBuilder<Map<String, dynamic>?>(
+                      future: supabase
+                          .from('loan_requests')
+                          .select('payment_bank')
+                          .eq('id', loanData['id'])
+                          .maybeSingle(),
+                      builder: (context, snapshot) {
+                        bool paymentBank = snapshot.data?['payment_bank'] ?? false;
+                        if (!snapshot.hasData) return const SizedBox();
+
+                        return SwitchListTile(
+                          title: const Text("Coordonnées de paiement"),
+                          value: paymentBank,
+                          onChanged: (val) async {
+                            // Met à jour dans la table loan_requests
+                            await supabase
+                                .from('loan_requests')
+                                .update({'payment_bank': val})
+                                .eq('id', loanData['id']);
+
+                            setState(() {
+                              // Met à jour localement pour refléter le changement
+                              loanData['payment_bank'] = val;
+                            });
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  val
+                                      ? "✅ Coordonnées de paiement activées"
+                                      : "❌ Coordonnées de paiement désactivées",
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // ===== Envoyer contrat PDF =====
+                    ElevatedButton(
+                      onPressed: () => sendContract(loanData, profile ?? {}),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                      child: const Text(
+                        "Envoyer contrat PDF",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),

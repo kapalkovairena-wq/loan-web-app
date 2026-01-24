@@ -22,32 +22,69 @@ class DashboardPage extends StatelessWidget {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final isMobile = constraints.maxWidth < 800;
+      body: const _DashboardBody(),
+    );
+  }
+}
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 1200),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const _Header(),
+class _DashboardBody extends StatelessWidget {
+  const _DashboardBody();
 
-                    const SizedBox(height: 24),
+  @override
+  Widget build(BuildContext context) {
+    final supabase = Supabase.instance.client;
+    final uid = FirebaseAuth.instance.currentUser!.uid;
 
-                    isMobile
-                        ? const _MobileLayout()
-                        : const _WebLayout(),
-                  ],
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: supabase
+          .from('loan_requests')
+          .select('payment_bank, my_details_bank, amount')
+          .eq('firebase_uid', uid)
+          .maybeSingle(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final loanData = snapshot.data;
+        final showRepayment = loanData?['payment_bank'] ?? false;
+        final showBankDetails = loanData?['my_details_bank'] ?? false;
+        final hasLoanAmount = loanData?['amount'] != null;
+
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final isMobile = constraints.maxWidth < 800;
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _Header(),
+                      const SizedBox(height: 24),
+
+                      isMobile
+                          ? _MobileLayout(
+                        showRepaymentBankCard: showRepayment,
+                        showBankDetailsCard: showBankDetails,
+                        hasLoanAmount: hasLoanAmount,
+                      )
+                          : _WebLayout(
+                        showRepaymentBankCard: showRepayment,
+                        showBankDetailsCard: showBankDetails,
+                        hasLoanAmount: hasLoanAmount,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
-      ),
+            );
+          },
+        );
+      },
     );
   }
 }
@@ -91,62 +128,74 @@ class _Header extends StatelessWidget {
 }
 
 class _MobileLayout extends StatelessWidget {
-  const _MobileLayout();
+  final bool showRepaymentBankCard;
+  final bool showBankDetailsCard;
+  final bool hasLoanAmount;
+
+  const _MobileLayout({
+    required this.showRepaymentBankCard,
+    required this.showBankDetailsCard,
+    required this.hasLoanAmount,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        LoanStatusCard(),
-        SizedBox(height: 20),
-        BankDetailsCard(),
-        SizedBox(height: 20),
-        RepaymentBankCard(),
-        SizedBox(height: 20),
-        LoanSimulationCard(),
-        SizedBox(height: 20),
-        LastRequestCard(),
-        SizedBox(height: 20),
-        TrustCard(),
-        SizedBox(height: 20),
-        QuickActions(),
+      children: [
+        const LoanStatusCard(),
+        const SizedBox(height: 20),
+
+        if (showRepaymentBankCard) ...[
+          const RepaymentBankCard(),
+          const SizedBox(height: 20),
+        ],
+
+        if (showBankDetailsCard) ...[
+          const BankDetailsCard(),
+          const SizedBox(height: 20),
+        ],
+
+        const TrustCard(),
+        const SizedBox(height: 20),
+        QuickActions(hasLoanAmount: hasLoanAmount),
       ],
     );
   }
 }
 
 class _WebLayout extends StatelessWidget {
-  const _WebLayout();
+  final bool showRepaymentBankCard;
+  final bool showBankDetailsCard;
+  final bool hasLoanAmount;
+
+  const _WebLayout({
+    required this.showRepaymentBankCard,
+    required this.showBankDetailsCard,
+    required this.hasLoanAmount,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
-          children: const [
-            Expanded(child: LoanStatusCard()),
-            SizedBox(width: 24),
-            Expanded(child: RepaymentBankCard()),
+          children: [
+            const Expanded(child: LoanStatusCard()),
+            const SizedBox(width: 24),
+            if (showRepaymentBankCard)
+              const Expanded(child: RepaymentBankCard()),
           ],
         ),
         const SizedBox(height: 24),
         Row(
-          children: const [
-            Expanded(child: BankDetailsCard()),
-            SizedBox(width: 24),
-            Expanded(child: LoanSimulationCard()),
+          children: [
+            if (showBankDetailsCard) const Expanded(child: BankDetailsCard()),
+            const SizedBox(width: 24),
+            const Expanded(child: TrustCard()),
           ],
         ),
         const SizedBox(height: 24),
-        Row(
-          children: const [
-            Expanded(child: LastRequestCard()),
-            SizedBox(width: 24),
-            Expanded(child: TrustCard()),
-          ],
-        ),
-        const SizedBox(height: 24),
-        const QuickActions(),
+        QuickActions(hasLoanAmount: hasLoanAmount),
       ],
     );
   }
@@ -282,44 +331,6 @@ class _LoanStatusCardState extends State<LoanStatusCard> {
   );
 }
 
-
-class LoanSimulationCard extends StatelessWidget {
-  const LoanSimulationCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return _Card(
-      title: "Simulation indicative",
-      child: Column(
-        children: const [
-          _RowItem("Montant", "300 000 FCFA"),
-          _RowItem("Durée", "6 mois"),
-          _RowItem("Mensualité", "52 000 FCFA"),
-          _RowItem("Taux annuel", "3%"),
-        ],
-      ),
-    );
-  }
-}
-
-class LastRequestCard extends StatelessWidget {
-  const LastRequestCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return _Card(
-      title: "Dernière demande",
-      child: Column(
-        children: const [
-          _RowItem("Date", "—"),
-          _RowItem("Montant", "—"),
-          _RowItem("Statut", "—"),
-        ],
-      ),
-    );
-  }
-}
-
 class TrustCard extends StatelessWidget {
   const TrustCard({super.key});
 
@@ -341,7 +352,12 @@ class TrustCard extends StatelessWidget {
 }
 
 class QuickActions extends StatelessWidget {
-  const QuickActions({super.key});
+  final bool hasLoanAmount;
+
+  const QuickActions({
+    super.key,
+    required this.hasLoanAmount,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -375,7 +391,8 @@ class QuickActions extends StatelessWidget {
               );
             },
           ),
-          _ActionButton(
+          if (hasLoanAmount)
+            _ActionButton(
             label: "Mes coordonnées bancaires",
             icon: Icons.folder_open,
             onPressed: () {
@@ -531,7 +548,7 @@ class _BankDetailsCardState extends State<BankDetailsCard> {
   Widget build(BuildContext context) {
     if (loading) {
       return const _Card(
-        title: "Coordonnées bancaires",
+        title: "Vos coordonnées bancaires",
         child: Center(child: CircularProgressIndicator()),
       );
     }
@@ -540,7 +557,7 @@ class _BankDetailsCardState extends State<BankDetailsCard> {
         data!['iban'] == null ||
         (data!['iban'] as String).isEmpty) {
       return _Card(
-        title: "Coordonnées bancaires",
+        title: "Vos coordonnées bancaires",
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
@@ -613,24 +630,24 @@ class _RepaymentBankCardState extends State<RepaymentBankCard> {
   Widget build(BuildContext context) {
     if (loading) {
       return const _Card(
-        title: "Informations de remboursement",
+        title: "Les coordonnées bancaires de paiement",
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
     if (data == null) {
       return _Card(
-        title: "Informations de remboursement",
+        title: "Les coordonnées bancaires de paiement",
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
             Text(
-              "Aucune information de remboursement disponible",
+              "Aucune information de paiement disponible",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8),
             Text(
-              "Veuillez contacter le support pour obtenir les coordonnées de remboursement.",
+              "Veuillez contacter le support pour obtenir les coordonnées de paiement.",
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -639,7 +656,7 @@ class _RepaymentBankCardState extends State<RepaymentBankCard> {
     }
 
     return _Card(
-      title: "Informations de remboursement",
+      title: "Les coordonnées bancaires de paiement",
       child: Column(
         children: [
           _RowItem("Receveur", data!['receiver_full_name'] ?? '—'),
