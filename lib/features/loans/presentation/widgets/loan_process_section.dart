@@ -7,86 +7,89 @@ class LoanProcessSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    final bool isMobile = width < 600;
+    final bool isTablet = width >= 600 && width < 1100;
+
+    final double maxContentWidth = isMobile
+        ? width
+        : 800; // FORCÉ à 2 cartes max
+
     return Column(
       children: [
-        const SizedBox(height: 100),
+        SizedBox(height: isMobile ? 60 : 100),
 
-        // ===== TITRE =====
+        /// ===== TITRES =====
         const Text(
           "Notre processus de prêt",
           style: TextStyle(color: Colors.black54),
         ),
         const SizedBox(height: 10),
-        const Text(
+        Text(
           "Votre prêt en 3 étapes",
           style: TextStyle(
-            fontSize: 34,
+            fontSize: isMobile ? 26 : 34,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
-        const SizedBox(
-          width: 650,
-          child: Text(
+        SizedBox(
+          width: isMobile ? width * 0.9 : 650,
+          child: const Text(
             "Que ce soit pour un projet, un besoin de trésorerie ou un investissement, notre objectif est de vous aider à aller de l’avant en toute confiance.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.black54),
           ),
         ),
 
-        const SizedBox(height: 80),
+        SizedBox(height: isMobile ? 50 : 80),
 
-        // ===== ÉTAPES 1 & 2 =====
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Expanded(
-                child: StepCard(
+        /// ===== ÉTAPES =====
+        Center(
+          child: SizedBox(
+            width: maxContentWidth,
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 40,
+              runSpacing: 60,
+              children: const [
+                StepCard(
                   step: "01",
                   title: "Simulez votre prêt",
                   description:
                   "Choisissez le montant et la durée souhaités. Recevez un devis clair et sans engagement en quelques clics.",
                   isDark: false,
                 ),
-              ),
-              SizedBox(width: 40),
-              Expanded(
-                child: StepCard(
+                StepCard(
                   step: "02",
-                  title: "Soumettez votre demande en ligne",
+                  title: "Soumettez votre demande",
                   description:
-                  "Remplissez le formulaire sécurisé sans aucun document papier. Votre dossier sera traité rapidement.",
+                  "Remplissez le formulaire sécurisé sans aucun document papier. Votre dossier est traité rapidement.",
                   isDark: true,
                 ),
-              ),
-            ],
+                StepCard(
+                  step: "03",
+                  title: "Recevez les fonds",
+                  description:
+                  "Une fois votre demande approuvée, le montant est versé directement sur votre compte.",
+                  isDark: false,
+                ),
+              ],
+            ),
           ),
         ),
 
-        const SizedBox(height: 60),
+        SizedBox(height: isMobile ? 80 : 120),
 
-        // ===== ÉTAPE 3 =====
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 250),
-          child: StepCard(
-            step: "03",
-            title: "Recevez les fonds",
-            description:
-            "Une fois votre demande approuvée, le montant sera transféré directement sur votre compte. Simple, rapide et fiable.",
-            isDark: false,
-          ),
-        ),
-
-        const SizedBox(height: 120),
-
-        // ===== CTA FINAL =====
+        /// ===== CTA =====
         const LoanCTASection(),
       ],
     );
   }
 }
+
 
 class StepCard extends StatelessWidget {
   final String step;
@@ -104,59 +107,74 @@ class StepCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    final bool isMobile = width < 600;
+
     final bgColor = isDark ? const Color(0xFF061A3A) : Colors.white;
     final textColor = isDark ? Colors.white : Colors.black87;
     final subTextColor = isDark ? Colors.white70 : Colors.black54;
 
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 26,
-          backgroundColor: const Color(0xFFF5B400),
-          child: Text(
-            "$step.",
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+    return SizedBox(
+      width: isMobile ? width * 0.9 : 360, // 👈 360 x 2 + spacing = 2 max
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 26,
+            backgroundColor: const Color(0xFFF5B400),
+            child: Text(
+              "$step.",
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 20),
-        Container(
-          padding: const EdgeInsets.all(32),
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 15,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              const Icon(Icons.trending_up, color: Color(0xFFF5B400)),
-              const SizedBox(height: 20),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: textColor,
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(28),
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.06),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                description,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: subTextColor),
-              ),
-            ],
+              ],
+            ),
+            child: Column(
+              children: [
+                const Icon(
+                  Icons.trending_up,
+                  color: Color(0xFFF5B400),
+                  size: 28,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: textColor,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: subTextColor,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -166,33 +184,35 @@ class LoanCTASection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final bool isMobile = width < 600;
+
     return Container(
-      height: 380,
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 70 : 100,
+        horizontal: 20,
+      ),
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            const Color(0xFF061A3A).withOpacity(0.9),
-            const Color(0xFF061A3A).withOpacity(0.9),
-          ],
+          colors: [Color(0xFF061A3A), Color(0xFF061A3A)],
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
+          Text(
             "Démarrez votre projet de prêt dès maintenant",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 30,
+              fontSize: isMobile ? 22 : 30,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          const SizedBox(
-            width: 700,
-            child: Text(
+          SizedBox(
+            width: isMobile ? width * 0.9 : 700,
+            child: const Text(
               "Vous avez un projet en tête ? Nous vous aidons à le concrétiser rapidement grâce à un prêt simple, sécurisé et 100 % en ligne.",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white70),
@@ -203,12 +223,17 @@ class LoanCTASection extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFF5B400),
               padding:
-              const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+              const EdgeInsets.symmetric(horizontal: 42, vertical: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+                MaterialPageRoute(
+                  builder: (_) => const LoanRequestPage(),
+                ),
               );
             },
             child: const Text(

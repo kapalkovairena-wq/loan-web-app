@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../pages/loan_request_page.dart';
 
+/// =======================
+/// SECTION PRINCIPALE
+/// =======================
 class LoanFeaturesSection extends StatelessWidget {
   const LoanFeaturesSection({super.key});
 
@@ -36,6 +39,9 @@ class LoanFeaturesSection extends StatelessWidget {
   }
 }
 
+/// =======================
+/// FEATURE RESPONSIVE
+/// =======================
 class LoanFeature extends StatelessWidget {
   final String title;
   final String description;
@@ -52,86 +58,153 @@ class LoanFeature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 60),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (imageLeft) _image(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                      height: 1.6,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const LoanRequestPage()),
-                      );
-                    },
-                    child: const Text(
-                      "Demander un prêt >",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.deepPurple,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double width = constraints.maxWidth;
+
+        /// Breakpoints
+        final bool isMobile = width < 700;
+        final bool isTablet = width >= 700 && width < 1100;
+
+        /// Ratios image / texte
+        final int imageFlex = isMobile ? 0 : isTablet ? 5 : 6;
+        final int textFlex = isMobile ? 0 : isTablet ? 5 : 4;
+
+        final double titleSize = isMobile ? 22.0 : isTablet ? 26.0 : 32.0;
+        final double descriptionSize = isMobile ? 14.0 : 16.0;
+
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 20.0 : 80.0,
+            vertical: isMobile ? 40.0 : 70.0,
           ),
-          if (!imageLeft) _image(),
-        ],
-      ),
+          child: isMobile
+              ? Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _image(width),
+              const SizedBox(height: 24),
+              _textColumn(
+                context,
+                titleSize,
+                descriptionSize,
+                TextAlign.center,
+              ),
+            ],
+          )
+              : Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (imageLeft)
+                Expanded(
+                  flex: imageFlex,
+                  child: _image(),
+                ),
+              Expanded(
+                flex: textFlex,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: _textColumn(
+                    context,
+                    titleSize,
+                    descriptionSize,
+                    TextAlign.start,
+                  ),
+                ),
+              ),
+              if (!imageLeft)
+                Expanded(
+                  flex: imageFlex,
+                  child: _image(),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _image() {
+  /// =======================
+  /// TEXTE
+  /// =======================
+  Widget _textColumn(
+      BuildContext context,
+      double titleSize,
+      double descriptionSize,
+      TextAlign align,
+      ) {
+    return Column(
+      crossAxisAlignment:
+      align == TextAlign.center ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          textAlign: align,
+          style: TextStyle(
+            fontSize: titleSize,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text(
+          description,
+          textAlign: align,
+          style: TextStyle(
+            fontSize: descriptionSize,
+            color: Colors.black54,
+            height: 1.6,
+          ),
+        ),
+        const SizedBox(height: 24),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const LoanRequestPage(),
+              ),
+            );
+          },
+          child: const Text(
+            "Demander un prêt >",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.deepPurple,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// =======================
+  /// IMAGE
+  /// =======================
+  Widget _image([double? containerWidth]) {
+    final double imageHeight =
+    containerWidth != null ? containerWidth * 0.6 : 300.0;
+
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
       child: Image.network(
         imageUrl,
-        width: 380,
-        height: 260,
+        width: double.infinity,
+        height: imageHeight,
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return Container(
-            width: 380,
-            height: 260,
-            alignment: Alignment.center,
-            child: const CircularProgressIndicator(strokeWidth: 2),
+          return SizedBox(
+            height: imageHeight,
+            child: const Center(
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
           );
         },
-        errorBuilder: (context, error, stackTrace) {
+        errorBuilder: (_, __, ___) {
           return Container(
-            width: 380,
-            height: 260,
+            height: imageHeight,
+            color: Colors.grey.shade200,
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(16),
-            ),
             child: const Icon(Icons.broken_image, size: 40),
           );
         },

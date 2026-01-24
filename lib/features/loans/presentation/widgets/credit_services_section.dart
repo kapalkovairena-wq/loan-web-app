@@ -6,71 +6,120 @@ class CreditServicesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    /// Breakpoints
+    final bool isMobile = width < 1000;
+
+    /// 1 carte mobile, 2 partout ailleurs
+    final int crossAxisCount = isMobile ? 1 : 2;
+
     return Column(
       children: [
         const SizedBox(height: 80),
-        const Text("Nos dossiers", style: TextStyle(color: Colors.grey)),
+
+        /// =======================
+        /// TITRES
+        /// =======================
+        const Text(
+          "Nos dossiers",
+          style: TextStyle(color: Colors.grey),
+        ),
         const SizedBox(height: 8),
         const Text(
           "Nos services de crédit",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 12),
-        const SizedBox(
-          width: 600,
-          child: Text(
-            "Nous proposons des solutions de financement flexibles et accessibles, adaptées à vos besoins personnels ou professionnels.",
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black54),
+        SizedBox(
+          width: isMobile ? double.infinity : 600,
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "Nous proposons des solutions de financement flexibles et accessibles, adaptées à vos besoins personnels ou professionnels.",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black54),
+            ),
           ),
         ),
+
         const SizedBox(height: 60),
 
+        /// =======================
+        /// GRID RESPONSIVE
+        /// =======================
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80),
-          child: GridView.count(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 20 : 80,
+          ),
+          child: GridView.builder(
             shrinkWrap: true,
-            crossAxisCount: 2,
-            crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
             physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              LoanImageCard(
-                imageUrl:
-                "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/financial-services-1536x1152.webp",
-                overlayTitle: "Prêt personnel",
-                overlayText:
-                "Financez vos projets (voyages, équipements, mariages...) à un prix compétitif et avec une réponse rapide.",
-              ),
-              LoanImageCard(
-                imageUrl:
-                "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/business-team-collaboration-discussing-working-analysis-with-financial-data-and-marketing-growth-1536x1024.webp",
-                overlayTitle: "Prêt professionnel",
-                overlayText:
-                "Une solution simple et rapide pour soutenir votre entreprise : approvisionnement en matériel, trésorerie, développement.",
-              ),
-              LoanImageCard(
-                imageUrl:
-                "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/financial-statistics-1536x1024.webp",
-                overlayTitle: "Lignes de crédit flexibles",
-                overlayText:
-                "Accès rapide à des fonds immédiatement disponibles, sans obligation de les utiliser immédiatement.",
-              ),
-              LoanImageCard(
-                imageUrl:
-                "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/business-team-casual-collaboration-discussing-working-analysis-with-financial-data-and-marketing-1536x864.webp",
-                overlayTitle: "Simulation et enquête",
-                overlayText:
-                "Estimez votre solde créditeur et soumettez votre demande directement depuis notre plateforme, sans aucun document papier.",
-              ),
-            ],
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              crossAxisSpacing: 24,
+              mainAxisSpacing: 24,
+              childAspectRatio: isMobile ? 1.25 : 1.6,
+            ),
+            itemCount: _cards.length,
+            itemBuilder: (context, index) {
+              final card = _cards[index];
+              return LoanImageCard(
+                imageUrl: card.image,
+                overlayTitle: card.title,
+                overlayText: card.text,
+              );
+            },
           ),
         ),
+
+        const SizedBox(height: 100),
       ],
     );
   }
 }
 
+/// =======================
+/// DATA SOURCE
+/// =======================
+class _CardData {
+  final String image;
+  final String title;
+  final String text;
+
+  const _CardData(this.image, this.title, this.text);
+}
+
+const List<_CardData> _cards = [
+  _CardData(
+    "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/financial-services-1536x1152.webp",
+    "Prêt personnel",
+    "Financez vos projets (voyages, équipements, mariages...) à un prix compétitif et avec une réponse rapide.",
+  ),
+  _CardData(
+    "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/business-team-collaboration-discussing-working-analysis-with-financial-data-and-marketing-growth-1536x1024.webp",
+    "Prêt professionnel",
+    "Une solution simple et rapide pour soutenir votre entreprise : approvisionnement, trésorerie, développement.",
+  ),
+  _CardData(
+    "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/financial-statistics-1536x1024.webp",
+    "Lignes de crédit flexibles",
+    "Accès rapide à des fonds immédiatement disponibles, sans obligation d’utilisation immédiate.",
+  ),
+  _CardData(
+    "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/business-team-casual-collaboration-discussing-working-analysis-with-financial-data-and-marketing-1536x864.webp",
+    "Simulation et enquête",
+    "Estimez votre capacité de crédit et soumettez votre demande directement en ligne.",
+  ),
+];
+
+/// =======================
+/// CARTE IMAGE
+/// =======================
 class LoanImageCard extends StatefulWidget {
   final String imageUrl;
   final String overlayTitle;
@@ -90,72 +139,80 @@ class LoanImageCard extends StatefulWidget {
 class _LoanImageCardState extends State<LoanImageCard> {
   bool _isOpen = false;
 
-  void _toggle() {
-    setState(() => _isOpen = !_isOpen);
-  }
+  void _toggle() => setState(() => _isOpen = !_isOpen);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggle,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(14),
         child: Stack(
           children: [
             /// IMAGE
-            Image.network(
-              widget.imageUrl,
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
+            Positioned.fill(
+              child: Image.network(
+                widget.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
 
-            /// OVERLAY SOMBRE LÉGER
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.15),
-                    Colors.black.withOpacity(0.6),
-                  ],
+            /// OVERLAY SOMBRE
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.15),
+                      Colors.black.withOpacity(0.6),
+                    ],
+                  ),
                 ),
               ),
             ),
 
-            /// OVERLAY TEXTE BLEU TRANSPARENT
+            /// TEXTE GLASSMORPHISM
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,
-              bottom: _isOpen ? 0 : -120,
+              bottom: _isOpen ? 0 : -110,
               left: 0,
               right: 0,
-              height: 120,
+              height: 110,
               child: ClipRect(
                 child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
-                    color: const Color(0xFF1E3A8A).withOpacity(0.75),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    color: const Color(0xFF1E3A8A).withOpacity(0.2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           widget.overlayTitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
                           ),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 4),
                         Text(
                           widget.overlayText,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.white70,
-                            fontSize: 13,
-                            height: 1.4,
+                            fontSize: 12,
+                            height: 1.35,
                           ),
                         ),
                       ],

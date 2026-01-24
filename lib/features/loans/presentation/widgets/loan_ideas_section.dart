@@ -40,7 +40,7 @@ class _HeroImageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Hauteur adaptative
-    double height = isMobile ? 300 : isTablet ? 380 : 420;
+    double height = isMobile ? 300 : isTablet ? 450 : 500;
 
     // Largeur max du texte
     double textWidth = isMobile ? MediaQuery.of(context).size.width * 0.9 : 520;
@@ -72,7 +72,7 @@ class _HeroImageSection extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: textWidth),
                 child: Container(
-                  padding: EdgeInsets.all(isMobile ? 16 : 30),
+                  padding: EdgeInsets.all(isMobile ? 16 : 0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(4),

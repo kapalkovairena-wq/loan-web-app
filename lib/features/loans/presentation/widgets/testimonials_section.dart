@@ -60,10 +60,24 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    final bool isMobile = width < 600;
+    final bool isTablet = width >= 600 && width < 1100;
+
+    final double cardWidth = isMobile
+        ? width * 0.9
+        : isTablet
+        ? 600
+        : 720;
+
     final testimonial = testimonials[currentIndex];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80),
+      padding: EdgeInsets.symmetric(
+        vertical: isMobile ? 60 : 90,
+        horizontal: 20,
+      ),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xFF061A3A), Color(0xFF0B2B5B)],
@@ -76,47 +90,110 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
             style: TextStyle(color: Colors.white70),
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             "Nous bénéficions de la confiance de plus de 50 pays à travers le monde.",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 28,
+              fontSize: isMobile ? 22 : 30,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 50),
 
+          /// =========================
+          /// CARTE AVIS
+          /// =========================
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 600),
+            transitionBuilder: (child, animation) {
+              return FadeTransition(
+                opacity: animation,
+                child: SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(0, 0.08),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                ),
+              );
+            },
             child: Container(
               key: ValueKey(currentIndex),
-              margin: const EdgeInsets.symmetric(horizontal: 120),
-              padding: const EdgeInsets.all(32),
+              width: cardWidth,
+              padding: EdgeInsets.all(isMobile ? 20 : 32),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 24,
+                    offset: const Offset(0, 12),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  /// ⭐⭐⭐⭐⭐
+                  Row(
+                    children: List.generate(
+                      5,
+                          (index) => const Icon(
+                        Icons.star_rounded,
+                        color: Color(0xFFFBBF24),
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  /// TEXTE
                   Text(
                     testimonial.text,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontStyle: FontStyle.italic,
-                      fontSize: 16,
+                      fontSize: isMobile ? 14 : 16,
+                      height: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    testimonial.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    testimonial.role,
-                    style: const TextStyle(color: Colors.black54),
+                  const SizedBox(height: 28),
+
+                  /// PROFIL
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: const Color(0xFF1E3A8A),
+                        child: Text(
+                          testimonial.name[0],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            testimonial.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            testimonial.role,
+                            style: const TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
