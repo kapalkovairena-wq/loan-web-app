@@ -96,21 +96,22 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              "Bonjour 👋",
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 4),
-            Text(
-              "Bienvenue dans votre espace client sécurisé",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
+        Expanded(  // ← force le texte à prendre tout l’espace restant
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                "Bonjour 👋",
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Bienvenue dans votre espace client sécurisé",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
         ),
-        const Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
@@ -126,6 +127,7 @@ class _Header extends StatelessWidget {
     );
   }
 }
+
 
 class _MobileLayout extends StatelessWidget {
   final bool showRepaymentBankCard;
@@ -181,7 +183,11 @@ class _WebLayout extends StatelessWidget {
         Row(
           children: [
             const Expanded(child: LoanStatusCard()),
-            const SizedBox(width: 24),
+          ],
+        ),
+        const SizedBox(height: 24),
+        Row(
+          children: [
             if (showRepaymentBankCard)
               const Expanded(child: RepaymentBankCard()),
           ],
@@ -189,8 +195,13 @@ class _WebLayout extends StatelessWidget {
         const SizedBox(height: 24),
         Row(
           children: [
-            if (showBankDetailsCard) const Expanded(child: BankDetailsCard()),
-            const SizedBox(width: 24),
+            if (showBankDetailsCard)
+              const Expanded(child: BankDetailsCard()),
+          ],
+        ),
+        const SizedBox(height: 24),
+        Row(
+          children: [
             const Expanded(child: TrustCard()),
           ],
         ),
@@ -316,7 +327,8 @@ class _LoanStatusCardState extends State<LoanStatusCard> {
     Colors.red,
   );
 
-  Widget _statusCard(String title, String desc, Color color) => _Card(
+  Widget _statusCard(String title, String desc, Color color) =>
+      _Card(
     title: "Statut de votre prêt",
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -443,7 +455,9 @@ class _Card extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return SizedBox(
+        width: double.infinity, // ⭐ LA SOLUTION
+        child: Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -458,6 +472,7 @@ class _Card extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

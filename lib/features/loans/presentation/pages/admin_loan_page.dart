@@ -129,7 +129,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pdf.addPage(
         pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
-          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 32),
+          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 50),
           footer: (context) => pw.Center(
             child: pw.Text(
               'KreditSch © ${DateTime.now().year} - Seite ${context.pageNumber}',
