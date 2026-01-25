@@ -13,11 +13,14 @@ class LoanHistoryPage extends StatefulWidget {
 class _LoanHistoryPageState extends State<LoanHistoryPage> {
   final supabase = Supabase.instance.client;
   List<Map<String, dynamic>> requests = [];
+  Map<String, dynamic> profileData = {};
+  bool isLoadingProfile = true;
 
   @override
   void initState() {
     super.initState();
     loadRequests();
+    _loadProfile();
   }
 
   Future<void> loadRequests() async {
@@ -36,8 +39,52 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
     setState(() => requests = List<Map<String, dynamic>>.from(data));
   }
 
+  Future<void> _loadProfile() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+
+    // Utilisateur non connecté
+    if (firebaseUser == null) {
+      setState(() {
+        profileData = {'currency': '€'};
+        isLoadingProfile = false;
+      });
+      return;
+    }
+
+    try {
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('currency, language')
+          .eq('firebase_uid', firebaseUser.uid)
+          .single();
+
+      setState(() {
+        profileData = response;
+        isLoadingProfile = false;
+      });
+    } catch (e) {
+      // fallback sécurité
+      setState(() {
+        profileData = {'currency': '€'};
+        isLoadingProfile = false;
+      });
+    }
+  }
+
+  String get currency {
+    final c = profileData['currency'];
+    if (c == null || c.toString().isEmpty) return '€';
+    return c;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isLoadingProfile) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       appBar: AppBar(
@@ -108,7 +155,7 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
               {
                 "Profession": data['profession'],
                 "Source de revenus": data['income_source'],
-                "Montant demandé": "${data['amount']} FCFA",
+                "Montant demandé": "${data['amount']} $currency",
                 "Durée": "${data['duration_months']} mois",
               },
             ),
@@ -117,9 +164,9 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
             _section(
               "Récapitulatif du crédit",
               {
-                "Mensualité": "${data['monthly_payment']} FCFA",
-                "Intérêts": "${data['total_interest']} FCFA",
-                "Total à rembourser": "${data['total_amount']} FCFA",
+                "Mensualité": "${data['monthly_payment']} $currency",
+                "Intérêts": "${data['total_interest']} $currency",
+                "Total à rembourser": "${data['total_amount']} $currency",
               },
             ),
 

@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/app_drawer.dart';
 import '../widgets/whatsApp_button.dart';
@@ -16,6 +18,9 @@ class LoanSimulationPage extends StatefulWidget {
 }
 
 class _LoanSimulationPageState extends State<LoanSimulationPage> {
+  Map<String, dynamic> profileData = {};
+  bool isLoadingProfile = true;
+
   double montant = 3000;
   int duree = 12;
 
@@ -35,7 +40,65 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
   double get totalAssurance => assuranceMensuelle * duree;
 
   @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+
+    // Utilisateur non connecté
+    if (firebaseUser == null) {
+      setState(() {
+        profileData = {'currency': '€'};
+        isLoadingProfile = false;
+      });
+      return;
+    }
+
+    try {
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('currency, language')
+          .eq('firebase_uid', firebaseUser.uid)
+          .single();
+
+      setState(() {
+        profileData = response;
+        isLoadingProfile = false;
+      });
+    } catch (e) {
+      // fallback sécurité
+      setState(() {
+        profileData = {'currency': '€'};
+        isLoadingProfile = false;
+      });
+    }
+  }
+
+  String get currency {
+    final c = profileData['currency'];
+    if (c == null || c.toString().isEmpty) return '€';
+    return c;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    final bool isMobile = width < 700;
+    final bool isTablet = width >= 700 && width < 1100;
+    final bool isDesktop = width >= 1100;
+
+    if (isLoadingProfile) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
         backgroundColor: const Color(0xFFF8F9FB),
         drawer: const AppDrawer(),
@@ -48,10 +111,21 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
         const HeroBanner(),
         const SizedBox(height: 80),
 
-        Center(
+      Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: isMobile
+                ? double.infinity
+                : isTablet
+                ? 700
+                : 900,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 16 : 0,
+            ),
             child: Container(
-              width: 900,
-              padding: const EdgeInsets.all(40),
+              padding: EdgeInsets.all(isMobile ? 24 : 40),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
@@ -65,38 +139,46 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                const Text(
-                "Simulez votre prêt",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+                 Text(
+                  "Simulez votre prêt",
+                  style: TextStyle(
+                    fontSize: isMobile ? 22 : 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Ajustez les paramètres pour estimer votre crédit.",
-                style: TextStyle(color: Colors.black54),
-              ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Ajustez les paramètres pour estimer votre crédit.",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: isMobile ? 14 : 16,
+                    ),
+                  ),
 
-              const SizedBox(height: 40),
+                  const SizedBox(height: 40),
 
               // ===== MONTANT =====
               Text(
-                "Montant du prêt : ${montant.toInt()} €",
+                "Montant du prêt : ${montant.toInt()} $currency",
                 style: const TextStyle(fontWeight: FontWeight.w600),
               ),
-              Slider(
-                value: montant,
-                min: 3000,
-                max: 500000,
-                divisions: 100,
-                label: montant.toInt().toString(),
-                onChanged: (value) {
-                  setState(() => montant = value);
-                },
-              ),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      trackHeight: isMobile ? 3 : 4,
+                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                    ),
+                    child: Slider(
+                      value: montant,
+                      min: 3000,
+                      max: 500000,
+                      divisions: 1000,
+                      onChanged: (value) {
+                        setState(() => montant = value);
+                      },
+                    ),
+                  ),
 
-              const SizedBox(height: 30),
+                  const SizedBox(height: 30),
 
               // ===== DURÉE =====
               Text(
@@ -126,7 +208,7 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
                       children: [
                         _resultRow(
                           "Mensualité du crédit",
-                          "${mensualite.toStringAsFixed(2)} €",
+                          "${mensualite.toStringAsFixed(2)} $currency",
                           isBold: true,
                         ),
                         const Divider(color: Colors.white30),
@@ -140,15 +222,15 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
                         ),
                         _resultRow(
                           "Total des mensualités (hors assurance)",
-                          "${totalMensualites.toStringAsFixed(2)} €",
+                          "${totalMensualites.toStringAsFixed(2)} $currency",
                         ),
                         _resultRow(
                           "Total des intérêts",
-                          "${totalInterets.toStringAsFixed(2)} €",
+                          "${totalInterets.toStringAsFixed(2)} $currency",
                         ),
                         _resultRow(
                           "Total de l’assurance",
-                          "${totalAssurance.toStringAsFixed(2)} €",
+                          "${totalAssurance.toStringAsFixed(2)} $currency",
                         ),
                       ],
                     ),
@@ -157,27 +239,30 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
                   const SizedBox(height: 30),
 
                   Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFF5B400),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 16,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const LoanRequestPage(),
+                    child: SizedBox(
+                      width: isMobile ? double.infinity : null,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFF5B400),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 16,
                           ),
-                        );
-                      },
-                      child: const Text(
-                        "Continuer la demande",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const LoanRequestPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Continuer la demande",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -185,7 +270,9 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
                 ],
               ),
             ),
+          ),
         ),
+      ),
 
           const SizedBox(height: 80),
           const FooterSection(),
@@ -203,17 +290,47 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
   }
 
   Widget _resultRow(String label, String value, {bool isBold = false}) {
+    final isMobile = MediaQuery.of(context).size.width < 700;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: isMobile
+          ? Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.white70,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            value,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight:
+              isBold ? FontWeight.bold : FontWeight.w500,
+            ),
+          ),
+        ],
+      )
+          : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.white70),
+          ),
           Text(
             value,
             style: TextStyle(
               color: Colors.white,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+              fontWeight:
+              isBold ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],

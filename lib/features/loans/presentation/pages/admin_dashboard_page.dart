@@ -132,7 +132,6 @@ class QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String firebaseUid = FirebaseAuth.instance.currentUser!.uid;
     return _Card(
       title: "Actions rapides",
       child: Wrap(

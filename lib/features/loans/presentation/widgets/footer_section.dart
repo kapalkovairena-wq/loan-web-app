@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../pages/loan_simulation_page.dart';
+import '../pages/home_page.dart';
+import '../pages/contact_page.dart';
+import '../pages/loan_solution_section.dart';
+import '../pages/loan_offers_page.dart';
+import '../pages/about_page.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
@@ -164,20 +169,53 @@ class FooterSection extends StatelessWidget {
       children: [
         Expanded(flex: 2, child: _brandBlock(context)),
         const SizedBox(width: 30),
-        Expanded(child: _linksBlock("Services", [
-          "À propos de nous",
-          "Personnel",
-          "Crédit",
-          "Mobilité bancaire",
-          "Contact",
-        ])),
+        Expanded(child:
+        _linksBlock(
+          context,
+          "Services",
+          [
+            _FooterLink("À propos de nous", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const AboutPage()),
+              );
+            }),
+            _FooterLink("Crédit", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+              );
+            }),
+            _FooterLink("Contact", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ContactPage()),
+              );
+            }),
+          ],
+        ),
+        ),
         const SizedBox(width: 30),
-        Expanded(child: _linksBlock("Information", [
-          "Protection des données",
-          "Sécurité",
-          "Conditions d'utilisation",
-          "CGV",
-        ])),
+        Expanded(child:
+        _linksBlock(
+          context,
+          "Information",
+          [
+            _FooterLink("Protection des données", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const AboutPage()),
+              );
+            }),
+            _FooterLink("Sécurité", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+              );
+            }),
+            _FooterLink("CGV", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ContactPage()),
+              );
+            }),
+          ],
+        ),
+        ),
         const SizedBox(width: 30),
         Expanded(child: _contactBlock()),
       ],
@@ -193,18 +231,60 @@ class FooterSection extends StatelessWidget {
       children: [
         _brandBlock(context),
         const SizedBox(height: 40),
-        _linksBlock("Services", [
-          "À propos de nous",
-          "Personnel",
-          "Crédit",
-          "Contact",
-        ]),
+        _linksBlock(
+          context,
+          "Services",
+          [
+            _FooterLink("Page d'accueil", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const HomePage()),
+              );
+            }),
+            _FooterLink("Découvrir nos offres", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+              );
+            }),
+            _FooterLink("Investissement", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanSolutionSection()),
+              );
+            }),
+            _FooterLink("Contact", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ContactPage()),
+              );
+            }),
+            _FooterLink("À propos de nous", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanExpertiseSection()),
+              );
+            }),
+          ],
+        ),
         const SizedBox(height: 30),
-        _linksBlock("Information", [
-          "Protection des données",
-          "Sécurité",
-          "CGV",
-        ]),
+
+        _linksBlock(
+          context,
+          "Information",
+          [
+            _FooterLink("Protection des données", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const AboutPage()),
+              );
+            }),
+            _FooterLink("Sécurité", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+              );
+            }),
+            _FooterLink("CGV", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const ContactPage()),
+              );
+            }),
+          ],
+        ),
         const SizedBox(height: 30),
         _contactBlock(),
       ],
@@ -250,7 +330,11 @@ class FooterSection extends StatelessWidget {
     );
   }
 
-  Widget _linksBlock(String title, List<String> links) {
+  Widget _linksBlock(
+      BuildContext context,
+      String title,
+      List<_FooterLink> links,
+      ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -264,9 +348,18 @@ class FooterSection extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         ...links.map(
-              (e) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Text(e, style: const TextStyle(color: Colors.white70)),
+              (link) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: InkWell(
+              onTap: link.onTap,
+              hoverColor: Colors.white10,
+              child: Text(
+                link.label,
+                style: const TextStyle(
+                  color: Colors.white70,
+                ),
+              ),
+            ),
           ),
         ),
       ],
@@ -276,7 +369,7 @@ class FooterSection extends StatelessWidget {
   Widget _contactBlock() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           "Contact",
           style: TextStyle(
@@ -288,34 +381,60 @@ class FooterSection extends StatelessWidget {
         SizedBox(height: 12),
         _ContactRow(Icons.location_on,
             "Audenstraße 2 – 4, 61348 Bad Homburg"),
-        _ContactRow(Icons.email, "kontakt@kreditsch.de"),
-        _ContactRow(Icons.phone, "+41 798079225"),
+        _ContactRow(
+          Icons.email,
+          "kontakt@kreditsch.de",
+          onTap: () {
+            _launchURL("mailto:kontakt@kreditsch.de");
+          },
+        ),
+        _ContactRow(
+          Icons.phone,
+          "+41 798079225",
+          onTap: () {
+            _launchURL("tel:+41798079225");
+          },
+        ),
         _ContactRow(Icons.access_time, "Lun - Sam : 9h00 - 17h00"),
       ],
     );
   }
 }
 
+class _FooterLink {
+  final String label;
+  final VoidCallback onTap;
+
+  _FooterLink(this.label, this.onTap);
+}
+
 class _ContactRow extends StatelessWidget {
   final IconData icon;
   final String text;
+  final VoidCallback? onTap;
 
-  const _ContactRow(this.icon, this.text);
+  const _ContactRow(this.icon, this.text, {this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white70, size: 16),
-          const SizedBox(width: 8),
-          Expanded(
-            child:
-            Text(text, style: const TextStyle(color: Colors.white70)),
-          ),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.white70, size: 16),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(color: Colors.white70),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+

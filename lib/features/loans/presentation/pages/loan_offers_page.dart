@@ -25,7 +25,7 @@ class LoanOffersPage extends StatelessWidget {
             _HeroSection(),
             SizedBox(height: 80),
             _OffersSection(),
-            SizedBox(height: 80),
+            SizedBox(height: 40),
             WhyChooseUsLoanSection(),
             WhyChooseUsSection(),
             _CallToActionSection(),
@@ -101,65 +101,93 @@ class _HeroSection extends StatelessWidget {
 class _OffersSection extends StatelessWidget {
   const _OffersSection();
 
+  int _getCrossAxisCount(double width) {
+    if (width < 700) {
+      return 1; // mobile
+    }
+    return 2; // tablette + desktop
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 80),
-        child: Column(
-          children: [
-          const Text(
-          "Nos offres",
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        const Text(
-          "Découvrez les solutions de crédit que nous mettons à votre disposition.",
-          style: TextStyle(color: Colors.black54),
-        ),
-        const SizedBox(height: 60),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final isMobile = width < 700;
 
-        GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            crossAxisSpacing: 32,
-            mainAxisSpacing: 32,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-            OfferCard(
-              title: "Prêt personnel",
-              description:
-              "Financez vos projets personnels avec des conditions flexibles et un traitement rapide.",
-              imageUrl:
-              "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/2.png",
-            ),
-            OfferCard(
-              title: "Prêt entrepreneurial",
-              description:
-              "Un accompagnement financier pour développer et faire grandir votre entreprise.",
-              imageUrl:
-              "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/4.png",
-            ),
-            OfferCard(
-              title: "Prêt investissement",
-              description:
-              "Investissez dans l’immobilier ou d’autres opportunités rentables.",
-              imageUrl:
-              "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo%20(1600%20x%201600%20px)%20(1).png",
-            ),
-              OfferCard(
-                title: "Prêt d’urgence",
-                description:
-                "Une solution rapide pour faire face aux imprévus financiers.",
-                imageUrl:
-                "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/3.png",
+        final crossAxisCount = _getCrossAxisCount(width);
+
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 16 : 80,
+          ),
+          child: Column(
+            children: [
+              const Text(
+                "Nos offres",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                "Découvrez les solutions de crédit que nous mettons à votre disposition.",
+                style: TextStyle(color: Colors.black54),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 60),
+
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 4,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  crossAxisSpacing: 32,
+                  mainAxisSpacing: 32,
+                  childAspectRatio: isMobile ? 1.20 : 0.95,
+                ),
+                itemBuilder: (context, index) {
+                  final offers = [
+                    const OfferCard(
+                      title: "Prêt personnel",
+                      description:
+                      "Financez vos projets personnels avec des conditions flexibles et un traitement rapide.",
+                      imageUrl:
+                      "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/2.png",
+                    ),
+                    const OfferCard(
+                      title: "Prêt entrepreneurial",
+                      description:
+                      "Un accompagnement financier pour développer et faire grandir votre entreprise.",
+                      imageUrl:
+                      "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/4.png",
+                    ),
+                    const OfferCard(
+                      title: "Prêt investissement",
+                      description:
+                      "Investissez dans l’immobilier ou d’autres opportunités rentables.",
+                      imageUrl:
+                      "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo%20(1600%20x%201600%20px)%20(1).png",
+                    ),
+                    const OfferCard(
+                      title: "Prêt d’urgence",
+                      description:
+                      "Une solution rapide pour faire face aux imprévus financiers.",
+                      imageUrl:
+                      "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/3.png",
+                    ),
+                  ];
+
+                  return offers[index];
+                },
               ),
             ],
-        ),
-          ],
-        ),
+          ),
+        );
+      },
     );
   }
 }
@@ -193,9 +221,8 @@ class OfferCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 500,
-              width: double.infinity,
+            AspectRatio(
+              aspectRatio: 16 / 9, // 👈 contrôle la hauteur proprement
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
@@ -228,85 +255,6 @@ class OfferCard extends StatelessWidget {
   }
 }
 
-/* ================= WHY CHOOSE US ================= */
-
-class _WhyChooseUsSection extends StatelessWidget {
-  const _WhyChooseUsSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 80),
-      child: Column(
-        children: const [
-          Text(
-            "Pourquoi nous choisir ?",
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 40),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _AdvantageItem(
-                title: "Réponse rapide",
-                description: "Décision de principe en moins de 24h.",
-              ),
-              _AdvantageItem(
-                title: "Conditions flexibles",
-                description: "Des offres adaptées à votre situation.",
-              ),
-              _AdvantageItem(
-                title: "Confidentialité",
-                description: "Vos données sont protégées et sécurisées.",
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _AdvantageItem extends StatelessWidget {
-  final String title;
-  final String description;
-
-  const _AdvantageItem({
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 280,
-      child: Column(
-          children: [
-          const Icon(Icons.verified, size: 48, color: Colors.amber),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.black54),
-            ),
-          ],
-      ),
-    );
-  }
-}
-
 /* ================= CTA SECTION ================= */
 
 class _CallToActionSection extends StatelessWidget {
@@ -314,41 +262,51 @@ class _CallToActionSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 700;
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80),
+      padding: EdgeInsets.symmetric(
+        vertical: 80,
+        horizontal: isMobile ? 16 : 0,
+      ),
       width: double.infinity,
       color: const Color(0xFF04122A),
       child: Column(
         children: [
-          const Text(
+          Text(
             "Prêt à faire votre demande ?",
             style: TextStyle(
               color: Colors.white,
-              fontSize: 32,
+              fontSize: isMobile ? 24 : 32,
               fontWeight: FontWeight.bold,
             ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
           const Text(
             "Contactez-nous dès aujourd’hui et bénéficiez d’un accompagnement personnalisé.",
             style: TextStyle(color: Colors.white70),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
-              backgroundColor: Colors.amber,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const LoanRequestPage()),
-              );
-            },
-            child: const Text(
-              "Faire une demande",
-              style: TextStyle(fontSize: 16),
+          SizedBox(
+            width: isMobile ? double.infinity : null,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
+                backgroundColor: Colors.amber,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+                );
+              },
+              child: const Text(
+                "Faire une demande",
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ),
         ],

@@ -22,13 +22,9 @@ class AppHeader extends StatelessWidget {
           /// Logo centré
           Expanded(
             child: Center(
-              child: Text(
-                'KreditSch',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple.shade700,
-                ),
+              child: Image.network(
+                "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo.png",
+                height: 150,
               ),
             ),
           ),

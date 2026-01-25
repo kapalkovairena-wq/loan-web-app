@@ -20,6 +20,9 @@ class LoanRequestPage extends StatefulWidget {
 }
 
 class _LoanRequestPageState extends State<LoanRequestPage> {
+  Map<String, dynamic> profileData = {};
+  bool isLoadingProfile = true;
+
   // ===== Controllers =====
   final nameController = TextEditingController();
   final emailController = TextEditingController();
@@ -93,6 +96,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
   @override
   void initState() {
     super.initState();
+    _loadProfile();
 
     if (FirebaseAuth.instance.currentUser == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -104,8 +108,53 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
     }
   }
 
+  Future<void> _loadProfile() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+
+    // Utilisateur non connecté
+    if (firebaseUser == null) {
+      setState(() {
+        profileData = {'currency': '€'};
+        isLoadingProfile = false;
+      });
+      return;
+    }
+
+    try {
+      final response = await Supabase.instance.client
+          .from('profiles')
+          .select('currency, language')
+          .eq('firebase_uid', firebaseUser.uid)
+          .single();
+
+      setState(() {
+        profileData = response;
+        isLoadingProfile = false;
+      });
+    } catch (e) {
+      // fallback sécurité
+      setState(() {
+        profileData = {'currency': '€'};
+        isLoadingProfile = false;
+      });
+    }
+  }
+
+  String get currency {
+    final c = profileData['currency'];
+    if (c == null || c.toString().isEmpty) return '€';
+    return c;
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    if (isLoadingProfile) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       drawer: const AppDrawer(),
       backgroundColor: const Color(0xFFF8F9FB),
@@ -372,13 +421,13 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
           title: const Text("Demande envoyée avec succès"),
           content: Text(
             "Merci ${nameController.text},\n\n"
-                "Montant : ${amount.toStringAsFixed(0)} FCFA\n"
+                "Montant : ${amount.toStringAsFixed(0)} $currency\n"
                 "Durée : $months mois\n"
                 "Taux annuel : 3%\n\n"
-                "Mensualité : ${monthly.toStringAsFixed(0)} FCFA\n"
-                "Total mensualités : ${(monthly * months).toStringAsFixed(0)} FCFA\n"
-                "Total intérêts : ${interest.toStringAsFixed(0)} FCFA\n"
-                "Total à rembourser : ${total.toStringAsFixed(0)} FCFA",
+                "Mensualité : ${monthly.toStringAsFixed(0)} $currency\n"
+                "Total mensualités : ${(monthly * months).toStringAsFixed(0)} $currency\n"
+                "Total intérêts : ${interest.toStringAsFixed(0)} $currency\n"
+                "Total à rembourser : ${total.toStringAsFixed(0)} $currency",
           ),
           actions: [
             TextButton(
