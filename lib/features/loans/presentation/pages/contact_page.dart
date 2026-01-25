@@ -6,70 +6,169 @@ import '../widgets/whatsApp_button.dart';
 import '../widgets/hero_banner.dart';
 import '../widgets/footer_section.dart';
 
-
-class ContactPage extends StatelessWidget {
+class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
 
   @override
+  State<ContactPage> createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin {
+  late AnimationController _formController;
+  late AnimationController _infoController;
+  late Animation<Offset> _formSlide;
+  late Animation<Offset> _infoSlide;
+  late Animation<double> _formOpacity;
+  late Animation<double> _infoOpacity;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Animation formulaire
+    _formController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _formSlide = Tween<Offset>(
+      begin: const Offset(0, 0.2),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _formController, curve: Curves.easeOutCubic),
+    );
+    _formOpacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _formController, curve: Curves.easeIn),
+    );
+
+    // Animation infos
+    _infoController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _infoSlide = Tween<Offset>(
+      begin: const Offset(0, 0.2),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _infoController, curve: Curves.easeOutCubic),
+    );
+    _infoOpacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _infoController, curve: Curves.easeIn),
+    );
+
+    // Lancement des animations avec un léger delay
+    _formController.forward().then((_) {
+      Future.delayed(const Duration(milliseconds: 200), () {
+        _infoController.forward();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _formController.dispose();
+    _infoController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isMobile = MediaQuery.of(context).size.width < 900;
+    final width = MediaQuery.of(context).size.width;
+    final isMobile = width < 900;
 
     return Scaffold(
       drawer: const AppDrawer(),
       body: Stack(
-          children: [
-      SingleChildScrollView(
-      child : Container(
-      color: const Color(0xFFF8F8F8),
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      child: Center(
-        child: Column(
-            children: [
-            const AppHeader(),
-        const HeroBanner(),
-        const SizedBox(height: 80),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: isMobile
-              ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _contactForm(),
-              const SizedBox(height: 60),
-              _contactInfo(),
-            ],
-          )
-              : Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(flex: 6, child: _contactForm()),
-              const SizedBox(width: 60),
-              Expanded(flex: 5, child: _contactInfo()),
-            ],
-          ),
-        ),
-              const SizedBox(height: 80),
-              const FooterSection(),
-            ],
-        ),
-      ),
-    ),
-      ),
-            const WhatsAppButton(
-              phoneNumber: "+4915774851991",
-              message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
-            ),
-          ],
-      )
-    );
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              color: const Color(0xFFF8F8F8),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const AppHeader(),
+                      const HeroBanner(),
+                      const SizedBox(height: 80),
 
+                      // Responsive layout form + info avec animation
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          if (isMobile) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SlideTransition(
+                                  position: _formSlide,
+                                  child: FadeTransition(
+                                    opacity: _formOpacity,
+                                    child: _contactForm(isMobile: isMobile),
+                                  ),
+                                ),
+                                const SizedBox(height: 40),
+                                SlideTransition(
+                                  position: _infoSlide,
+                                  child: FadeTransition(
+                                    opacity: _infoOpacity,
+                                    child: _contactInfo(),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  flex: 6,
+                                  child: SlideTransition(
+                                    position: _formSlide,
+                                    child: FadeTransition(
+                                      opacity: _formOpacity,
+                                      child: _contactForm(isMobile: isMobile),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 60),
+                                Expanded(
+                                  flex: 5,
+                                  child: SlideTransition(
+                                    position: _infoSlide,
+                                    child: FadeTransition(
+                                      opacity: _infoOpacity,
+                                      child: _contactInfo(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
+                      ),
+
+                      const SizedBox(height: 80),
+                      const FooterSection(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const WhatsAppButton(
+            phoneNumber: "+4915774851991",
+            message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
+          ),
+        ],
+      ),
+    );
   }
 
   // ---------------- FORMULAIRE ----------------
 
-  Widget _contactForm() {
+  Widget _contactForm({required bool isMobile}) {
     return Container(
-      padding: const EdgeInsets.all(50),
+      padding: EdgeInsets.all(isMobile ? 24 : 50),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),

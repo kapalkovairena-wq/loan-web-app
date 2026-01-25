@@ -70,7 +70,7 @@ class AppDrawer extends StatelessWidget {
               }),
 
               _drawerItem(context, 'À propos de nous', () {
-                _go(context, const LoanExpertiseSection());
+                _go(context, const AboutPage());
               }),
 
               if (user != null) ...[

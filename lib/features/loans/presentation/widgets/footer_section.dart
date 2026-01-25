@@ -174,19 +174,29 @@ class FooterSection extends StatelessWidget {
           context,
           "Services",
           [
-            _FooterLink("À propos de nous", () {
+            _FooterLink("Page d'accueil", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const AboutPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
-            _FooterLink("Crédit", () {
+            _FooterLink("Découvrir nos offres", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
+              );
+            }),
+            _FooterLink("Investissement", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const LoanSolutionSection()),
               );
             }),
             _FooterLink("Contact", () {
               Navigator.push(context,
                 MaterialPageRoute(builder: (_) => const ContactPage()),
+              );
+            }),
+            _FooterLink("À propos de nous", () {
+              Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const AboutPage()),
               );
             }),
           ],
@@ -200,17 +210,17 @@ class FooterSection extends StatelessWidget {
           [
             _FooterLink("Protection des données", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const AboutPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
             _FooterLink("Sécurité", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
             _FooterLink("CGV", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ContactPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
           ],
@@ -257,7 +267,7 @@ class FooterSection extends StatelessWidget {
             }),
             _FooterLink("À propos de nous", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanExpertiseSection()),
+                MaterialPageRoute(builder: (_) => const AboutPage()),
               );
             }),
           ],
@@ -270,17 +280,17 @@ class FooterSection extends StatelessWidget {
           [
             _FooterLink("Protection des données", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const AboutPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
             _FooterLink("Sécurité", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
             _FooterLink("CGV", () {
               Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ContactPage()),
+                MaterialPageRoute(builder: (_) => const HomePage()),
               );
             }),
           ],

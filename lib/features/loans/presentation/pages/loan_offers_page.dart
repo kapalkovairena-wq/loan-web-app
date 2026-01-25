@@ -270,7 +270,7 @@ class _CallToActionSection extends StatelessWidget {
         horizontal: isMobile ? 16 : 0,
       ),
       width: double.infinity,
-      color: const Color(0xFF04122A),
+      color: const Color(0xFF061A3A),
       child: Column(
         children: [
           Text(

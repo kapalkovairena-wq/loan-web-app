@@ -22,15 +22,11 @@ class LoanSolutionSection extends StatelessWidget {
         SingleChildScrollView(
         child: Container(
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
       child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppHeader(),
-              const SizedBox(height: 60),
               HeroBanner(),
               const SizedBox(height: 60),
               _heroSection(isMobile),
@@ -44,7 +40,6 @@ class LoanSolutionSection extends StatelessWidget {
               FooterSection(),
             ],
           ),
-        ),
       ),
     ),
         ),
@@ -82,8 +77,8 @@ class LoanSolutionSection extends StatelessWidget {
   Widget _heroImage() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(6),
-      child: Image.asset(
-        'assets/images/loan_team.jpg',
+      child: Image.network(
+        'https://images.unsplash.com/photo-1521737604893-d14cc237f11d',
         fit: BoxFit.cover,
       ),
     );
@@ -136,34 +131,50 @@ class LoanSolutionSection extends StatelessWidget {
   // ---------------- CARTES BLANCHES ----------------
 
   Widget _whiteCards(bool isMobile) {
-    return GridView.count(
-        shrinkWrap: true,
-        crossAxisCount: isMobile ? 1 : 3,
-        crossAxisSpacing: 30,
-        mainAxisSpacing: 30,
-        physics: const NeverScrollableScrollPhysics(),
-        children: const [
-        _Card(
-          icon: "☂️",
-          title: "Prêt à faible risque",
-          text:
-          "Des mensualités fixes et transparentes "
-              "pour une meilleure maîtrise de votre budget.",
-        ),
-        _Card(
-            icon: "📌",
-            title: "Prêts ciblés",
-            text:
-            "Financement dédié : logement, auto, études, projets personnels ou trésorerie.",
-        ),
-          _Card(
-            icon: "💰",
-            title: "Montant flexible",
-            text:
-            "Empruntez entre 1 000 € et 250 000 € "
-                "selon votre profil et votre besoin.",
-          ),
-        ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
+        final itemWidth = isMobile
+            ? maxWidth
+            : (maxWidth - 60) / 3; // 3 cartes desktop
+
+        return Wrap(
+          spacing: 30,
+          runSpacing: 30,
+          children: [
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "☂️",
+                title: "Prêt à faible risque",
+                text:
+                "Des mensualités fixes et transparentes "
+                    "pour une meilleure maîtrise de votre budget.",
+              ),
+            ),
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "📌",
+                title: "Prêts ciblés",
+                text:
+                "Financement dédié : logement, auto, études, "
+                    "projets personnels ou trésorerie.",
+              ),
+            ),
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "💰",
+                title: "Montant flexible",
+                text:
+                "Empruntez entre 1 000 € et 500 000 € "
+                    "selon votre profil et votre besoin.",
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -189,47 +200,127 @@ class LoanSolutionSection extends StatelessWidget {
   // ---------------- CARTES GRISES ----------------
 
   Widget _greyCards(bool isMobile) {
-    return GridView.count(
-      shrinkWrap: true,
-      crossAxisCount: isMobile ? 1 : 2,
-      crossAxisSpacing: 30,
-      mainAxisSpacing: 30,
-      physics: const NeverScrollableScrollPhysics(),
-      children: const [
-        _Card(
-          icon: "🎯",
-          title: "Prêts personnalisés",
-          text:
-          "Des offres adaptées à votre situation financière "
-              "et à votre capacité de remboursement.",
-          grey: true,
-        ),
-        _Card(
-          icon: "🌱",
-          title: "Prêts responsables",
-          text:
-          "Financements pensés pour des projets durables "
-              "et à impact positif.",
-          grey: true,
-        ),
-        _Card(
-          icon: "🏥",
-          title: "Prêts thématiques",
-          text:
-          "Santé, études, mobilité, logement ou entrepreneuriat : "
-              "des prêts dédiés à chaque besoin.",
-          grey: true,
-        ),
-        _Card(
-          icon: "🤝",
-          title: "Partenaires financiers",
-          text:
-          "Accès à des solutions issues de partenaires "
-              "financiers nationaux et internationaux.",
-          grey: true,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
+        final itemWidth = isMobile
+            ? maxWidth
+            : (maxWidth - 30) / 2; // 2 cartes desktop
+
+        return Wrap(
+          spacing: 30,
+          runSpacing: 30,
+          children: [
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "🎯",
+                title: "Prêts personnalisés",
+                text:
+                "Des offres adaptées à votre situation financière "
+                    "et à votre capacité de remboursement.",
+                grey: true,
+              ),
+            ),
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "🌱",
+                title: "Prêts responsables",
+                text:
+                "Financements pensés pour des projets durables "
+                    "et à impact positif.",
+                grey: true,
+              ),
+            ),
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "🏥",
+                title: "Prêts thématiques",
+                text:
+                "Santé, études, mobilité, logement ou entrepreneuriat.",
+                grey: true,
+              ),
+            ),
+            _AnimatedCard(
+              width: itemWidth,
+              child: const _Card(
+                icon: "🤝",
+                title: "Partenaires financiers",
+                text:
+                "Accès à des solutions issues de partenaires "
+                    "financiers nationaux et internationaux.",
+                grey: true,
+              ),
+            ),
+          ],
+        );
+      },
     );
+  }
+}
+
+class _AnimatedCard extends StatefulWidget {
+  final Widget child;
+  final double width;
+
+  const _AnimatedCard({
+    required this.child,
+    required this.width,
+  });
+
+  @override
+  State<_AnimatedCard> createState() => _AnimatedCardState();
+}
+
+class _AnimatedCardState extends State<_AnimatedCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<Offset> _offset;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
+    _opacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+
+    _offset = Tween<Offset>(
+      begin: const Offset(0, 0.08),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: widget.width,
+      child: FadeTransition(
+        opacity: _opacity,
+        child: SlideTransition(
+          position: _offset,
+          child: widget.child,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 }
 
