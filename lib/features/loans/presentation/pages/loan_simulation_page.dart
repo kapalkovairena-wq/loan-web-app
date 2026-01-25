@@ -7,7 +7,6 @@ import '../widgets/app_drawer.dart';
 import '../widgets/whatsApp_button.dart';
 import '../pages/loan_request_page.dart';
 import '../widgets/app_header.dart';
-import '../widgets/hero_banner.dart';
 import '../widgets/footer_section.dart';
 
 class LoanSimulationPage extends StatefulWidget {
@@ -108,7 +107,6 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
         child: Column(
         children: [
             const AppHeader(),
-        const HeroBanner(),
         const SizedBox(height: 80),
 
       Center(

@@ -308,6 +308,10 @@ class FooterSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Image.network(
+          "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/favicon.png",
+          height: 100,
+        ),
         const Text(
           "KreditSch",
           style: TextStyle(

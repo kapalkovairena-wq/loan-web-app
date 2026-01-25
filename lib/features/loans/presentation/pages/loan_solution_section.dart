@@ -27,8 +27,6 @@ class LoanSolutionSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppHeader(),
-              HeroBanner(),
-              const SizedBox(height: 60),
               _heroSection(isMobile),
               const SizedBox(height: 80),
               _whiteCards(isMobile),

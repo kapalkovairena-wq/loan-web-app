@@ -17,7 +17,7 @@ class AdminDashboardPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       appBar: AppBar(
-        title: const Text("Tableau de bord"),
+        title: const Text("Tableau de bord admin"),
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -68,7 +68,7 @@ class _Header extends StatelessWidget {
             ),
             SizedBox(height: 4),
             Text(
-              "Bienvenue dans votre espace client sécurisé",
+              "Bienvenue dans votre espace admin sécurisé",
               style: TextStyle(color: Colors.grey),
             ),
           ],

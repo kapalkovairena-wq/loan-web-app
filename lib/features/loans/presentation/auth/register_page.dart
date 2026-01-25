@@ -177,14 +177,6 @@ class _RegisterState extends State<Register> {
                           "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo.png",
                           height: 60,
                         ),
-                        const SizedBox(height: 12),
-                        const Text(
-                          "KreditSch",
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                       ],
                     ),
                   ),
