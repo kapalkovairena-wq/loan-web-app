@@ -74,7 +74,7 @@ class _HeroSection extends StatelessWidget {
               "Nos offres de financement",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 42,
+                fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
             ),

@@ -124,7 +124,8 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Column(
+          Expanded(  // ← force le texte à prendre tout l’espace restant
+            child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -140,8 +141,16 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
                       ),
                     ],
                   ),
-                  const Spacer(),
-                  _statusBadge(profile!['loan_status']),
+          ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child:
+                    _statusBadge(profile!['loan_status']),
+                  ),
                 ],
               ),
 
