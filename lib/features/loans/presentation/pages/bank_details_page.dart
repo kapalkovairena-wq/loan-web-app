@@ -90,7 +90,6 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
       await supabase.from('loan_requests').update({
         'my_details_bank': true,
       }).eq('firebase_uid', firebaseUid);
-    }
 
 // 🔥 EDGE FUNCTION — RAPPEL PAIEMENT
     await supabase.functions.invoke(
@@ -105,6 +104,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
         "x-edge-secret": "Mahugnon23",
       },
     );
+    }
+
 
     setState(() => loading = false);
 
