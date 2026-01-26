@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 class TransactionHistoryPage extends StatefulWidget {
@@ -11,29 +12,51 @@ class TransactionHistoryPage extends StatefulWidget {
 }
 
 class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
-  final supabase = Supabase.instance.client;
   final String firebaseUid = FirebaseAuth.instance.currentUser!.uid;
-
   bool loading = true;
   List<Map<String, dynamic>> transactions = [];
 
   @override
   void initState() {
     super.initState();
-    _load();
+    _loadTransactions();
   }
 
-  Future<void> _load() async {
-    final res = await supabase
-        .from('payment_proofs')
-        .select('id, file_url, status, created_at')
-        .eq('firebase_uid', firebaseUid) // filtre par Firebase UID
-        .order('created_at', ascending: false);
+  Future<void> _loadTransactions() async {
+    setState(() => loading = true);
 
-    setState(() {
-      transactions = List<Map<String, dynamic>>.from(res);
-      loading = false;
-    });
+    try {
+      // 🔹 Remplace par l'URL de ton Edge Function
+      final uri = Uri.parse(
+          "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/get_payment_proofs");
+
+      final response = await http.post(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "x-edge-secret": "Mahugnon23",
+        },
+        body: jsonEncode({"firebase_uid": firebaseUid}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          transactions =
+          List<Map<String, dynamic>>.from(data["transactions"] ?? []);
+        });
+      } else {
+        debugPrint("Erreur récupération: ${response.body}");
+        setState(() => transactions = []);
+      }
+    } catch (e) {
+      debugPrint("Erreur HTTP: $e");
+      setState(() => transactions = []);
+    } finally {
+      setState(() => loading = false);
+    }
   }
 
   Color _statusColor(String status) {
