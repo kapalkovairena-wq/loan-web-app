@@ -7,6 +7,7 @@ import '../pages/admin_financial_account_page.dart';
 import '../pages/chat_admin_page.dart';
 import '../pages/admin_loan_page.dart';
 import '../pages/loan_admin_page.dart';
+import '../pages/admin_payment_proofs_page.dart';
 
 
 class AdminDashboardPage extends StatelessWidget {
@@ -59,21 +60,22 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              "Bonjour 👋",
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 4),
-            Text(
-              "Bienvenue dans votre espace admin sécurisé",
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
+        Expanded(  // ← force le texte à prendre tout l’espace restant
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                "Bonjour 👋",
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Bienvenue dans votre espace Admin sécurisé",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
         ),
-        const Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
           decoration: BoxDecoration(
@@ -182,6 +184,18 @@ class QuickActions extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => LoanAdminPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Validation des paiements",
+            icon: Icons.folder_open,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AdminPaymentProofsPage(),
                 ),
               );
             },

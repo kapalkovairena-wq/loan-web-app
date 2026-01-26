@@ -92,6 +92,14 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
       }).eq('firebase_uid', firebaseUid);
     }
 
+    // 🔥 EDGE FUNCTION — RAPPEL PAIEMENT
+    await supabase.functions.invoke(
+      'remind_next_payment',
+      body: {
+        'firebase_uid': firebaseUid,
+      },
+    );
+
     setState(() => loading = false);
 
     if (mounted) {
@@ -109,7 +117,7 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Coordonnées bancaires"),
+        title: const Text("Vos coordonnées bancaires"),
       ),
       body: initialLoading
           ? const Center(child: CircularProgressIndicator())

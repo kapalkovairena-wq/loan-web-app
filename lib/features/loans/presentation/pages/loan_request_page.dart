@@ -368,6 +368,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
         required double totalAmount,
         required String identityUrl,
         required String addressUrl,
+        required String currency,
       }) async {
         final supabase = Supabase.instance.client;
 
@@ -390,6 +391,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
             "totalAmount": totalAmount,
             "identityUrl": identityUrl,
             "addressUrl": addressUrl,
+            "currency": currency,
           },
         );
       }
@@ -413,6 +415,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
         totalAmount: total,
         identityUrl: identityUrl,
         addressUrl: addressUrl,
+        currency: currency,
       );
 
       showDialog(

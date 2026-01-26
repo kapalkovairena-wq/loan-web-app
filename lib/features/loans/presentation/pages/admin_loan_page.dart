@@ -784,6 +784,69 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
     );
   }
 
+  void _showSetPaymentDialog(
+      BuildContext context,
+      String firebaseUid,
+      dynamic currentPayment,
+      ) {
+    final controller = TextEditingController(
+      text: currentPayment != null ? currentPayment.toString() : "",
+    );
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Définir le montant de paiement"),
+        content: TextField(
+          controller: controller,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          decoration: const InputDecoration(
+            labelText: "Montant",
+            suffixText: "EUR",
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Annuler"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final value = double.tryParse(controller.text.trim());
+
+              if (value == null || value <= 0) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("❌ Montant invalide"),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                return;
+              }
+
+              // ===== UPDATE PROFILE =====
+              await supabase
+                  .from('profiles')
+                  .update({'payment': value})
+                  .eq('firebase_uid', firebaseUid);
+
+              Navigator.pop(context);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("✅ Montant défini : $value EUR"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
+            child: const Text("Enregistrer"),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showDetailsDialog(Map<String, dynamic> loanData) async {
     final profile = await supabase
         .from('profiles')
@@ -831,6 +894,26 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
               Center(
                 child: Column(
                   children: [
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.euro),
+                      label: const Text("Définir le montant de paiement"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        _showSetPaymentDialog(
+                          context,
+                          loanData['firebase_uid'],
+                          profile?['payment'],
+                        );
+                      },
+                    ),
+
                     // ===== Payment Bank Toggle =====
                     FutureBuilder<Map<String, dynamic>?>(
                       future: supabase
