@@ -12,6 +12,7 @@ class AdminPaymentProofsPage extends StatefulWidget {
 
 class _AdminPaymentProofsPageState extends State<AdminPaymentProofsPage> {
   final supabase = Supabase.instance.client;
+
   bool loading = true;
   List<Map<String, dynamic>> proofs = [];
 
@@ -21,39 +22,133 @@ class _AdminPaymentProofsPageState extends State<AdminPaymentProofsPage> {
     _load();
   }
 
+  /* ================= LOAD ================= */
   Future<void> _load() async {
-    final res = await supabase.rpc('get_pending_payment_proofs');
-    setState(() {
-      proofs = List<Map<String, dynamic>>.from(res);
-      loading = false;
-    });
+    debugPrint("📥 [ADMIN] Loading pending payment proofs...");
+
+    try {
+      final res = await supabase.rpc('get_pending_payment_proofs');
+
+      debugPrint("📦 [ADMIN] RPC result: ${res.length} proofs");
+
+      setState(() {
+        proofs = List<Map<String, dynamic>>.from(res);
+        loading = false;
+      });
+    } catch (e, stack) {
+      debugPrint("❌ [ADMIN] Failed to load proofs");
+      debugPrint("❌ $e");
+      debugPrint("📌 $stack");
+
+      setState(() => loading = false);
+    }
   }
 
+  /* ================= APPROVE ================= */
   Future<void> _approve(Map proof) async {
-    await supabase.from('payment_proofs').update({
-      'status': 'approved',
-      'reviewed_at': DateTime.now().toIso8601String(),
-      'reviewed_by': supabase.auth.currentUser?.email,
-    }).eq('id', proof['id']);
+    debugPrint("✅ [APPROVE] Start");
+    debugPrint("🆔 proof_id=${proof['id']}");
+    debugPrint("👤 firebase_uid=${proof['firebase_uid']}");
 
-    await supabase.from('loan_requests').update({
-      'payment_bank': true,
-      'loan_status': 'paid',
-    }).eq('firebase_uid', proof['firebase_uid']);
+    try {
+      final res = await supabase.functions.invoke(
+        'approve_payment_proof',
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+        },
+        body: {
+          'proof_id': proof['id'],
+          'firebase_uid': proof['firebase_uid'],
+        },
+      );
 
-    _load();
+      debugPrint("📡 [APPROVE] Edge status=${res.status}");
+      debugPrint("📡 [APPROVE] Edge data=${res.data}");
+
+      if (res.status != 200) {
+        throw Exception(res.data);
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("✅ Paiement approuvé"),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+
+      await _load();
+    } catch (e, stack) {
+      debugPrint("🔥 [APPROVE] Error");
+      debugPrint("❌ $e");
+      debugPrint("📌 $stack");
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("❌ Erreur approbation"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
+  /* ================= REJECT ================= */
   Future<void> _reject(Map proof) async {
-    await supabase.from('payment_proofs').update({
-      'status': 'rejected',
-      'reviewed_at': DateTime.now().toIso8601String(),
-      'reviewed_by': supabase.auth.currentUser?.email,
-    }).eq('id', proof['id']);
+    debugPrint("⛔ [REJECT] Start");
+    debugPrint("🆔 proof_id=${proof['id']}");
 
-    _load();
+    try {
+      final res = await supabase.functions.invoke(
+        'reject_payment_proof',
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+        },
+        body: {
+          'proof_id': proof['id'],
+        },
+      );
+
+      debugPrint("📡 [REJECT] Edge status=${res.status}");
+      debugPrint("📡 [REJECT] Edge data=${res.data}");
+
+      if (res.status != 200) {
+        throw Exception(res.data);
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("⛔ Paiement rejeté"),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+
+      await _load();
+    } catch (e, stack) {
+      debugPrint("🔥 [REJECT] Error");
+      debugPrint("❌ $e");
+      debugPrint("📌 $stack");
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("❌ Erreur rejet"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
+  /* ================= UI ================= */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +164,7 @@ class _AdminPaymentProofsPageState extends State<AdminPaymentProofsPage> {
         itemCount: proofs.length,
         itemBuilder: (_, i) {
           final p = proofs[i];
+
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             child: Padding(
