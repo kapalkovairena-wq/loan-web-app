@@ -4,10 +4,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
-import 'dart:typed_data'; // Pour Uint8List
 import 'package:flutter/foundation.dart'; // Pour kIsWeb
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 import '../pages/loan_request_page.dart';
 import '../pages/chat_user_page.dart';
@@ -36,62 +36,95 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
-class _DashboardBody extends StatelessWidget {
+class _DashboardBody extends StatefulWidget {
   const _DashboardBody();
 
   @override
-  Widget build(BuildContext context) {
-    final supabase = Supabase.instance.client;
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+  State<_DashboardBody> createState() => _DashboardBodyState();
+}
 
-    return FutureBuilder<Map<String, dynamic>?>(
-      future: supabase
+class _DashboardBodyState extends State<_DashboardBody> {
+  final supabase = Supabase.instance.client;
+  final uid = FirebaseAuth.instance.currentUser!.uid;
+
+  Map<String, dynamic>? loanData;
+  bool loading = true;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLoan();
+
+    // Rafraîchir toutes les secondes
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) => _fetchLoan());
+  }
+
+  Future<void> _fetchLoan() async {
+    try {
+      final data = await supabase
           .from('loan_requests')
-          .select('payment_bank, my_details_bank, amount')
+          .select('payment_bank, my_details_bank, amount, loan_status')
           .eq('firebase_uid', uid)
-          .maybeSingle(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+          .maybeSingle();
 
-        final loanData = snapshot.data;
-        final showRepayment = loanData?['payment_bank'] ?? false;
-        final showBankDetails = loanData?['my_details_bank'] ?? false;
-        final hasLoanAmount = loanData?['amount'] != null;
+      if (!mounted) return;
+      debugPrint('loanData: $data');
 
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            final isMobile = constraints.maxWidth < 800;
+      setState(() {
+        loanData = data;
+        loading = false;
+      });
+    } catch (e) {
+      debugPrint('Erreur fetchLoan: $e');
+    }
+  }
 
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const _Header(),
-                      const SizedBox(height: 24),
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
-                      isMobile
-                          ? _MobileLayout(
-                        showRepaymentBankCard: showRepayment,
-                        showBankDetailsCard: showBankDetails,
-                        hasLoanAmount: hasLoanAmount,
-                      )
-                          : _WebLayout(
-                        showRepaymentBankCard: showRepayment,
-                        showBankDetailsCard: showBankDetails,
-                        hasLoanAmount: hasLoanAmount,
-                      ),
-                    ],
+  @override
+  Widget build(BuildContext context) {
+    final showRepayment = loanData?['payment_bank'] ?? false;
+    final showBankDetails = loanData?['my_details_bank'] ?? false;
+    final hasLoanAmount = loanData?['amount'] != null;
+
+    if (loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 800;
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const _Header(),
+                  const SizedBox(height: 24),
+                  isMobile
+                      ? _MobileLayout(
+                    showRepaymentBankCard: showRepayment,
+                    showBankDetailsCard: showBankDetails,
+                    hasLoanAmount: hasLoanAmount,
+                  )
+                      : _WebLayout(
+                    showRepaymentBankCard: showRepayment,
+                    showBankDetailsCard: showBankDetails,
+                    hasLoanAmount: hasLoanAmount,
                   ),
-                ),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );
