@@ -374,14 +374,11 @@ class _RepaymentBankCardState extends State<RepaymentBankCard> {
 }
 
 
-
-
 class AccountsUsersPage extends StatefulWidget {
   const AccountsUsersPage({super.key});
 
   @override
-  State<AccountsUsersPage> createState() =>
-      _AccountsUsersPageState();
+  State<AccountsUsersPage> createState() => _AccountsUsersPageState();
 }
 
 class _AccountsUsersPageState extends State<AccountsUsersPage> {
@@ -393,106 +390,159 @@ class _AccountsUsersPageState extends State<AccountsUsersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Admin — Utilisateurs"),
+        title: const Text("Les utilisateurs"),
       ),
-      body: Row(
-        children: [
-          // ================= LISTE UTILISATEURS =================
-          SizedBox(
-            width: 360,
-            child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: supabase
-                  .from('profiles')
-                  .select()
-                  .order('created_at', ascending: false),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isMobile = constraints.maxWidth < 700;
 
-                final users = snapshot.data!;
+          if (isMobile) {
+            // ===== MOBILE : LISTE OU DÉTAILS =====
+            return selectedUser == null
+                ? _buildUserList(isMobile: true)
+                : _buildUserDetails(isMobile: true);
+          }
 
-                if (users.isEmpty) {
-                  return const Center(child: Text("Aucun utilisateur"));
-                }
+          // ===== DESKTOP / WEB =====
+          return Row(
+            children: [
+              SizedBox(
+                width: 360,
+                child: _buildUserList(isMobile: false),
+              ),
+              const VerticalDivider(width: 1),
+              Expanded(
+                child: _buildUserDetails(isMobile: false),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
 
-                return ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    final u = users[index];
+  // ================= LISTE UTILISATEURS =================
+  Widget _buildUserList({required bool isMobile}) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: supabase
+          .from('profiles')
+          .select()
+          .order('created_at', ascending: false),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-                    final bool hasBankInfo =
-                        u['iban'] != null && (u['iban'] as String).isNotEmpty;
+        final users = snapshot.data!;
 
-                    return ListTile(
-                      selected: selectedUser?['id'] == u['id'],
-                      title: Text(
-                        u['email'],
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        u['receiver_full_name'] ?? '_',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Icon(
-                        hasBankInfo ? Icons.verified : Icons.warning_amber,
-                        color: hasBankInfo ? Colors.green : Colors.orange,
-                      ),
-                      onTap: () {
-                        setState(() {
-                          selectedUser = u;
-                        });
-                      },
-                    );
-                  },
-                );
+        if (users.isEmpty) {
+          return const Center(child: Text("Aucun utilisateur"));
+        }
+
+        return ListView.builder(
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            final u = users[index];
+
+            final bool hasBankInfo =
+                u['iban'] != null && (u['iban'] as String).isNotEmpty;
+
+            return ListTile(
+              selected: selectedUser?['id'] == u['id'],
+              title: SelectableText(
+                u['email'],
+                maxLines: 1,
+                toolbarOptions: const ToolbarOptions(copy: true),
+              ),
+              subtitle: SelectableText(
+                u['receiver_full_name'] ?? '_',
+                maxLines: 1,
+                toolbarOptions: const ToolbarOptions(copy: true),
+              ),
+              trailing: Icon(
+                hasBankInfo ? Icons.verified : Icons.warning_amber,
+                color: hasBankInfo ? Colors.green : Colors.orange,
+              ),
+              onTap: () {
+                setState(() {
+                  selectedUser = u;
+                });
               },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // ================= DETAILS UTILISATEUR =================
+  Widget _buildUserDetails({required bool isMobile}) {
+    if (selectedUser == null) {
+      return const Center(
+        child: Text(
+          "Sélectionnez un utilisateur",
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Informations utilisateur",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+
+            _infoRow("Email", selectedUser!['email']),
+            _infoRow("Devise", selectedUser!['currency']),
+            _infoRow("Langue", selectedUser!['language']),
+            const Divider(height: 32),
+
+            _infoRow("Nom du receveur", selectedUser!['receiver_full_name']),
+            _infoRow("IBAN", selectedUser!['iban']),
+            _infoRow("BIC", selectedUser!['bic']),
+            _infoRow("Banque", selectedUser!['bank_name']),
+            _infoRow("Adresse banque", selectedUser!['bank_address']),
+
+            if (isMobile) ...[
+              const SizedBox(height: 30),
+              ElevatedButton.icon(
+                onPressed: () {
+                  setState(() {
+                    selectedUser = null;
+                  });
+                },
+                icon: const Icon(Icons.arrow_back),
+                label: const Text("Retour à la liste"),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ================= ROW COPIABLE =================
+  Widget _infoRow(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 160,
+            child: SelectableText(
+              "$label :",
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-
-          const VerticalDivider(width: 1),
-
-          // ================= DETAILS =================
           Expanded(
-            child: selectedUser == null
-                ? const Center(
-              child: Text(
-                "Sélectionnez un utilisateur",
-                style: TextStyle(fontSize: 16),
-              ),
-            )
-                : Padding(
-              padding: const EdgeInsets.all(24),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Informations utilisateur",
-                      style: TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 20),
-
-                    _InfoRow("Email", selectedUser!['email']),
-                    _InfoRow("Devise", selectedUser!['currency']),
-                    _InfoRow("Langue", selectedUser!['language']),
-                    const Divider(height: 32),
-
-                    _InfoRow("Nom du receveur",
-                        selectedUser!['receiver_full_name']),
-                    _InfoRow("IBAN", selectedUser!['iban']),
-                    _InfoRow("BIC", selectedUser!['bic']),
-                    _InfoRow(
-                        "Banque", selectedUser!['bank_name']),
-                    _InfoRow("Adresse banque",
-                        selectedUser!['bank_address']),
-                  ],
-                ),
-              ),
-            ),
+            child: SelectableText(value ?? "-"),
           ),
         ],
       ),
