@@ -89,6 +89,8 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
     if (selectedConversationId == null ||
         controller.text.trim().isEmpty) return;
 
+    final messageText = controller.text.trim(); // ✅ sauvegarde
+
     _typingTimer?.cancel();
     _isTyping = false;
 
@@ -105,6 +107,19 @@ class _ChatAdminPageState extends State<ChatAdminPage> {
     });
 
     controller.clear();
+
+    await supabase.functions.invoke(
+      'notify_user_new_support_message',
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+      },
+      body: {
+        'conversation_id': selectedConversationId,
+        'message': messageText,
+      },
+    );
 
     await Future.delayed(const Duration(milliseconds: 100));
     if (scrollController.hasClients) {
