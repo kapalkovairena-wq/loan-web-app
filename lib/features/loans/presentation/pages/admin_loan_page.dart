@@ -115,6 +115,12 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
             .asUint8List(),
       );
 
+      final LogoImage = pw.MemoryImage(
+        (await rootBundle.load('assets/pdf/logo.png'))
+            .buffer
+            .asUint8List(),
+      );
+
       final content = await _buildContractContent(
         loanData,
         profileData,
@@ -123,6 +129,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
         footerImage,
         SigneImage,
         TimImage,
+        LogoImage,
         dateOfPayment,
       );
 
@@ -136,7 +143,28 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
               style: pw.TextStyle(fontSize: 9),
             ),
           ),
-          build: (context) => content,
+          build: (context) => [
+            pw.Stack(
+              children: [
+                // ===== BACKGROUND IMAGE =====
+                pw.Positioned.fill(
+                  child: pw.Opacity(
+                    opacity: 0.05, // 👈 très discret (0.03–0.08 max)
+                    child: pw.Image(
+                      justiceImage,
+                      fit: pw.BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                // ===== CONTENT =====
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: content,
+                ),
+              ],
+            ),
+          ],
         ),
       );
 
@@ -186,6 +214,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.ImageProvider footerImage,
       pw.ImageProvider SigneImage,
       pw.ImageProvider TimImage,
+      pw.ImageProvider LogoImage,
       DateTime dateOfPayment,
       ) async {
     final crimsonRegular =
@@ -238,8 +267,8 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
+          pw.Image(LogoImage, height: 60),
           pw.Image(flagImage, height: 40),
-          pw.Image(justiceImage, height: 60),
         ],
       ),
 
