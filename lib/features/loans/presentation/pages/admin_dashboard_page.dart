@@ -8,6 +8,8 @@ import '../pages/chat_admin_page.dart';
 import '../pages/admin_loan_page.dart';
 import '../pages/loan_admin_page.dart';
 import '../pages/admin_payment_proofs_page.dart';
+import 'admin_documents_page.dart';
+import 'admin_users_message_page.dart';
 
 
 class AdminDashboardPage extends StatelessWidget {
@@ -196,6 +198,30 @@ class QuickActions extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => AdminPaymentProofsPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Validation des documents",
+            icon: Icons.folder_open,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AdminDocumentsPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Envoyer un message PRO",
+            icon: Icons.folder_open,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AdminUsersMessagePage(),
                 ),
               );
             },

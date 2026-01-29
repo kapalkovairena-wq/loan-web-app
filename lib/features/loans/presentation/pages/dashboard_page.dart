@@ -16,6 +16,7 @@ import '../auth/loan_service.dart';
 import '../pages/loan_history_page.dart';
 import '../pages/client_profile_page.dart';
 import '../pages/transaction_history_page.dart';
+import 'user_documents_history_page.dart';
 
 
 class DashboardPage extends StatelessWidget {
@@ -64,7 +65,7 @@ class _DashboardBodyState extends State<_DashboardBody> {
     try {
       final data = await supabase
           .from('loan_requests')
-          .select('payment_bank, my_details_bank, amount, loan_status')
+          .select('payment_bank, my_details_bank, amount, loan_status, document')
           .eq('firebase_uid', uid)
           .maybeSingle();
 
@@ -90,6 +91,7 @@ class _DashboardBodyState extends State<_DashboardBody> {
   Widget build(BuildContext context) {
     final showRepayment = loanData?['payment_bank'] ?? false;
     final showBankDetails = loanData?['my_details_bank'] ?? false;
+    final documentUpload = loanData?['document'] ?? false;
     final hasLoanAmount = loanData?['amount'] != null;
 
     if (loading) {
@@ -114,11 +116,13 @@ class _DashboardBodyState extends State<_DashboardBody> {
                       ? _MobileLayout(
                     showRepaymentBankCard: showRepayment,
                     showBankDetailsCard: showBankDetails,
+                    documentUploadCard : documentUpload,
                     hasLoanAmount: hasLoanAmount,
                   )
                       : _WebLayout(
                     showRepaymentBankCard: showRepayment,
                     showBankDetailsCard: showBankDetails,
+                    documentUploadCard : documentUpload,
                     hasLoanAmount: hasLoanAmount,
                   ),
                 ],
@@ -174,11 +178,13 @@ class _Header extends StatelessWidget {
 class _MobileLayout extends StatelessWidget {
   final bool showRepaymentBankCard;
   final bool showBankDetailsCard;
+  final bool documentUploadCard;
   final bool hasLoanAmount;
 
   const _MobileLayout({
     required this.showRepaymentBankCard,
     required this.showBankDetailsCard,
+    required this.documentUploadCard,
     required this.hasLoanAmount,
   });
 
@@ -199,6 +205,11 @@ class _MobileLayout extends StatelessWidget {
           const SizedBox(height: 20),
         ],
 
+        if (documentUploadCard) ...[
+          const DocumentUploadCard(),
+          const SizedBox(height: 20),
+        ],
+
         const TrustCard(),
         const SizedBox(height: 20),
         QuickActions(hasLoanAmount: hasLoanAmount),
@@ -210,11 +221,13 @@ class _MobileLayout extends StatelessWidget {
 class _WebLayout extends StatelessWidget {
   final bool showRepaymentBankCard;
   final bool showBankDetailsCard;
+  final bool documentUploadCard;
   final bool hasLoanAmount;
 
   const _WebLayout({
     required this.showRepaymentBankCard,
     required this.showBankDetailsCard,
+    required this.documentUploadCard,
     required this.hasLoanAmount,
   });
 
@@ -239,6 +252,13 @@ class _WebLayout extends StatelessWidget {
           children: [
             if (showBankDetailsCard)
               const Expanded(child: BankDetailsCard()),
+          ],
+        ),
+        const SizedBox(height: 24),
+        Row(
+          children: [
+            if (documentUploadCard)
+              const Expanded(child: DocumentUploadCard()),
           ],
         ),
         const SizedBox(height: 24),
@@ -478,6 +498,18 @@ class QuickActions extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (_) => const TransactionHistoryPage(),
+                ),
+              );
+            },
+          ),
+          _ActionButton(
+            label: "Historique des documents",
+            icon: Icons.history,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const UserDocumentsHistoryPage(),
                 ),
               );
             },
@@ -899,6 +931,138 @@ class _RepaymentBankCardState extends State<RepaymentBankCard> {
                 onPressed: _pickFile,
               ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class DocumentUploadCard extends StatefulWidget {
+  const DocumentUploadCard({super.key});
+
+  @override
+  State<DocumentUploadCard> createState() => _DocumentUploadCardState();
+}
+
+class _DocumentUploadCardState extends State<DocumentUploadCard> {
+  final String firebaseUid = FirebaseAuth.instance.currentUser!.uid;
+
+  Uint8List? selectedFileBytes;
+  String? selectedFileName;
+  bool loading = true;
+  bool hasDocumentPermission = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermission();
+  }
+
+  Future<void> _checkPermission() async {
+    final supabase = Supabase.instance.client;
+    final profile = await supabase
+        .from('loan_requests')
+        .select('document')
+        .eq('firebase_uid', firebaseUid)
+        .maybeSingle();
+
+    if (!mounted) return;
+    setState(() {
+      hasDocumentPermission = profile?['document'] == true;
+      loading = false;
+    });
+  }
+
+  Future<void> _pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      withData: true,
+    );
+    if (result != null && result.files.single.bytes != null) {
+      setState(() {
+        selectedFileBytes = result.files.single.bytes!;
+        selectedFileName = result.files.single.name;
+      });
+    }
+  }
+
+  Future<void> _submitDocument() async {
+    if (selectedFileBytes == null || selectedFileName == null) return;
+
+    try {
+      // ⚡ Appel Edge Function pour upload
+      final uri = Uri.parse(
+          "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/upload_user_document");
+
+      final response = await http.post(
+        uri,
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
+          "x-edge-secret": "Mahugnon23",
+        },
+        body: jsonEncode({
+          "firebase_uid": firebaseUid,
+          "file_base64": base64Encode(selectedFileBytes!),
+          "file_name": selectedFileName!,
+          "mime_type": "application/octet-stream", // adapter selon type
+        }),
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception("Erreur upload: ${response.body}");
+      }
+
+      setState(() {
+        selectedFileBytes = null;
+        selectedFileName = null;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("✅ Document soumis avec succès"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("❌ Erreur lors de l'upload : $e"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) return const SizedBox();
+
+    if (!hasDocumentPermission) return const SizedBox();
+
+    return _Card(
+      title: "Soumettre un document",
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (selectedFileBytes != null)
+            Image.memory(selectedFileBytes!, height: 150),
+          const SizedBox(height: 12),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.upload_file),
+            label: const Text("Choisir un fichier / photo"),
+            onPressed: _pickFile,
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton.icon(
+            icon: const Icon(Icons.check),
+            label: const Text("Soumettre le document"),
+            onPressed:
+            (selectedFileBytes != null && selectedFileName != null)
+                ? _submitDocument
+                : null,
+          ),
         ],
       ),
     );
