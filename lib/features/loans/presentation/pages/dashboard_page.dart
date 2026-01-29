@@ -544,7 +544,40 @@ class _RowItem extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Text(label)),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          SelectableText(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+}
+
+class _RowItemColor extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color? valueColor;
+  final FontWeight? valueWeight;
+
+  const _RowItemColor(
+      this.label,
+      this.value, {
+        this.valueColor,
+        this.valueWeight,
+      });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          SelectableText(
+            value,
+            style: TextStyle(
+              fontWeight: valueWeight ?? FontWeight.bold,
+              color: valueColor ?? Colors.black,
+            ),
+          ),
         ],
       ),
     );
@@ -799,9 +832,11 @@ class _RepaymentBankCardState extends State<RepaymentBankCard> {
           if (payment != null) ...[
             const Divider(height: 32),
 
-            _RowItem(
+            _RowItemColor(
               "Montant à payer",
               "$payment $currency",
+              valueColor: Colors.red,
+              valueWeight: FontWeight.bold,
             ),
 
             const SizedBox(height: 16),

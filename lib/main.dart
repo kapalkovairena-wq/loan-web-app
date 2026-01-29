@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'features/loans/presentation/pages/home_page.dart';
 
@@ -21,6 +22,9 @@ void main() async {
         appId: "1:214149699740:web:556cda3cec07bbb94eb559"
     ),
   );
+
+  await initializeDateFormatting('fr_FR', null);
+
   runApp(const LoanApp());
 }
 

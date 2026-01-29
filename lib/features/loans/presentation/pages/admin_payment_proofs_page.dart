@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'admin_transactions_history_page.dart';
+import 'package:intl/intl.dart';
 
 class AdminPaymentProofsPage extends StatefulWidget {
   const AdminPaymentProofsPage({super.key});
@@ -20,6 +22,11 @@ class _AdminPaymentProofsPageState extends State<AdminPaymentProofsPage> {
   void initState() {
     super.initState();
     _load();
+  }
+
+  String formatDate(String isoDate) {
+    final date = DateTime.parse(isoDate).toLocal();
+    return DateFormat('dd/MM/yyyy à HH:mm', 'fr_FR').format(date);
   }
 
   /* ================= LOAD ================= */
@@ -154,6 +161,20 @@ class _AdminPaymentProofsPageState extends State<AdminPaymentProofsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Preuves de paiement"),
+        actions: [
+          IconButton(
+            tooltip: "Historique",
+            icon: const Icon(Icons.history),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const AdminTransactionsHistoryPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
@@ -180,11 +201,7 @@ class _AdminPaymentProofsPageState extends State<AdminPaymentProofsPage> {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    "Montant : ${p['amount']} ${p['currency']}",
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    "Soumis le : ${DateTime.parse(p['created_at']).toLocal()}",
+                    "Soumis le : ${formatDate(p['created_at'])}",
                     style: const TextStyle(color: Colors.grey),
                   ),
                   const SizedBox(height: 12),

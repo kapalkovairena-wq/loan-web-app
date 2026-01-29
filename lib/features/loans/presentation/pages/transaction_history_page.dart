@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class TransactionHistoryPage extends StatefulWidget {
   const TransactionHistoryPage({super.key});
@@ -20,6 +21,11 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   void initState() {
     super.initState();
     _loadTransactions();
+  }
+
+  String formatDate(String isoDate) {
+    final date = DateTime.parse(isoDate).toLocal();
+    return DateFormat('dd/MM/yyyy à HH:mm', 'fr_FR').format(date);
   }
 
   Future<void> _loadTransactions() async {
@@ -117,9 +123,8 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Soumis le : ${DateTime.parse(tx['created_at']).toLocal()}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold),
+                          "Soumis le : ${formatDate(tx['created_at'])}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
