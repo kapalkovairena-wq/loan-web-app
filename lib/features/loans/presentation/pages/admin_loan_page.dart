@@ -154,6 +154,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           "clientName": loanData['full_name'],
           "clientEmail": loanData['email'],
           "pdfBase64": pdfBase64,
+          "loanRequestId": loanData['id'],
         }),
       );
 
