@@ -143,28 +143,18 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
               style: pw.TextStyle(fontSize: 9),
             ),
           ),
-          build: (context) => [
-            pw.Stack(
-              children: [
-                // ===== BACKGROUND IMAGE =====
-                pw.Positioned.fill(
-                  child: pw.Opacity(
-                    opacity: 0.05, // 👈 très discret (0.03–0.08 max)
-                    child: pw.Image(
-                      justiceImage,
-                      fit: pw.BoxFit.cover,
-                    ),
-                  ),
+          pageTheme: pw.PageTheme(
+            buildBackground: (context) {
+              return pw.FullPage(
+                ignoreMargins: true,
+                child: pw.Opacity(
+                  opacity: 0.05, // discret
+                  child: pw.Image(justiceImage, fit: pw.BoxFit.cover),
                 ),
-
-                // ===== CONTENT =====
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: content,
-                ),
-              ],
-            ),
-          ],
+              );
+            },
+          ),
+          build: (context) => content, // ton contenu reste normal
         ),
       );
 
