@@ -976,6 +976,48 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
                     const SizedBox(height: 12),
 
+                    // ===== Document Toggle =====
+                    FutureBuilder<Map<String, dynamic>?>(
+                      future: supabase
+                          .from('loan_requests')
+                          .select('document')
+                          .eq('id', loanData['id'])
+                          .maybeSingle(),
+                      builder: (context, snapshot) {
+                        bool paymentBank = snapshot.data?['document'] ?? false;
+                        if (!snapshot.hasData) return const SizedBox();
+
+                        return SwitchListTile(
+                          title: const Text("Afficher l'importation de document"),
+                          value: paymentBank,
+                          onChanged: (val) async {
+                            // Met à jour dans la table loan_requests
+                            await supabase
+                                .from('loan_requests')
+                                .update({'document': val})
+                                .eq('id', loanData['id']);
+
+                            setState(() {
+                              // Met à jour localement pour refléter le changement
+                              loanData['document'] = val;
+                            });
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  val
+                                      ? "✅ Affichage de l'importation de document activé"
+                                      : "❌ Affichage de l'importation de document désactivé",
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 12),
+
                     // ===== Envoyer contrat PDF =====
                     ElevatedButton(
                       onPressed: () => sendContract(loanData, profile ?? {}),
