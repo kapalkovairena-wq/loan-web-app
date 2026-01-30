@@ -8,9 +8,6 @@ import 'features/loans/presentation/pages/loan_offers_page.dart';
 import 'features/loans/presentation/pages/loan_solution_section.dart';
 import 'features/loans/presentation/pages/contact_page.dart';
 import 'features/loans/presentation/pages/about_page.dart';
-import 'features/loans/presentation/auth/logout_page.dart';
-import 'features/loans/presentation/auth/auth_gate.dart';
-import 'features/loans/presentation/auth/register_page.dart';
 import 'features/loans/presentation/pages/loan_request_page.dart';
 import 'features/loans/presentation/pages/chat_user_page.dart';
 import 'features/loans/presentation/pages/bank_details_page.dart';
@@ -93,25 +90,6 @@ final GoRouter appRouter = GoRouter(
       path: '/about',
       name: 'about',
       builder: (context, state) => const AboutPage(),
-    ),
-
-    /// LOGOUT
-    GoRoute(
-      path: '/logout',
-      name: 'logout',
-      builder: (context, state) => const LogoutPage(),
-    ),
-
-    GoRoute(
-      path: '/login',
-      name: 'login',
-      builder: (context, state) => const AuthGate(),
-    ),
-
-    GoRoute(
-      path: '/register',
-      name: 'register',
-      builder: (context, state) => const RegisterPage(),
     ),
 
     GoRoute(

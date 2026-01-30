@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../auth/supabase_admin_service.dart';
 import '../pages/admin_dashboard_page.dart';
+import '../auth/logout_page.dart';
+
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -85,7 +87,12 @@ class AppDrawer extends StatelessWidget {
                 _drawerItem(
                   context,
                   'Se déconnecter',
-                      () => _go(context, 'logout'),
+                        () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LogoutPage()),
+                      );
+                    }
                 ),
             ],
           );

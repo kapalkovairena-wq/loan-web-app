@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import '../auth/supabase_admin_service.dart';
 import '../pages/admin_dashboard_page.dart';
-
+import '../auth/auth_gate.dart';
+import '../auth/register_page.dart';
 
 class HeroBanner extends StatelessWidget {
   const HeroBanner({super.key});
@@ -91,14 +92,26 @@ class HeroBanner extends StatelessWidget {
                                     : MainAxisAlignment.start,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () =>
-                                        context.go('/login'),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const AuthGate(),
+                                        ),
+                                      );
+                                    },
                                     child: const Text('Se connecter'),
                                   ),
                                   const SizedBox(width: 20),
                                   OutlinedButton(
-                                    onPressed: () =>
-                                        context.go('/register'),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const RegisterPage(),
+                                        ),
+                                      );
+                                    },
                                     child: const Text(
                                       "S'inscrire",
                                       style: TextStyle(color: Colors.white),
