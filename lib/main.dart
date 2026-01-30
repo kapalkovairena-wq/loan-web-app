@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -28,19 +29,38 @@ void main() async {
   runApp(const LoanApp());
 }
 
+final GoRouter _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      name: 'home',
+      builder: (context, state) => const HomePage(),
+    ),
+
+    // Exemples pour plus tard
+    // GoRoute(
+    //   path: '/login',
+    //   name: 'login',
+    //   builder: (context, state) => const LoginPage(),
+    // ),
+  ],
+);
+
+
 class LoanApp extends StatelessWidget {
   const LoanApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'KreditSch',
       theme: ThemeData(
         primaryColor: Colors.deepPurple,
         useMaterial3: true,
       ),
-      home: HomePage(),
+      routerConfig: _router,
     );
   }
 }
