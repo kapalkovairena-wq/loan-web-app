@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:go_router/go_router.dart';
 import '../auth/supabase_admin_service.dart';
+import '../pages/admin_dashboard_page.dart';
 
 
 class HeroBanner extends StatelessWidget {
@@ -116,9 +117,14 @@ class HeroBanner extends StatelessWidget {
 
                                 if (adminSnapshot.data == true) {
                                   return ElevatedButton(
-                                    onPressed: () =>
-                                        context.goNamed(
-                                            'admin_dashboard'),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => const AdminDashboardPage(),
+                                        ),
+                                      );
+                                    },
                                     child: const Text('Accéder à l’espace admin'),
                                   );
                                 }

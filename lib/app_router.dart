@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import 'features/loans/presentation/pages/home_page.dart';
 import 'features/loans/presentation/pages/dashboard_page.dart';
-import 'features/loans/presentation/pages/admin_dashboard_page.dart';
 import 'features/loans/presentation/pages/loan_simulation_page.dart';
 import 'features/loans/presentation/pages/loan_offers_page.dart';
 import 'features/loans/presentation/pages/loan_solution_section.dart';
@@ -59,13 +58,6 @@ final GoRouter appRouter = GoRouter(
       path: '/dashboard',
       name: 'dashboard',
       builder: (context, state) => const DashboardPage(),
-    ),
-
-    /// DASHBOARD ADMIN
-    GoRoute(
-      path: '/admin',
-      name: 'admin_dashboard',
-      builder: (context, state) => const AdminDashboardPage(),
     ),
 
     /// LOAN SIMULATION

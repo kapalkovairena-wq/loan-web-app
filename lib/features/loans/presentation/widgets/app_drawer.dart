@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 
 import '../auth/supabase_admin_service.dart';
+import '../pages/admin_dashboard_page.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -38,11 +39,12 @@ class AppDrawer extends StatelessWidget {
                   future: SupabaseAdminService.isAdmin(user.email!),
                   builder: (context, adminSnapshot) {
                     if (adminSnapshot.data == true) {
-                      return _drawerItem(
-                        context,
-                        'Tableau de bord admin',
-                            () => _go(context, 'admin_dashboard'),
-                      );
+                      return _drawerItem(context, 'Tableau de bord admin', () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const AdminDashboardPage()),
+                        );
+                      });
                     }
                     return const SizedBox.shrink();
                   },
