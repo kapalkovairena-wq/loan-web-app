@@ -148,7 +148,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
               return pw.FullPage(
                 ignoreMargins: true,
                 child: pw.Opacity(
-                  opacity: 0.05, // discret
+                  opacity: 0.1, // discret
                   child: pw.Image(justiceImage, fit: pw.BoxFit.cover),
                 ),
               );
