@@ -136,7 +136,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
       pdf.addPage(
         pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
-          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 50),
+          margin: const pw.EdgeInsets.fromLTRB(32, 32, 32, 32),
           footer: (context) => pw.Center(
             child: pw.Text(
               'KreditSch © ${DateTime.now().year} - Seite ${context.pageNumber}',
@@ -500,7 +500,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
 
       // ================= SIGNATURES =================
       pw.Divider(),
-      pw.Image(TimImage, height: 200),
+      pw.Image(TimImage, height: 150),
       pw.SizedBox(height: 10),
       pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
