@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'features/loans/presentation/pages/home_page.dart';
+import 'app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,25 +28,6 @@ void main() async {
   runApp(const LoanApp());
 }
 
-final GoRouter _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      name: 'home',
-      builder: (context, state) => const HomePage(),
-    ),
-
-    // Exemples pour plus tard
-    // GoRoute(
-    //   path: '/login',
-    //   name: 'login',
-    //   builder: (context, state) => const LoginPage(),
-    // ),
-  ],
-);
-
-
 class LoanApp extends StatelessWidget {
   const LoanApp({super.key});
 
@@ -60,7 +40,7 @@ class LoanApp extends StatelessWidget {
         primaryColor: Colors.deepPurple,
         useMaterial3: true,
       ),
-      routerConfig: _router,
+      routerConfig: appRouter,
     );
   }
 }

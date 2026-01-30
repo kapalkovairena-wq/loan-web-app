@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../pages/loan_request_page.dart';
+import 'package:go_router/go_router.dart';
 
 /// =======================
 /// SECTION PRINCIPALE
@@ -157,14 +156,8 @@ class LoanFeature extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const LoanRequestPage(),
-              ),
-            );
-          },
+          onPressed: () =>
+              context.go('/request'),
           child: const Text(
             "Demander un prêt >",
             style: TextStyle(

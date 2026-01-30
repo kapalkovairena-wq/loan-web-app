@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:go_router/go_router.dart';
 import '../auth/supabase_admin_service.dart';
-import '../../presentation/auth/auth_gate.dart';
-import '../../presentation/auth/register_page.dart';
-import '../pages/dashboard_page.dart';
-import '../pages/admin_dashboard_page.dart';
+
 
 class HeroBanner extends StatelessWidget {
   const HeroBanner({super.key});
@@ -92,22 +90,14 @@ class HeroBanner extends StatelessWidget {
                                     : MainAxisAlignment.start,
                                 children: [
                                   ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (_) => const AuthGate()),
-                                      );
-                                    },
+                                    onPressed: () =>
+                                        context.go('/login'),
                                     child: const Text('Se connecter'),
                                   ),
                                   const SizedBox(width: 20),
                                   OutlinedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (_) => const RegisterPage()),
-                                      );
-                                    },
+                                    onPressed: () =>
+                                        context.go('/register'),
                                     child: const Text(
                                       "S'inscrire",
                                       style: TextStyle(color: Colors.white),
@@ -126,27 +116,16 @@ class HeroBanner extends StatelessWidget {
 
                                 if (adminSnapshot.data == true) {
                                   return ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const AdminDashboardPage(),
-                                        ),
-                                      );
-                                    },
+                                    onPressed: () =>
+                                        context.goNamed(
+                                            'admin_dashboard'),
                                     child: const Text('Accéder à l’espace admin'),
                                   );
                                 }
 
                                 return ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => const DashboardPage(),
-                                      ),
-                                    );
-                                  },
+                                  onPressed: () =>
+                                      context.goNamed('dashboard'),
                                   child: const Text('Accéder à mon espace'),
                                 );
                               },

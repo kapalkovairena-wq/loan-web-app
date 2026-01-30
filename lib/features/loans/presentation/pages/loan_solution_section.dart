@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../widgets/app_header.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/whatsApp_button.dart';
-import '../widgets/hero_banner.dart';
 import '../widgets/footer_section.dart';
 
 

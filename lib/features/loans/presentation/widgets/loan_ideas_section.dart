@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../pages/loan_offers_page.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanIdeasSection extends StatelessWidget {
   const LoanIdeasSection({super.key});
@@ -175,12 +174,8 @@ class _LeftContent extends StatelessWidget {
         _bullet('Prêt avec remboursement échelonné'),
         const SizedBox(height: 30),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-            );
-          },
+          onPressed: () =>
+              context.go('/offers'),
           child: const Text('Découvrir nos offres'),
         ),
       ],

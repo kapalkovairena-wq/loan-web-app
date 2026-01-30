@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart'; // Pour kIsWeb
 import 'dart:async';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/web_card.dart';
 import '../auth/loan_service.dart';
-import '../pages/loan_request_page.dart';
 
 class LoanStatusCard extends StatefulWidget {
   const LoanStatusCard({super.key});
@@ -81,21 +81,7 @@ class _LoanStatusCardState extends State<LoanStatusCard> {
         const SizedBox(height: 12),
         ElevatedButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                transitionDuration: const Duration(milliseconds: 500),
-                pageBuilder: (_, __, ___) => const LoanRequestPage(),
-                transitionsBuilder: (_, animation, __, child) =>
-                    SlideTransition(
-                      position: Tween(
-                        begin: const Offset(0, 1),
-                        end: Offset.zero,
-                      ).animate(animation),
-                      child: child,
-                    ),
-              ),
-            );
+            context.goNamed('loan_request');
           },
           child: const Text("Faire une demande"),
         ),

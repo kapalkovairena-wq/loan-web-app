@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../pages/loan_request_page.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanProcessSection extends StatelessWidget {
   const LoanProcessSection({super.key});
@@ -228,14 +227,8 @@ class LoanCTASection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const LoanRequestPage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/request'),
             child: const Text(
               "Soumettre une demande",
               style: TextStyle(

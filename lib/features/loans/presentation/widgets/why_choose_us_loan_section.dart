@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/loan_request_page.dart';
-import '../pages/loan_offers_page.dart';
+import 'package:go_router/go_router.dart';
 
 class WhyChooseUsLoanSection extends StatelessWidget {
   const WhyChooseUsLoanSection({super.key});
@@ -103,12 +102,8 @@ class _TopDarkSection extends StatelessWidget {
             backgroundColor: Colors.amber,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
           ),
-          onPressed: () {
-            Navigator.push(
-              context, // ✅ maintenant valide
-              MaterialPageRoute(builder: (_) => const LoanRequestPage()),
-            );
-          },
+          onPressed: () =>
+              context.go('/request'),
           child: const Text(
             'Faire une demande',
             style: TextStyle(color: Colors.black),
@@ -248,12 +243,8 @@ class _BottomButton extends StatelessWidget {
         backgroundColor: Colors.amber,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
       ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-        );
-      },
+      onPressed: () =>
+          context.go('/offers'),
       child: const Text('Voir les offres', style: TextStyle(color: Colors.black)),
     );
   }

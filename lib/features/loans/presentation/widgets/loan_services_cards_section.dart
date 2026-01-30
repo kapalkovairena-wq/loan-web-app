@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/loan_offers_page.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanServicesCardsSection extends StatelessWidget {
   const LoanServicesCardsSection({super.key});
@@ -166,12 +166,8 @@ class _LoanCard extends StatelessWidget {
               ),
               SizedBox(height: 20),
               TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-                  );
-                },
+                onPressed: () =>
+                    context.go('/offers'),
                 child: const Text(
                   'En savoir plus →',
                   style: TextStyle(color: Colors.amber),
@@ -228,12 +224,8 @@ class _BottomCard extends StatelessWidget {
           ),
           SizedBox(height: 20),
           TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-              );
-            },
+            onPressed: () =>
+                context.go('/offers'),
             child: const Text(
               'En savoir plus →',
               style: TextStyle(color: Colors.amber),

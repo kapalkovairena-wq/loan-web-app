@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/loan_offers_page.dart';
+import 'package:go_router/go_router.dart';
 
 class TeamSection extends StatelessWidget {
   const TeamSection({super.key});
@@ -165,12 +165,8 @@ class _ActionLink extends StatelessWidget {
     final link = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-          );
-        },
+        onTap: () =>
+        context.go('/offers'),
         child: const Text(
           'Découvrez nos solutions de prêt >',
           style: TextStyle(

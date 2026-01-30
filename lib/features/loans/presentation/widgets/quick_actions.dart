@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../pages/loan_request_page.dart';
-import '../pages/chat_user_page.dart';
-import '../pages/bank_details_page.dart';
-import '../pages/loan_history_page.dart';
-import '../pages/client_profile_page.dart';
-import '../pages/transaction_history_page.dart';
-import '../pages/user_documents_history_page.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/web_card.dart';
 import '../widgets/action_button.dart';
@@ -30,87 +23,45 @@ class QuickActions extends StatelessWidget {
           ActionButton(
             label: "Profil",
             icon: Icons.person,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ClientProfilePage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/profile'),
           ),
           ActionButton(
             label: "Nouvelle demande",
             icon: Icons.add_circle_outline,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const LoanRequestPage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/request'),
           ),
           if (hasLoanAmount)
             ActionButton(
               label: "Mes coordonnées bancaires",
               icon: Icons.folder_open,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const BankDetailsPage(),
-                  ),
-                );
-              },
+              onPressed: () =>
+                  context.go('/bank_details'),
             ),
           ActionButton(
             label: "Historique des demandes",
             icon: Icons.history,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const LoanHistoryPage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/loan_history'),
           ),
           ActionButton(
             label: "Historique des paiements",
             icon: Icons.history,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const TransactionHistoryPage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/transaction_history'),
           ),
           ActionButton(
             label: "Historique des documents",
             icon: Icons.history,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const UserDocumentsHistoryPage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/documents_history'),
           ),
           ActionButton(
             label: "Support",
             icon: Icons.chat_bubble_outline,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const ChatUserPage(),
-                ),
-              );
-            },
+            onPressed: () =>
+                context.go('/chat'),
           ),
         ],
       ),

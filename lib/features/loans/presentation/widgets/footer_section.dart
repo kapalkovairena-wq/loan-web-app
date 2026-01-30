@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../pages/loan_simulation_page.dart';
-import '../pages/home_page.dart';
-import '../pages/contact_page.dart';
-import '../pages/loan_solution_section.dart';
-import '../pages/loan_offers_page.dart';
-import '../pages/about_page.dart';
+import 'package:go_router/go_router.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
@@ -175,29 +169,19 @@ class FooterSection extends StatelessWidget {
           "Services",
           [
             _FooterLink("Page d'accueil", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
             _FooterLink("Découvrir nos offres", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-              );
+              context.go('/offers');
             }),
             _FooterLink("Investissement", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanSolutionSection()),
-              );
+              context.go('/investment');
             }),
             _FooterLink("Contact", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ContactPage()),
-              );
+              context.go('/contact');
             }),
             _FooterLink("À propos de nous", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const AboutPage()),
-              );
+              context.go('/about');
             }),
           ],
         ),
@@ -209,19 +193,13 @@ class FooterSection extends StatelessWidget {
           "Information",
           [
             _FooterLink("Protection des données", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
             _FooterLink("Sécurité", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
             _FooterLink("CGV", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
           ],
         ),
@@ -246,29 +224,19 @@ class FooterSection extends StatelessWidget {
           "Services",
           [
             _FooterLink("Page d'accueil", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
             _FooterLink("Découvrir nos offres", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanOffersPage()),
-              );
+              context.go('/offers');
             }),
             _FooterLink("Investissement", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const LoanSolutionSection()),
-              );
+              context.go('/investment');
             }),
             _FooterLink("Contact", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const ContactPage()),
-              );
+              context.go('/contact');
             }),
             _FooterLink("À propos de nous", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const AboutPage()),
-              );
+              context.go('/about');
             }),
           ],
         ),
@@ -279,19 +247,13 @@ class FooterSection extends StatelessWidget {
           "Information",
           [
             _FooterLink("Protection des données", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
             _FooterLink("Sécurité", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
             _FooterLink("CGV", () {
-              Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const HomePage()),
-              );
+              context.goNamed('home');
             }),
           ],
         ),
@@ -332,10 +294,7 @@ class FooterSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const LoanSimulationPage()),
-            );
+            context.goNamed('loan_simulation');
           },
           child: const Text("Voir une simulation",
               style: TextStyle(color: Colors.black)),
