@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
+import '../../presentation/auth/auth_gate.dart';
+
 class TransactionHistoryPage extends StatefulWidget {
   const TransactionHistoryPage({super.key});
 
@@ -21,6 +23,15 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
   void initState() {
     super.initState();
     _loadTransactions();
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   String formatDate(String isoDate) {

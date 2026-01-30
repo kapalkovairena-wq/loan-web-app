@@ -10,6 +10,7 @@ import '../widgets/loan_status_card.dart';
 import '../widgets/repayment_bank_card.dart';
 import '../widgets/trust_card.dart';
 import '../widgets/quick_actions.dart';
+import '../../presentation/auth/auth_gate.dart';
 
 
 class DashboardPage extends StatelessWidget {
@@ -52,6 +53,15 @@ class _DashboardBodyState extends State<_DashboardBody> {
 
     // Rafraîchir toutes les secondes
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _fetchLoan());
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   Future<void> _fetchLoan() async {

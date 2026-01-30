@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../presentation/auth/auth_gate.dart';
+
 class ChatUserPage extends StatefulWidget {
   const ChatUserPage({super.key});
 
@@ -27,6 +29,15 @@ class _ChatUserPageState extends State<ChatUserPage> {
     super.initState();
     loadLastConversation();
     _startAutoRefresh();
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   @override

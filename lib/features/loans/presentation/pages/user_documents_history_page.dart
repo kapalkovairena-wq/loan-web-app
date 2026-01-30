@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../presentation/auth/auth_gate.dart';
+
 class UserDocumentsHistoryPage extends StatefulWidget {
   const UserDocumentsHistoryPage({super.key});
 
@@ -21,6 +23,15 @@ class _UserDocumentsHistoryPageState
   void initState() {
     super.initState();
     _loadHistory();
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   Future<void> _loadHistory() async {

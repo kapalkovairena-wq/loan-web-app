@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../presentation/auth/auth_gate.dart';
 
 class BankDetailsPage extends StatefulWidget {
   const BankDetailsPage({super.key});
@@ -31,6 +32,15 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
   void initState() {
     super.initState();
     _loadBankDetails();
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   @override

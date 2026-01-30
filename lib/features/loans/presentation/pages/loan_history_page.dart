@@ -3,6 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+import '../../presentation/auth/auth_gate.dart';
+
 class LoanHistoryPage extends StatefulWidget {
   const LoanHistoryPage({super.key});
 
@@ -21,6 +23,15 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
     super.initState();
     loadRequests();
     _loadProfile();
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const AuthGate()),
+        );
+      });
+    }
   }
 
   Future<void> loadRequests() async {
