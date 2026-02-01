@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart'; // Pour kIsWeb
-import 'dart:async';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../widgets/web_card.dart';
 import '../auth/loan_service.dart';
@@ -31,32 +30,48 @@ class _LoanStatusCardState extends State<LoanStatusCard> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     Widget cardWidget;
 
     if (loading) {
-      cardWidget = const WebCard(
-        title: "Statut de votre prêt",
-        child: Center(child: CircularProgressIndicator()),
+      cardWidget = WebCard(
+        title: loc.loanStatusTitle,
+        child: const Center(child: CircularProgressIndicator()),
       );
     } else if (loan == null) {
-      cardWidget = _noRequest(context);
+      cardWidget = _noRequest(context, loc);
     } else {
       switch (loan!.status) {
         case LoanStatus.pending:
-          cardWidget = _pending();
+          cardWidget = _statusCard(
+            loc.loanStatusPendingTitle,
+            loc.loanStatusPendingDescription,
+            Colors.orange,
+            loc,
+          );
           break;
         case LoanStatus.approved:
-          cardWidget = _approved();
+          cardWidget = _statusCard(
+            loc.loanStatusApprovedTitle,
+            loc.loanStatusApprovedDescription,
+            Colors.green,
+            loc,
+          );
           break;
         case LoanStatus.rejected:
-          cardWidget = _rejected();
+          cardWidget = _statusCard(
+            loc.loanStatusRejectedTitle,
+            loc.loanStatusRejectedDescription,
+            Colors.red,
+            loc,
+          );
           break;
         default:
-          cardWidget = _noRequest(context);
+          cardWidget = _noRequest(context, loc);
       }
     }
 
-    // Ajoute une clé unique pour l'animation
     cardWidget = KeyedSubtree(
       key: ValueKey(loan?.status ?? 'none'),
       child: cardWidget,
@@ -66,58 +81,49 @@ class _LoanStatusCardState extends State<LoanStatusCard> {
       duration: const Duration(milliseconds: 400),
       transitionBuilder: (child, animation) =>
           FadeTransition(opacity: animation, child: child),
-      child: cardWidget, // ← le widget avec une clé unique
+      child: cardWidget,
     );
   }
 
-
-  Widget _noRequest(BuildContext context) => WebCard(
-    title: "Statut de votre prêt",
+  Widget _noRequest(BuildContext context, AppLocalizations loc) => WebCard(
+    title: loc.loanStatusTitle,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Aucune demande en cours",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(
+          loc.loanStatusNoneTitle,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 12),
         ElevatedButton(
-          onPressed: () {
-            context.goNamed('loan_request');
-          },
-          child: const Text("Faire une demande"),
+          onPressed: () => context.goNamed('loan_request'),
+          child: Text(loc.loanStatusActionRequest),
         ),
       ],
     ),
   );
 
-  Widget _pending() => _statusCard(
-    "⏳ Demande en cours",
-    "Notre équipe analyse votre dossier.",
-    Colors.orange,
-  );
-
-  Widget _approved() => _statusCard(
-    "✅ Demande approuvée",
-    "Les fonds seront bientôt disponibles.",
-    Colors.green,
-  );
-
-  Widget _rejected() => _statusCard(
-    "❌ Demande refusée",
-    "Vous pouvez soumettre une nouvelle demande.",
-    Colors.red,
-  );
-
-  Widget _statusCard(String title, String desc, Color color) =>
+  Widget _statusCard(
+      String title,
+      String description,
+      Color color,
+      AppLocalizations loc,
+      ) =>
       WebCard(
-        title: "Statut de votre prêt",
+        title: loc.loanStatusTitle,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,
-                style:
-                TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color)),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
             const SizedBox(height: 8),
-            Text(desc),
+            Text(description),
           ],
         ),
       );

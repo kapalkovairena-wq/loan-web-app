@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 /// =======================
 /// SECTION PRINCIPALE
@@ -9,27 +10,26 @@ class LoanFeaturesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
-      children: const [
+      children: [
         LoanFeature(
-          title: "Financez vos projets personnels simplement",
-          description:
-          "Obtenez un prêt privé flexible pour vos besoins personnels avec des intérêts transparents et un remboursement adapté.",
+          title: l10n.loanFeaturePersonalTitle,
+          description: l10n.loanFeaturePersonalDescription,
           imageUrl:
           "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/CRST-6687_Hom.webp",
         ),
         LoanFeature(
-          title: "Soutenez les entrepreneurs et PME",
-          description:
-          "Investissez ou empruntez pour développer une activité grâce à notre réseau de prêteurs privés vérifiés.",
+          title: l10n.loanFeatureBusinessTitle,
+          description: l10n.loanFeatureBusinessDescription,
           imageUrl:
           "https://images.unsplash.com/photo-1556761175-4b46a572b786",
           imageLeft: false,
         ),
         LoanFeature(
-          title: "Prêt rapide, sans procédure bancaire lourde",
-          description:
-          "Validation rapide, pénalités claires et conditions définies à l’avance entre prêteur et emprunteur.",
+          title: l10n.loanFeatureFastTitle,
+          description: l10n.loanFeatureFastDescription,
           imageUrl:
           "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo%20(1600%20x%201600%20px).png",
         ),
@@ -57,6 +57,8 @@ class LoanFeature extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final double width = constraints.maxWidth;
@@ -85,6 +87,7 @@ class LoanFeature extends StatelessWidget {
               const SizedBox(height: 24),
               _textColumn(
                 context,
+                l10n,
                 titleSize,
                 descriptionSize,
                 TextAlign.center,
@@ -105,6 +108,7 @@ class LoanFeature extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: _textColumn(
                     context,
+                    l10n,
                     titleSize,
                     descriptionSize,
                     TextAlign.start,
@@ -128,13 +132,15 @@ class LoanFeature extends StatelessWidget {
   /// =======================
   Widget _textColumn(
       BuildContext context,
+      AppLocalizations l10n,
       double titleSize,
       double descriptionSize,
       TextAlign align,
       ) {
     return Column(
-      crossAxisAlignment:
-      align == TextAlign.center ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      crossAxisAlignment: align == TextAlign.center
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: [
         Text(
           title,
@@ -156,11 +162,10 @@ class LoanFeature extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         ElevatedButton(
-          onPressed: () =>
-              context.go('/request'),
-          child: const Text(
-            "Demander un prêt >",
-            style: TextStyle(
+          onPressed: () => context.go('/request'),
+          child: Text(
+            l10n.loanFeatureCta,
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               color: Colors.deepPurple,
             ),

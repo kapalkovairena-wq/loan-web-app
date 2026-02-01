@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoanProcessSection extends StatelessWidget {
   const LoanProcessSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
 
     final bool isMobile = width < 600;
     final bool isTablet = width >= 600 && width < 1100;
 
-    final double maxContentWidth = isMobile
-        ? width
-        : 800; // FORCÉ à 2 cartes max
+    final double maxContentWidth = isMobile ? width : 800;
 
     return Column(
       children: [
         SizedBox(height: isMobile ? 60 : 100),
 
         /// ===== TITRES =====
-        const Text(
-          "Notre processus de prêt",
-          style: TextStyle(color: Colors.black54),
+        Text(
+          loc.loanProcessSubtitle,
+          style: const TextStyle(color: Colors.black54),
         ),
         const SizedBox(height: 10),
         Text(
-          "Votre prêt en 3 étapes",
+          loc.loanProcessTitle,
           style: TextStyle(
             fontSize: isMobile ? 26 : 34,
             fontWeight: FontWeight.bold,
@@ -36,10 +36,10 @@ class LoanProcessSection extends StatelessWidget {
         const SizedBox(height: 12),
         SizedBox(
           width: isMobile ? width * 0.9 : 650,
-          child: const Text(
-            "Que ce soit pour un projet, un besoin de trésorerie ou un investissement, notre objectif est de vous aider à aller de l’avant en toute confiance.",
+          child: Text(
+            loc.loanProcessDescription,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black54),
+            style: const TextStyle(color: Colors.black54),
           ),
         ),
 
@@ -53,26 +53,23 @@ class LoanProcessSection extends StatelessWidget {
               alignment: WrapAlignment.center,
               spacing: 40,
               runSpacing: 60,
-              children: const [
+              children: [
                 StepCard(
                   step: "01",
-                  title: "Simulez votre prêt",
-                  description:
-                  "Choisissez le montant et la durée souhaités. Recevez un devis clair et sans engagement en quelques clics.",
+                  title: loc.step1Title,
+                  description: loc.step1Description,
                   isDark: false,
                 ),
                 StepCard(
                   step: "02",
-                  title: "Soumettez votre demande",
-                  description:
-                  "Remplissez le formulaire sécurisé sans aucun document papier. Votre dossier est traité rapidement.",
+                  title: loc.step2Title,
+                  description: loc.step2Description,
                   isDark: true,
                 ),
                 StepCard(
                   step: "03",
-                  title: "Recevez les fonds",
-                  description:
-                  "Une fois votre demande approuvée, le montant est versé directement sur votre compte.",
+                  title: loc.step3Title,
+                  description: loc.step3Description,
                   isDark: false,
                 ),
               ],
@@ -88,7 +85,6 @@ class LoanProcessSection extends StatelessWidget {
     );
   }
 }
-
 
 class StepCard extends StatelessWidget {
   final String step;
@@ -107,7 +103,6 @@ class StepCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
     final bool isMobile = width < 600;
 
     final bgColor = isDark ? const Color(0xFF061A3A) : Colors.white;
@@ -115,7 +110,7 @@ class StepCard extends StatelessWidget {
     final subTextColor = isDark ? Colors.white70 : Colors.black54;
 
     return SizedBox(
-      width: isMobile ? width * 0.9 : 360, // 👈 360 x 2 + spacing = 2 max
+      width: isMobile ? width * 0.9 : 360,
       child: Column(
         children: [
           CircleAvatar(
@@ -183,6 +178,7 @@ class LoanCTASection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
     final bool isMobile = width < 600;
 
@@ -200,7 +196,7 @@ class LoanCTASection extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Démarrez votre projet de prêt dès maintenant",
+            loc.loanCtaTitle,
             style: TextStyle(
               color: Colors.white,
               fontSize: isMobile ? 22 : 30,
@@ -211,10 +207,10 @@ class LoanCTASection extends StatelessWidget {
           const SizedBox(height: 16),
           SizedBox(
             width: isMobile ? width * 0.9 : 700,
-            child: const Text(
-              "Vous avez un projet en tête ? Nous vous aidons à le concrétiser rapidement grâce à un prêt simple, sécurisé et 100 % en ligne.",
+            child: Text(
+              loc.loanCtaDescription,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white70),
+              style: const TextStyle(color: Colors.white70),
             ),
           ),
           const SizedBox(height: 40),
@@ -227,11 +223,10 @@ class LoanCTASection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            onPressed: () =>
-                context.go('/request'),
-            child: const Text(
-              "Soumettre une demande",
-              style: TextStyle(
+            onPressed: () => context.go('/request'),
+            child: Text(
+              loc.loanCtaButton,
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),

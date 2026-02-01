@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../../widgets/language_selector.dart';
 
 class FooterSection extends StatelessWidget {
   const FooterSection({super.key});
@@ -14,6 +16,7 @@ class FooterSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
 
     final bool isMobile = width < 700;
@@ -24,9 +27,7 @@ class FooterSection extends StatelessWidget {
       color: const Color(0xFF061A3A),
       child: Column(
         children: [
-          /// =======================
           /// NEWSLETTER
-          /// =======================
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
             child: ConstrainedBox(
@@ -35,37 +36,43 @@ class FooterSection extends StatelessWidget {
                 padding: const EdgeInsets.all(30),
                 color: Colors.white,
                 child: isMobile
-                    ? _newsletterMobile()
-                    : _newsletterDesktop(),
+                    ? _newsletterMobile(l10n)
+                    : _newsletterDesktop(l10n),
               ),
             ),
           ),
 
-          /// =======================
-          /// FOOTER PRINCIPAL
-          /// =======================
+          /// FOOTER
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
               child: isMobile
-                  ? _footerMobile(context)
-                  : _footerDesktop(context, isTablet),
+                  ? _footerMobile(context, l10n)
+                  : _footerDesktop(context, l10n, isTablet),
             ),
           ),
 
-          /// =======================
-          /// COPYRIGHT
-          /// =======================
+          /// COPYRIGHT + SÉLECTEUR DE LANGUES
           Container(
             width: double.infinity,
             color: const Color(0xFF04122A),
             padding: const EdgeInsets.symmetric(vertical: 20),
-            child: const Center(
-              child: Text(
-                "© Copyright 2026 KreditSch. Tous droits réservés.",
-                style: TextStyle(color: Colors.white70),
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Sélecteur de langues centré
+                LanguageSelector(),
+
+                const SizedBox(height: 10),
+
+                // Texte de copyright
+                Text(
+                  l10n.footerCopyright,
+                  style: const TextStyle(color: Colors.white70),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ],
@@ -76,21 +83,19 @@ class FooterSection extends StatelessWidget {
   /// =======================
   /// NEWSLETTER
   /// =======================
-  Widget _newsletterDesktop() {
+  Widget _newsletterDesktop(AppLocalizations l10n) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Abonnez-vous à notre newsletter",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                l10n.newsletterTitle,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
-              Text(
-                "Restez informé(e) des fonctionnalités et technologies de nos produits en constante évolution.",
-              ),
+              const SizedBox(height: 10),
+              Text(l10n.newsletterDescription),
             ],
           ),
         ),
@@ -99,7 +104,7 @@ class FooterSection extends StatelessWidget {
           width: 360,
           child: TextField(
             decoration: InputDecoration(
-              hintText: "Votre adresse e-mail",
+              hintText: l10n.newsletterEmailHint,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
               ),
@@ -113,29 +118,32 @@ class FooterSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
           ),
           onPressed: () {},
-          child: const Text("S'abonner", style: TextStyle(color: Colors.black)),
+          child: Text(
+            l10n.newsletterSubscribe,
+            style: const TextStyle(color: Colors.black),
+          ),
         ),
       ],
     );
   }
 
-  Widget _newsletterMobile() {
+  Widget _newsletterMobile(AppLocalizations l10n) {
     return Column(
       children: [
-        const Text(
-          "Abonnez-vous à notre newsletter",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        Text(
+          l10n.newsletterTitle,
+          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
-        const Text(
-          "Restez informé(e) des nouveautés et évolutions.",
+        Text(
+          l10n.newsletterDescriptionShort,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 20),
         TextField(
           decoration: InputDecoration(
-            hintText: "Votre adresse e-mail",
+            hintText: l10n.newsletterEmailHint,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(4),
             ),
@@ -148,7 +156,10 @@ class FooterSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
           ),
           onPressed: () {},
-          child: const Text("S'abonner", style: TextStyle(color: Colors.black)),
+          child: Text(
+            l10n.newsletterSubscribe,
+            style: const TextStyle(color: Colors.black),
+          ),
         ),
       ],
     );
@@ -157,108 +168,72 @@ class FooterSection extends StatelessWidget {
   /// =======================
   /// FOOTER DESKTOP / TABLET
   /// =======================
-  Widget _footerDesktop(BuildContext context, bool isTablet) {
+  Widget _footerDesktop(
+      BuildContext context,
+      AppLocalizations l10n,
+      bool isTablet,
+      ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(flex: 2, child: _brandBlock(context)),
+        Expanded(flex: 2, child: _brandBlock(context, l10n)),
         const SizedBox(width: 30),
-        Expanded(child:
-        _linksBlock(
-          context,
-          "Services",
-          [
-            _FooterLink("Page d'accueil", () {
-              context.goNamed('home');
-            }),
-            _FooterLink("Découvrir nos offres", () {
-              context.go('/offers');
-            }),
-            _FooterLink("Investissement", () {
-              context.go('/investment');
-            }),
-            _FooterLink("Contact", () {
-              context.go('/contact');
-            }),
-            _FooterLink("À propos de nous", () {
-              context.go('/about');
-            }),
-          ],
-        ),
+        Expanded(
+          child: _linksBlock(
+            l10n.footerServices,
+            [
+              _FooterLink(l10n.footerHome, () => context.goNamed('home')),
+              _FooterLink(l10n.footerOffers, () => context.go('/offers')),
+              _FooterLink(l10n.footerInvestment, () => context.go('/investment')),
+              _FooterLink(l10n.footerContact, () => context.go('/contact')),
+              _FooterLink(l10n.footerAbout, () => context.go('/about')),
+            ],
+          ),
         ),
         const SizedBox(width: 30),
-        Expanded(child:
-        _linksBlock(
-          context,
-          "Information",
-          [
-            _FooterLink("Protection des données", () {
-              context.goNamed('home');
-            }),
-            _FooterLink("Sécurité", () {
-              context.goNamed('home');
-            }),
-            _FooterLink("CGV", () {
-              context.goNamed('home');
-            }),
-          ],
-        ),
+        Expanded(
+          child: _linksBlock(
+            l10n.footerInformation,
+            [
+              _FooterLink(l10n.footerPrivacy, () {}),
+              _FooterLink(l10n.footerSecurity, () {}),
+              _FooterLink(l10n.footerTerms, () {}),
+            ],
+          ),
         ),
         const SizedBox(width: 30),
-        Expanded(child: _contactBlock()),
+        Expanded(child: _contactBlock(l10n)),
       ],
     );
   }
 
-  /// =======================
-  /// FOOTER MOBILE
-  /// =======================
-  Widget _footerMobile(BuildContext context) {
+  Widget _footerMobile(BuildContext context, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _brandBlock(context),
+        _brandBlock(context, l10n),
         const SizedBox(height: 40),
         _linksBlock(
-          context,
-          "Services",
+          l10n.footerServices,
           [
-            _FooterLink("Page d'accueil", () {
-              context.goNamed('home');
-            }),
-            _FooterLink("Découvrir nos offres", () {
-              context.go('/offers');
-            }),
-            _FooterLink("Investissement", () {
-              context.go('/investment');
-            }),
-            _FooterLink("Contact", () {
-              context.go('/contact');
-            }),
-            _FooterLink("À propos de nous", () {
-              context.go('/about');
-            }),
+            _FooterLink(l10n.footerHome, () => context.goNamed('home')),
+            _FooterLink(l10n.footerOffers, () => context.go('/offers')),
+            _FooterLink(l10n.footerInvestment, () => context.go('/investment')),
+            _FooterLink(l10n.footerContact, () => context.go('/contact')),
+            _FooterLink(l10n.footerAbout, () => context.go('/about')),
           ],
         ),
         const SizedBox(height: 30),
-
         _linksBlock(
-          context,
-          "Information",
+          l10n.footerInformation,
           [
-            _FooterLink("Protection des données", () {
-              context.goNamed('home');
-            }),
-            _FooterLink("Sécurité", () {
-              context.goNamed('home');
-            }),
-            _FooterLink("CGV", () {
-              context.goNamed('home');
-            }),
+            _FooterLink(l10n.footerPrivacy, () {}),
+            _FooterLink(l10n.footerSecurity, () {}),
+            _FooterLink(l10n.footerTerms, () {}),
           ],
         ),
         const SizedBox(height: 30),
-        _contactBlock(),
+        _contactBlock(l10n),
       ],
     );
   }
@@ -266,7 +241,7 @@ class FooterSection extends StatelessWidget {
   /// =======================
   /// BLOCS
   /// =======================
-  Widget _brandBlock(BuildContext context) {
+  Widget _brandBlock(BuildContext context, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -283,9 +258,9 @@ class FooterSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
-        const Text(
-          "Nous redonnons aux gens le contrôle de leur argent grâce à des solutions de financement modernes.",
-          style: TextStyle(color: Colors.white70),
+        Text(
+          l10n.footerBrandDescription,
+          style: const TextStyle(color: Colors.white70),
         ),
         const SizedBox(height: 20),
         ElevatedButton(
@@ -293,21 +268,17 @@ class FooterSection extends StatelessWidget {
             backgroundColor: const Color(0xFFF5B400),
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           ),
-          onPressed: () {
-            context.goNamed('loan_simulation');
-          },
-          child: const Text("Voir une simulation",
-              style: TextStyle(color: Colors.black)),
+          onPressed: () => context.goNamed('loan_simulation'),
+          child: Text(
+            l10n.footerSimulationButton,
+            style: const TextStyle(color: Colors.black),
+          ),
         ),
       ],
     );
   }
 
-  Widget _linksBlock(
-      BuildContext context,
-      String title,
-      List<_FooterLink> links,
-      ) {
+  Widget _linksBlock(String title, List<_FooterLink> links) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -328,9 +299,7 @@ class FooterSection extends StatelessWidget {
               hoverColor: Colors.white10,
               child: Text(
                 link.label,
-                style: const TextStyle(
-                  color: Colors.white70,
-                ),
+                style: const TextStyle(color: Colors.white70),
               ),
             ),
           ),
@@ -339,36 +308,25 @@ class FooterSection extends StatelessWidget {
     );
   }
 
-  Widget _contactBlock() {
+  Widget _contactBlock(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Contact",
-          style: TextStyle(
+          l10n.footerContact,
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
         ),
-        SizedBox(height: 12),
-        _ContactRow(Icons.location_on,
-            "Audenstraße 2 – 4, 61348 Bad Homburg"),
-        _ContactRow(
-          Icons.email,
-          "kontakt@kreditsch.de",
-          onTap: () {
-            _launchURL("mailto:kontakt@kreditsch.de");
-          },
-        ),
-        _ContactRow(
-          Icons.phone,
-          "+41 798079225",
-          onTap: () {
-            _launchURL("tel:+41798079225");
-          },
-        ),
-        _ContactRow(Icons.access_time, "Lun - Sam : 9h00 - 17h00"),
+        const SizedBox(height: 12),
+        _ContactRow(Icons.location_on, l10n.footerAddress),
+        _ContactRow(Icons.email, "kontakt@kreditsch.de",
+            onTap: () => _launchURL("mailto:kontakt@kreditsch.de")),
+        _ContactRow(Icons.phone, "+41 798079225",
+            onTap: () => _launchURL("tel:+41798079225")),
+        _ContactRow(Icons.access_time, l10n.footerOpeningHours),
       ],
     );
   }
@@ -377,7 +335,6 @@ class FooterSection extends StatelessWidget {
 class _FooterLink {
   final String label;
   final VoidCallback onTap;
-
   _FooterLink(this.label, this.onTap);
 }
 
@@ -410,4 +367,3 @@ class _ContactRow extends StatelessWidget {
     );
   }
 }
-

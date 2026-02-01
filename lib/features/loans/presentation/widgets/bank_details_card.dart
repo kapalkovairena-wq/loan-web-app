@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:async';
 
 import '../widgets/web_card.dart';
 import '../widgets/row_item.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class BankDetailsCard extends StatefulWidget {
   const BankDetailsCard({super.key});
@@ -43,10 +43,12 @@ class _BankDetailsCardState extends State<BankDetailsCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (loading) {
-      return const WebCard(
-        title: "Vos coordonnées bancaires",
-        child: Center(child: CircularProgressIndicator()),
+      return WebCard(
+        title: l10n.bankDetailsTitle,
+        child: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -54,18 +56,18 @@ class _BankDetailsCardState extends State<BankDetailsCard> {
         data!['iban'] == null ||
         (data!['iban'] as String).isEmpty) {
       return WebCard(
-        title: "Vos coordonnées bancaires",
+        title: l10n.bankDetailsTitle,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              "Aucune information bancaire enregistrée",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              l10n.bankDetailsEmptyTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
-              "Veuillez renseigner vos coordonnées pour recevoir les fonds.",
-              style: TextStyle(color: Colors.grey),
+              l10n.bankDetailsEmptyDescription,
+              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
@@ -73,14 +75,14 @@ class _BankDetailsCardState extends State<BankDetailsCard> {
     }
 
     return WebCard(
-      title: "Vos coordonnées bancaires",
+      title: l10n.bankDetailsTitle,
       child: Column(
         children: [
-          RowItem("Receveur", data!['receiver_full_name'] ?? '—'),
-          RowItem("IBAN", data!['iban'] ?? '—'),
-          RowItem("BIC", data!['bic'] ?? '—'),
-          RowItem("Banque", data!['bank_name'] ?? '—'),
-          RowItem("Adresse", data!['bank_address'] ?? '—'),
+          RowItem(l10n.bankReceiver, data!['receiver_full_name'] ?? '—'),
+          RowItem(l10n.bankIban, data!['iban'] ?? '—'),
+          RowItem(l10n.bankBic, data!['bic'] ?? '—'),
+          RowItem(l10n.bankName, data!['bank_name'] ?? '—'),
+          RowItem(l10n.bankAddress, data!['bank_address'] ?? '—'),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoanExpertiseSection extends StatefulWidget {
   const LoanExpertiseSection({super.key});
@@ -48,6 +49,8 @@ class _LoanExpertiseSectionState extends State<LoanExpertiseSection>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final width = MediaQuery.of(context).size.width;
     final isMobile = width < 700;
     final isTablet = width >= 700 && width < 1100;
@@ -55,7 +58,7 @@ class _LoanExpertiseSectionState extends State<LoanExpertiseSection>
     double horizontalPadding() {
       if (isMobile) return 16;
       if (isTablet) return 40;
-      return 80; // Desktop
+      return 80;
     }
 
     double boxWidth() {
@@ -79,7 +82,9 @@ class _LoanExpertiseSectionState extends State<LoanExpertiseSection>
       },
       child: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding(), vertical: 60),
+          horizontal: horizontalPadding(),
+          vertical: 60,
+        ),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFF071C3A), Color(0xFF020D1F)],
@@ -98,21 +103,15 @@ class _LoanExpertiseSectionState extends State<LoanExpertiseSection>
                   width: boxWidth(),
                   background: Colors.white,
                   textColor: Colors.black,
-                  title: "Notre vision et notre mission",
-                  content:
-                  "Chez KreditSch, nous simplifions l’accès au crédit en proposant "
-                      "des solutions de prêts rapides, transparentes et adaptées "
-                      "à chaque profil, afin de redonner à chacun le contrôle de ses projets financiers.",
+                  title: l10n.loanVisionTitle,
+                  content: l10n.loanVisionContent,
                 ),
                 _aboutBox(
                   width: boxWidth(),
                   background: const Color(0xFFF6B400),
                   textColor: Colors.white,
-                  title: "Solutions de prêts intelligentes",
-                  content:
-                  "KreditSch est reconnue pour ses offres de prêts personnels, "
-                      "professionnels et d’urgence, alliant rapidité, sécurité "
-                      "et conditions flexibles pour accompagner chaque étape de votre vie.",
+                  title: l10n.loanSolutionsTitle,
+                  content: l10n.loanSolutionsContent,
                 ),
               ],
             ),
@@ -133,25 +132,25 @@ class _LoanExpertiseSectionState extends State<LoanExpertiseSection>
                       width: statWidth(),
                       icon: Icons.check_circle_outline,
                       value: stat1.value,
-                      label: "Demandes de prêts approuvées",
+                      label: l10n.loanStatApproved,
                     ),
                     _stat(
                       width: statWidth(),
                       icon: Icons.monetization_on_outlined,
                       value: stat2.value,
-                      label: "Types de prêts disponibles",
+                      label: l10n.loanStatTypes,
                     ),
                     _stat(
                       width: statWidth(),
                       icon: Icons.calendar_today_outlined,
                       value: stat3.value,
-                      label: "Années d’expertise financière",
+                      label: l10n.loanStatExperience,
                     ),
                     _stat(
                       width: statWidth(),
                       icon: Icons.person_outline,
                       value: stat4.value,
-                      label: "Experts crédit dédiés",
+                      label: l10n.loanStatExperts,
                     ),
                   ],
                 );

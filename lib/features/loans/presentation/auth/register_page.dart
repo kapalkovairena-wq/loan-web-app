@@ -4,6 +4,7 @@ import 'auth_service.dart';
 import 'supabase_profile_service.dart';
 import '../pages/home_page.dart';
 import 'login_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -56,40 +57,27 @@ class _RegisterState extends State<Register> {
   bool loading = false;
 
   List<String> currencyCodes = [
-    'EUR',
-    'BGN',
-    'DKK',
-    'HUF',
-    'PLN',
-    'RON',
-    'SEK',
-    'CZK',
-    'GBP',
-    'CHF',
-    'NOK',
-    'ISK',
-    'RUB',
-    'UAH',
-    'RSD',
-    'BAM',
-    'ALL',
-    'MKD',
-    'MDL',
-    'BYN',
-    'GEL',
-    'AMD',
-    'AZN',
-    'TRY',
+    'EUR','BGN','DKK','HUF','PLN','RON','SEK','CZK','GBP','CHF','NOK','ISK','RUB','UAH','RSD','BAM','ALL','MKD','MDL','BYN','GEL','AMD','AZN','TRY',
   ];
 
   String? selectedCurrency;
 
   Future<void> _register() async {
+    final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context);
+    const supportedLanguages = [
+      'en','fr','de','es','it','pt','pl','nl','sv','el','ro','hu','cs','sk','bg',
+      'hr','da','fi','ga','lt','lv','mt','sl','et',
+    ];
+    final languageCode = supportedLanguages.contains(locale.languageCode)
+        ? locale.languageCode
+        : 'en';
+
     if (emailCtrl.text.isEmpty ||
         passCtrl.text.isEmpty ||
         selectedCurrency == null) {
       _showMessage(
-        "Veuillez remplir tous les champs",
+        l10n.fillAllFields,
         isError: true,
       );
       return;
@@ -107,7 +95,8 @@ class _RegisterState extends State<Register> {
       // 2️⃣ Création du profil Supabase
       await SupabaseProfileService.createProfile(
         FirebaseAuth.instance.currentUser!,
-        currency: selectedCurrency!, // ✅ SÛR
+        currency: selectedCurrency!,
+        language: languageCode,
       );
 
       // 3️⃣ Redirection
@@ -119,23 +108,16 @@ class _RegisterState extends State<Register> {
       }
 
     } on FirebaseAuthException catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+
       if (e.code == 'email-already-in-use') {
-        _showMessage(
-          "Ce compte existe déjà. Veuillez vous connecter.",
-          isError: true,
-        );
+        _showMessage(l10n.accountAlreadyExists, isError: true);
       } else if (e.code == 'invalid-email') {
-        _showMessage("Email invalide", isError: true);
+        _showMessage(l10n.invalidEmail, isError: true);
       } else if (e.code == 'weak-password') {
-        _showMessage(
-          "Mot de passe trop faible (min. 6 caractères)",
-          isError: true,
-        );
+        _showMessage(l10n.weakPassword, isError: true);
       } else {
-        _showMessage(
-          "Erreur lors de la création du compte",
-          isError: true,
-        );
+        _showMessage(l10n.registrationError, isError: true);
       }
     } finally {
       setState(() => loading = false);
@@ -153,6 +135,16 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context);
+    const supportedLanguages = [
+      'en','fr','de','es','it','pt','pl','nl','sv','el','ro','hu','cs','sk','bg',
+      'hr','da','fi','ga','lt','lv','mt','sl','et',
+    ];
+    final languageCode = supportedLanguages.contains(locale.languageCode)
+        ? locale.languageCode
+        : 'en';
+
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       body: Center(
@@ -169,75 +161,64 @@ class _RegisterState extends State<Register> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // ===== LOGO =====
+                  /// LOGO
                   Center(
-                    child: Column(
-                      children: [
-                        Image.network(
-                          "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo.png",
-                          height: 60,
-                        ),
-                      ],
+                    child: Image.network(
+                      "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo.png",
+                      height: 60,
                     ),
                   ),
-
                   const SizedBox(height: 32),
 
-                  const Text(
-                    "Créer un compte",
-                    style: TextStyle(
+                  Text(
+                    l10n.createAccount,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    "Rejoignez KreditSch en quelques secondes",
-                    style: TextStyle(color: Colors.black54),
+                  Text(
+                    l10n.joinKreditSch,
+                    style: const TextStyle(color: Colors.black54),
                   ),
-
                   const SizedBox(height: 24),
 
-            DropdownButtonFormField<String>(
-              value: selectedCurrency,
-              decoration: const InputDecoration(
-                labelText: "Devise",
-                border: OutlineInputBorder(),
-              ),
-              items: currencyCodes.map((currency) {
-                return DropdownMenuItem(
-                  value: currency,
-                  child: Text(currency),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedCurrency = value;
-                });
-              },
-            ),
-            const SizedBox(height: 24),
+                  DropdownButtonFormField<String>(
+                    value: selectedCurrency,
+                    decoration: InputDecoration(
+                      labelText: l10n.currency,
+                      border: const OutlineInputBorder(),
+                    ),
+                    items: currencyCodes.map((currency) {
+                      return DropdownMenuItem(
+                        value: currency,
+                        child: Text(currency),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() => selectedCurrency = value);
+                    },
+                  ),
+                  const SizedBox(height: 24),
 
                   TextField(
                     controller: emailCtrl,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.email,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     controller: passCtrl,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Mot de passe",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.password,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
-
                   const SizedBox(height: 24),
 
                   ElevatedButton(
@@ -247,11 +228,9 @@ class _RegisterState extends State<Register> {
                     ),
                     child: loading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Créer mon compte"),
+                        : Text(l10n.createMyAccount),
                   ),
-
                   const SizedBox(height: 16),
-
                   const Divider(),
 
                   OutlinedButton.icon(
@@ -259,36 +238,27 @@ class _RegisterState extends State<Register> {
                       "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/google.png",
                       height: 18,
                     ),
-                    label: const Text("Continuer avec Google"),
+                    label: Text(l10n.continueWithGoogle),
                     onPressed: loading
                         ? null
                         : () async {
                       if (selectedCurrency == null) {
                         _showMessage(
-                          "Veuillez sélectionner une devise",
+                          l10n.selectCurrency,
                           isError: true,
                         );
                         return;
                       }
-
                       try {
                         setState(() => loading = true);
-
-                        // 1️⃣ Google Sign-In
                         await auth.signInWithGoogle();
-
                         final user = FirebaseAuth.instance.currentUser;
-                        if (user == null) {
-                          throw Exception("Utilisateur non authentifié");
-                        }
-
-                        // 2️⃣ Création du profil Supabase
+                        if (user == null) throw Exception(l10n.googleAuthError);
                         await SupabaseProfileService.createProfile(
                           user,
-                          currency: selectedCurrency!, // ✅ TRANSMISE
+                          currency: selectedCurrency!,
+                          language: languageCode,
                         );
-
-                        // 3️⃣ Redirection
                         if (mounted) {
                           Navigator.pushReplacement(
                             context,
@@ -296,35 +266,26 @@ class _RegisterState extends State<Register> {
                           );
                         }
                       } catch (e) {
-                        _showMessage(
-                          "Erreur lors de l'inscription Google",
-                          isError: true,
-                        );
+                        _showMessage(l10n.googleAuthError, isError: true);
                       } finally {
                         setState(() => loading = false);
                       }
                     },
                   ),
-
                   const SizedBox(height: 24),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Déjà un compte ?",
-                        style: TextStyle(color: Colors.black54),
-                      ),
+                      Text(l10n.alreadyHaveAccount, style: const TextStyle(color: Colors.black54)),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) => const LoginPage(),
-                            ),
+                            MaterialPageRoute(builder: (_) => const LoginPage()),
                           );
                         },
-                        child: const Text("Se connecter"),
+                        child: Text(l10n.signIn),
                       ),
                     ],
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../presentation/auth/auth_gate.dart';
 
@@ -36,10 +37,7 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
 
   Future<void> loadRequests() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
-
-    if (firebaseUser == null) {
-      return;
-    }
+    if (firebaseUser == null) return;
 
     final data = await supabase
         .from('loan_requests')
@@ -53,7 +51,6 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
   Future<void> _loadProfile() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
 
-    // Utilisateur non connecté
     if (firebaseUser == null) {
       setState(() {
         profileData = {'currency': '€'};
@@ -63,9 +60,9 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
     }
 
     try {
-      final response = await Supabase.instance.client
+      final response = await supabase
           .from('profiles')
-          .select('currency, language')
+          .select('currency')
           .eq('firebase_uid', firebaseUser.uid)
           .single();
 
@@ -73,8 +70,7 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
         profileData = response;
         isLoadingProfile = false;
       });
-    } catch (e) {
-      // fallback sécurité
+    } catch (_) {
       setState(() {
         profileData = {'currency': '€'};
         isLoadingProfile = false;
@@ -82,14 +78,12 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
     }
   }
 
-  String get currency {
-    final c = profileData['currency'];
-    if (c == null || c.toString().isEmpty) return '€';
-    return c;
-  }
+  String get currency => profileData['currency'] ?? '€';
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (isLoadingProfile) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -99,22 +93,24 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       appBar: AppBar(
-        title: const Text("Historique des demandes"),
+        title: Text(l10n.loanHistoryTitle),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 1,
       ),
       body: requests.isEmpty
-          ? const Center(child: Text("Aucune demande trouvée"))
+          ? Center(child: Text(l10n.loanHistoryEmpty))
           : ListView.builder(
         padding: const EdgeInsets.all(24),
         itemCount: requests.length,
-        itemBuilder: (_, i) => _loanCard(requests[i]),
+        itemBuilder: (_, i) => _loanCard(context, requests[i]),
       ),
     );
   }
 
-  Widget _loanCard(Map<String, dynamic> data) {
+  Widget _loanCard(BuildContext context, Map<String, dynamic> data) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       margin: const EdgeInsets.only(bottom: 24),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -123,81 +119,80 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            /// ===== HEADER =====
+            /// HEADER
             Row(
               children: [
                 Expanded(
                   child: Text(
                     data['full_name'],
                     style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-                _statusBadge(data['loan_status']),
+                _statusBadge(context, data['loan_status']),
               ],
             ),
 
             const SizedBox(height: 6),
             Text(
-              "Soumise le ${DateFormat('dd/MM/yyyy').format(DateTime.parse(data['created_at']))}",
+              "${l10n.loanSubmittedOn} ${DateFormat('dd/MM/yyyy').format(
+                DateTime.parse(data['created_at']),
+              )}",
               style: TextStyle(color: Colors.grey[600]),
             ),
 
             const Divider(height: 30),
 
-            /// ===== PERSONAL INFO =====
             _section(
-              "Informations personnelles",
+              l10n.personalInformation,
               {
-                "Email": data['email'],
-                "Téléphone": data['phone'],
-                "Adresse": data['address'],
-                "Ville": data['city'],
-                "Pays": data['country'],
+                l10n.email: data['email'],
+                l10n.phone: data['phone'],
+                l10n.address: data['address'],
+                l10n.city: data['city'],
+                l10n.country: data['country'],
               },
             ),
 
-            /// ===== FINANCIAL INFO =====
             _section(
-              "Informations financières",
+              l10n.financialInformation,
               {
-                "Profession": data['profession'],
-                "Source de revenus": data['income_source'],
-                "Montant demandé": "${data['amount']} $currency",
-                "Durée": "${data['duration_months']} mois",
+                l10n.profession: data['profession'],
+                l10n.incomeSource: data['income_source'],
+                l10n.requestedAmount: "${data['amount']} $currency",
+                l10n.duration: "${data['duration_months']} ${l10n.months}",
               },
             ),
 
-            /// ===== CALCUL =====
             _section(
-              "Récapitulatif du crédit",
+              l10n.loanSummary,
               {
-                "Mensualité": "${data['monthly_payment']} $currency",
-                "Intérêts": "${data['total_interest']} $currency",
-                "Total à rembourser": "${data['total_amount']} $currency",
+                l10n.monthlyPayment:
+                "${data['monthly_payment']} $currency",
+                l10n.totalInterest:
+                "${data['total_interest']} $currency",
+                l10n.totalToRepay:
+                "${data['total_amount']} $currency",
               },
             ),
 
-            /// ===== DOCUMENTS =====
             const SizedBox(height: 20),
-            const Text(
-              "Documents soumis",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Text(
+              l10n.submittedDocuments,
+              style:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
 
             Row(
               children: [
                 _documentPreview(
-                  title: "Pièce d'identité",
+                  title: l10n.identityDocument,
                   imageUrl: data['identity_document_url'],
                 ),
                 const SizedBox(width: 16),
                 _documentPreview(
-                  title: "Justificatif de domicile",
+                  title: l10n.addressProof,
                   imageUrl: data['address_proof_url'],
                 ),
               ],
@@ -215,8 +210,8 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title,
-              style: const TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold)),
+              style:
+              const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 10),
           ...items.entries.map(
                 (e) => Padding(
@@ -229,7 +224,8 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
                   ),
                   Expanded(
                     child: Text(e.value,
-                        style: const TextStyle(fontWeight: FontWeight.w600)),
+                        style:
+                        const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ],
               ),
@@ -264,16 +260,18 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
     );
   }
 
-  Widget _statusBadge(String status) {
+  Widget _statusBadge(BuildContext context, String status) {
+    final l10n = AppLocalizations.of(context)!;
+
     Color color = Colors.orange;
-    String text = "En cours";
+    String text = l10n.statusPending;
 
     if (status == "approved") {
       color = Colors.green;
-      text = "Approuvée";
+      text = l10n.statusApproved;
     } else if (status == "rejected") {
       color = Colors.red;
-      text = "Refusée";
+      text = l10n.statusRejected;
     }
 
     return Container(
@@ -282,10 +280,8 @@ class _LoanHistoryPageState extends State<LoanHistoryPage> {
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(
-        text,
-        style: TextStyle(color: color, fontWeight: FontWeight.bold),
-      ),
+      child: Text(text,
+          style: TextStyle(color: color, fontWeight: FontWeight.bold)),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../presentation/auth/auth_gate.dart';
 
@@ -133,7 +134,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
   Future<void> sendMessage() async {
     if (controller.text.trim().isEmpty || activeConversationId == null) return;
 
-    final messageText = controller.text.trim(); // ✅ sauvegarde
+    final messageText = controller.text.trim();
 
     _typingTimer?.cancel();
     _isTyping = false;
@@ -147,7 +148,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
       'conversation_id': activeConversationId!,
       'sender_type': 'user',
       'sender_firebase_uid': firebaseUid,
-      'message': controller.text.trim(),
+      'message': messageText,
     });
 
     controller.clear();
@@ -184,20 +185,22 @@ class _ChatUserPageState extends State<ChatUserPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (activeConversationId == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text("Support")),
+        appBar: AppBar(title: Text(l10n.supportTitle)),
         body: Center(
           child: ElevatedButton(
             onPressed: createNewConversation,
-            child: const Text("Nouvelle discussion"),
+            child: Text(l10n.newConversation),
           ),
         ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Chat support")),
+      appBar: AppBar(title: Text(l10n.supportChatTitle)),
       body: Column(
         children: [
           Expanded(
@@ -213,7 +216,6 @@ class _ChatUserPageState extends State<ChatUserPage> {
                 }
 
                 final messages = snapshot.data!;
-
                 if (messages.isNotEmpty) {
                   onNewMessage(messages.first);
                 }
@@ -248,8 +250,7 @@ class _ChatUserPageState extends State<ChatUserPage> {
                               showCursor: false,
                               cursorWidth: 1,
                               style: TextStyle(
-                                color:
-                                isUser ? Colors.white : Colors.black,
+                                color: isUser ? Colors.white : Colors.black,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -289,7 +290,6 @@ class _ChatUserPageState extends State<ChatUserPage> {
             ),
           ),
 
-          /* -------- ADMIN TYPING -------- */
           StreamBuilder<List<Map<String, dynamic>>>(
             stream: supabase
                 .from('chat_typing')
@@ -304,11 +304,12 @@ class _ChatUserPageState extends State<ChatUserPage> {
                   snapshot.data!.first['is_admin_typing'] == true;
 
               return isAdminTyping
-                  ? const Padding(
-                padding: EdgeInsets.only(left: 12, bottom: 6),
+                  ? Padding(
+                padding:
+                const EdgeInsets.only(left: 12, bottom: 6),
                 child: Text(
-                  "Support est en train d’écrire…",
-                  style: TextStyle(
+                  l10n.supportTyping,
+                  style: const TextStyle(
                     fontStyle: FontStyle.italic,
                     color: Colors.grey,
                   ),
@@ -318,7 +319,6 @@ class _ChatUserPageState extends State<ChatUserPage> {
             },
           ),
 
-          /* -------- INPUT -------- */
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
@@ -342,8 +342,8 @@ class _ChatUserPageState extends State<ChatUserPage> {
                         textInputAction: TextInputAction.newline,
                         scrollPhysics: const BouncingScrollPhysics(),
                         onChanged: _onUserTyping,
-                        decoration: const InputDecoration(
-                          hintText: "Votre message...",
+                        decoration:  InputDecoration(
+                          hintText: l10n.messageHint,
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.all(12),
                         ),

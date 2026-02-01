@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/app_drawer.dart';
@@ -13,6 +14,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
     final isMobile = width < 700;
     final isTablet = width >= 700 && width < 1100;
@@ -20,13 +22,13 @@ class AboutPage extends StatelessWidget {
     double horizontalPadding() {
       if (isMobile) return 16;
       if (isTablet) return 40;
-      return 120; // Desktop
+      return 120;
     }
 
     double featureItemWidth() {
       if (isMobile) return double.infinity;
       if (isTablet) return (width - horizontalPadding() * 2 - 40) / 2;
-      return 420; // Desktop
+      return 420;
     }
 
     return Scaffold(
@@ -49,7 +51,6 @@ class AboutPage extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    // Bouton contact flottant
                     Positioned(
                       right: isMobile ? 16 : 40,
                       bottom: isMobile ? 16 : 40,
@@ -69,18 +70,19 @@ class AboutPage extends StatelessWidget {
                           ],
                         ),
                         child: Row(
-                          children: const [
-                            Icon(Icons.chat, color: Color(0xFFF5B400)),
-                            SizedBox(width: 10),
+                          children: [
+                            const Icon(Icons.chat,
+                                color: Color(0xFFF5B400)),
+                            const SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Écrivez-nous",
-                                  style: TextStyle(
+                                  t.aboutContactUs,
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text("(+49) 1577 4851991"),
+                                const Text("(+49) 1577 4851991"),
                               ],
                             ),
                           ],
@@ -90,40 +92,39 @@ class AboutPage extends StatelessWidget {
                   ],
                 ),
 
-                // ================= TEXTE =================
+                // ================= TEXT =================
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
-                      horizontal: horizontalPadding(), vertical: 60),
+                    horizontal: horizontalPadding(),
+                    vertical: 60,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Label
                       Row(
                         children: [
-                          const Text(
-                            "Via KreditSch",
-                            style: TextStyle(
+                          Text(
+                            t.aboutLabel,
+                            style: const TextStyle(
                               color: Color(0xFFF5B400),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Expanded(
+                          const Expanded(
                             child: Divider(
-                              color: const Color(0xFFF5B400),
+                              color: Color(0xFFF5B400),
                               thickness: 1,
-                              endIndent: isMobile ? 0 : 0,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 20),
 
-                      // Titre
-                      const Text(
-                        "Des solutions de prêt adaptées à chaque projet",
-                        style: TextStyle(
+                      Text(
+                        t.aboutTitle,
+                        style: const TextStyle(
                           fontSize: 34,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF0B1C3E),
@@ -131,14 +132,13 @@ class AboutPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
 
-                      // Description
                       ConstrainedBox(
                         constraints: BoxConstraints(
                           maxWidth: isMobile ? double.infinity : 800,
                         ),
-                        child: const Text(
-                          "KreditSch accompagne particuliers et entrepreneurs avec des solutions de prêt fiables, transparentes et rapides, adaptées à vos besoins financiers réels.",
-                          style: TextStyle(
+                        child: Text(
+                          t.aboutDescription,
+                          style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black87,
                           ),
@@ -146,34 +146,36 @@ class AboutPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 60),
 
-                      // ================= FEATURES =================
                       isMobile
                           ? Column(
                         children: [
-                          for (var feature in const [
+                          for (var feature in [
                             _FeatureItem(
                               icon: Icons.trending_up,
-                              title: "Prêt personnel flexible",
+                              title: t.aboutFeaturePersonalLoanTitle,
                               description:
-                              "Financez vos projets personnels avec des conditions claires et sans surprise.",
+                              t.aboutFeaturePersonalLoanDesc,
                             ),
                             _FeatureItem(
                               icon: Icons.business_center,
-                              title: "Prêt professionnel",
+                              title:
+                              t.aboutFeatureBusinessLoanTitle,
                               description:
-                              "Un soutien financier solide pour développer votre activité en toute sérénité.",
+                              t.aboutFeatureBusinessLoanDesc,
                             ),
                             _FeatureItem(
                               icon: Icons.schedule,
-                              title: "Décaissement rapide",
+                              title:
+                              t.aboutFeatureFastPaymentTitle,
                               description:
-                              "Recevez vos fonds rapidement après validation de votre dossier.",
+                              t.aboutFeatureFastPaymentDesc,
                             ),
                             _FeatureItem(
                               icon: Icons.verified,
-                              title: "Processus sécurisé",
+                              title:
+                              t.aboutFeatureSecurityTitle,
                               description:
-                              "Vos données sont protégées selon les normes les plus strictes.",
+                              t.aboutFeatureSecurityDesc,
                             ),
                           ])
                             Padding(
@@ -189,36 +191,41 @@ class AboutPage extends StatelessWidget {
                           : Wrap(
                         spacing: 40,
                         runSpacing: 40,
-                        children: const [
+                        children: [
                           _FeatureItem(
                             icon: Icons.trending_up,
-                            title: "Prêt personnel flexible",
+                            title:
+                            t.aboutFeaturePersonalLoanTitle,
                             description:
-                            "Financez vos projets personnels avec des conditions claires et sans surprise.",
+                            t.aboutFeaturePersonalLoanDesc,
                           ),
                           _FeatureItem(
                             icon: Icons.business_center,
-                            title: "Prêt professionnel",
+                            title:
+                            t.aboutFeatureBusinessLoanTitle,
                             description:
-                            "Un soutien financier solide pour développer votre activité en toute sérénité.",
+                            t.aboutFeatureBusinessLoanDesc,
                           ),
                           _FeatureItem(
                             icon: Icons.schedule,
-                            title: "Décaissement rapide",
+                            title:
+                            t.aboutFeatureFastPaymentTitle,
                             description:
-                            "Recevez vos fonds rapidement après validation de votre dossier.",
+                            t.aboutFeatureFastPaymentDesc,
                           ),
                           _FeatureItem(
                             icon: Icons.verified,
-                            title: "Processus sécurisé",
+                            title:
+                            t.aboutFeatureSecurityTitle,
                             description:
-                            "Vos données sont protégées selon les normes les plus strictes.",
+                            t.aboutFeatureSecurityDesc,
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
+
                 const LoanExpertiseSection(),
                 const TestimonialsSection(),
                 const TeamSection(),
@@ -228,7 +235,6 @@ class AboutPage extends StatelessWidget {
           ),
           const WhatsAppButton(
             phoneNumber: "+4915774851991",
-            message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
           ),
         ],
       ),
@@ -261,10 +267,8 @@ class _FeatureItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+                style:
+                const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               const SizedBox(height: 8),
               Text(

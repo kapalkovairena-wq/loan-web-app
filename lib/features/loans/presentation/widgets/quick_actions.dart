@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../widgets/web_card.dart';
 import '../widgets/action_button.dart';
@@ -14,54 +15,49 @@ class QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return WebCard(
-      title: "Actions rapides",
+      title: loc.quickActionsTitle,
       child: Wrap(
         spacing: 16,
         runSpacing: 16,
         children: [
           ActionButton(
-            label: "Profil",
+            label: loc.quickActionProfile,
             icon: Icons.person,
-            onPressed: () =>
-                context.go('/profile'),
+            onPressed: () => context.go('/profile'),
           ),
           ActionButton(
-            label: "Nouvelle demande",
+            label: loc.quickActionNewRequest,
             icon: Icons.add_circle_outline,
-            onPressed: () =>
-                context.go('/request'),
+            onPressed: () => context.go('/request'),
           ),
           if (hasLoanAmount)
             ActionButton(
-              label: "Mes coordonnées bancaires",
+              label: loc.quickActionBankDetails,
               icon: Icons.folder_open,
-              onPressed: () =>
-                  context.go('/bank_details'),
+              onPressed: () => context.go('/bank_details'),
             ),
           ActionButton(
-            label: "Historique des demandes",
+            label: loc.quickActionLoanHistory,
             icon: Icons.history,
-            onPressed: () =>
-                context.go('/loan_history'),
+            onPressed: () => context.go('/loan_history'),
           ),
           ActionButton(
-            label: "Historique des paiements",
+            label: loc.quickActionPaymentHistory,
             icon: Icons.history,
-            onPressed: () =>
-                context.go('/transaction_history'),
+            onPressed: () => context.go('/transaction_history'),
           ),
           ActionButton(
-            label: "Historique des documents",
+            label: loc.quickActionDocumentsHistory,
             icon: Icons.history,
-            onPressed: () =>
-                context.go('/documents_history'),
+            onPressed: () => context.go('/documents_history'),
           ),
           ActionButton(
-            label: "Support",
+            label: loc.quickActionSupport,
             icon: Icons.chat_bubble_outline,
-            onPressed: () =>
-                context.go('/chat'),
+            onPressed: () => context.go('/chat'),
           ),
         ],
       ),

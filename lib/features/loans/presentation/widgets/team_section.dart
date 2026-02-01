@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class TeamSection extends StatelessWidget {
   const TeamSection({super.key});
@@ -46,6 +47,8 @@ class _MobileLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -58,7 +61,7 @@ class _MobileLayout extends StatelessWidget {
         ),
         const SizedBox(height: 32),
         Text(
-          'Notre équipe',
+          l10n.teamTitle,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: titleSize,
@@ -67,16 +70,10 @@ class _MobileLayout extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        const Text(
-          'Fondée par des experts de la finance et du digital, '
-              'KreditSch accompagne depuis plusieurs années des milliers '
-              'de clients dans la réalisation de leurs projets grâce à '
-              'des solutions de prêt simples, rapides et transparentes.\n\n'
-              'Notre équipe internationale travaille chaque jour avec '
-              'une seule ambition : rendre l’accès au crédit plus juste, '
-              'plus humain et accessible à tous.',
+        Text(
+          l10n.teamDescription,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 15,
             height: 1.7,
             color: Color(0xFF6B6B6B),
@@ -98,6 +95,8 @@ class _DesktopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -121,7 +120,7 @@ class _DesktopLayout extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Notre équipe',
+                l10n.teamTitle,
                 style: TextStyle(
                   fontSize: titleSize,
                   fontWeight: FontWeight.w700,
@@ -129,15 +128,9 @@ class _DesktopLayout extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
-                'Fondée par des experts de la finance et du digital, '
-                    'KreditSch accompagne depuis plusieurs années des milliers '
-                    'de clients dans la réalisation de leurs projets grâce à '
-                    'des solutions de prêt simples, rapides et transparentes.\n\n'
-                    'Notre équipe internationale travaille chaque jour avec '
-                    'une seule ambition : rendre l’accès au crédit plus juste, '
-                    'plus humain et accessible à tous.',
-                style: TextStyle(
+              Text(
+                l10n.teamDescription,
+                style: const TextStyle(
                   fontSize: 16,
                   height: 1.7,
                   color: Color(0xFF6B6B6B),
@@ -162,14 +155,15 @@ class _ActionLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final link = MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () =>
-        context.go('/offers'),
-        child: const Text(
-          'Découvrez nos solutions de prêt >',
-          style: TextStyle(
+        onTap: () => context.go('/offers'),
+        child: Text(
+          l10n.teamCta,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color(0xFF6A1FD2),

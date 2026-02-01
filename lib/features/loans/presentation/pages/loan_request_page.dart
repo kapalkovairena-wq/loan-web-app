@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../presentation/auth/auth_loan_gate.dart';
 import '../widgets/input_field.dart';
@@ -111,7 +112,6 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
   Future<void> _loadProfile() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
 
-    // Utilisateur non connecté
     if (firebaseUser == null) {
       setState(() {
         profileData = {'currency': '€'};
@@ -132,7 +132,6 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
         isLoadingProfile = false;
       });
     } catch (e) {
-      // fallback sécurité
       setState(() {
         profileData = {'currency': '€'};
         isLoadingProfile = false;
@@ -146,9 +145,10 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
     return c;
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (isLoadingProfile) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -184,49 +184,95 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Informations personnelles",
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        Text(
+                          l10n.personalInfoTitle,
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
 
-                        InputField(label: "Nom complet *", hint: "Votre nom complet", controller: nameController),
-                        InputField(label: "Email *", hint: "exemple@email.com", controller: emailController),
-                        InputField(label: "Téléphone *", hint: "+49 00000000000", controller: phoneController),
-                        InputField(label: "Date de naissance", hint: "JJ/MM/AAAA", controller: dobController),
-                        InputField(label: "Adresse *", hint: "", controller: addressController),
-                        InputField(label: "Ville", hint: "", controller: cityController),
-                        InputField(label: "Pays", hint: "", controller: countryController),
+                        InputField(
+                          label: l10n.fullNameLabel,
+                          hint: l10n.fullNameHint,
+                          controller: nameController,
+                        ),
+                        InputField(
+                          label: l10n.emailLabel,
+                          hint: l10n.emailHint,
+                          controller: emailController,
+                        ),
+                        InputField(
+                          label: l10n.phoneLabel,
+                          hint: l10n.phoneHint,
+                          controller: phoneController,
+                        ),
+                        InputField(
+                          label: l10n.dobLabel,
+                          hint: l10n.dobHint,
+                          controller: dobController,
+                        ),
+                        InputField(
+                          label: l10n.addressLabel,
+                          hint: l10n.addressHint,
+                          controller: addressController,
+                        ),
+                        InputField(
+                          label: l10n.cityLabel,
+                          hint: "",
+                          controller: cityController,
+                        ),
+                        InputField(
+                          label: l10n.countryLabel,
+                          hint: "",
+                          controller: countryController,
+                        ),
 
                         const SizedBox(height: 20),
 
-                        const Text(
-                          "Documents requis",
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        Text(
+                          l10n.requiredDocsTitle,
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
 
                         _documentUpload(
-                          title: "Pièce d'identité (Carte d'identité / Passeport / Permis)",
+                          title: l10n.identityDoc,
                           bytes: identityBytes,
                           onTap: () => pickFile(true),
+                          l10n: l10n,
                         ),
 
                         _documentUpload(
-                          title: "Justificatif de domicile",
+                          title: l10n.addressProof,
                           bytes: addressBytes,
                           onTap: () => pickFile(false),
+                          l10n: l10n,
                         ),
 
                         const SizedBox(height: 30),
 
-                        const Text(
-                          "Informations financières",
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        Text(
+                          l10n.financialInfoTitle,
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
 
-                        InputField(label: "Montant demandé", hint: "", controller: amountController),
-                        InputField(label: "Durée (mois)", hint: "", controller: durationController),
-                        InputField(label: "Source de revenus", hint: "", controller: incomeController),
-                        InputField(label: "Profession", hint: "", controller: professionController),
+                        InputField(
+                          label: l10n.amountLabel,
+                          hint: "",
+                          controller: amountController,
+                        ),
+                        InputField(
+                          label: l10n.durationLabel,
+                          hint: "",
+                          controller: durationController,
+                        ),
+                        InputField(
+                          label: l10n.incomeLabel,
+                          hint: "",
+                          controller: incomeController,
+                        ),
+                        InputField(
+                          label: l10n.professionLabel,
+                          hint: "",
+                          controller: professionController,
+                        ),
 
                         const SizedBox(height: 30),
 
@@ -236,10 +282,10 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
                               backgroundColor: const Color(0xFFF5B400),
                               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
                             ),
-                            onPressed: submitForm,
-                            child: const Text(
-                              "Soumettre la demande",
-                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                            onPressed: () => submitForm(l10n),
+                            child: Text(
+                              l10n.submitRequest,
+                              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
@@ -256,7 +302,6 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
 
           const WhatsAppButton(
             phoneNumber: "+4915774851991",
-            message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
           ),
         ],
       ),
@@ -267,6 +312,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
     required String title,
     required Uint8List? bytes,
     required VoidCallback onTap,
+    required AppLocalizations l10n,
   }) {
     return Card(
       child: ListTile(
@@ -275,22 +321,22 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
           color: bytes == null ? Colors.grey : Colors.green,
         ),
         title: Text(title),
-        subtitle: Text(bytes == null ? "Aucun fichier sélectionné" : "Document ajouté"),
+        subtitle: Text(bytes == null ? l10n.noFileSelected : l10n.documentAdded),
         trailing: TextButton(
           onPressed: onTap,
-          child: const Text("Télécharger"),
+          child: Text(l10n.uploadButton),
         ),
       ),
     );
   }
 
-  Future<void> submitForm() async {
+  Future<void> submitForm(AppLocalizations l10n) async {
     try {
       if (nameController.text.isEmpty ||
           addressController.text.isEmpty ||
           identityBytes == null ||
           addressBytes == null) {
-        showError("Veuillez compléter tous les champs obligatoires");
+        showError(l10n.fillRequiredFields);
         return;
       }
 
@@ -298,7 +344,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
       final months = int.tryParse(durationController.text);
 
       if (amount == null || months == null || amount <= 0 || months <= 0) {
-        showError("Montant ou durée invalide");
+        showError(l10n.invalidAmountOrDuration);
         return;
       }
 
@@ -323,7 +369,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
       final firebaseUser = FirebaseAuth.instance.currentUser;
 
       if (firebaseUser == null) {
-        showError("Utilisateur non authentifié");
+        showError(l10n.notAuthenticated);
         return;
       }
 
@@ -418,30 +464,34 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
         currency: currency,
       );
 
+      final totalPayments = monthly * months;
+
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text("Demande envoyée avec succès"),
+          title: Text(l10n.requestSuccessTitle),
           content: Text(
-            "Merci ${nameController.text},\n\n"
-                "Montant : ${amount.toStringAsFixed(0)} $currency\n"
-                "Durée : $months mois\n"
-                "Taux annuel : 3%\n\n"
-                "Mensualité : ${monthly.toStringAsFixed(0)} $currency\n"
-                "Total mensualités : ${(monthly * months).toStringAsFixed(0)} $currency\n"
-                "Total intérêts : ${interest.toStringAsFixed(0)} $currency\n"
-                "Total à rembourser : ${total.toStringAsFixed(0)} $currency",
+            l10n.requestSuccessContent(
+              nameController.text,                 // {name}
+              amount.toStringAsFixed(2),           // {amount}
+              currency,                             // {currency}
+              months.toString(),                   // {duration}
+              monthly.toStringAsFixed(2),           // {monthly}
+              totalPayments.toStringAsFixed(2),    // {totalPayments}
+              interest.toStringAsFixed(2),          // {totalInterest}
+              total.toStringAsFixed(2),             // {totalAmount}
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
+              child: Text(l10n.okButton),
             ),
           ],
         ),
       );
     } catch (e) {
-      showError("Erreur lors de l'envoi : $e");
+      showError("${l10n.errorOccurred}: $e");
     }
   }
 

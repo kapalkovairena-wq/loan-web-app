@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../widgets/app_drawer.dart';
 import '../widgets/whatsApp_button.dart';
@@ -47,7 +48,6 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
   Future<void> _loadProfile() async {
     final firebaseUser = FirebaseAuth.instance.currentUser;
 
-    // Utilisateur non connecté
     if (firebaseUser == null) {
       setState(() {
         profileData = {'currency': '€'};
@@ -68,7 +68,6 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
         isLoadingProfile = false;
       });
     } catch (e) {
-      // fallback sécurité
       setState(() {
         profileData = {'currency': '€'};
         isLoadingProfile = false;
@@ -84,11 +83,11 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
 
     final bool isMobile = width < 700;
     final bool isTablet = width >= 700 && width < 1100;
-    final bool isDesktop = width >= 1100;
 
     if (isLoadingProfile) {
       return const Scaffold(
@@ -99,191 +98,153 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
     }
 
     return Scaffold(
-        backgroundColor: const Color(0xFFF8F9FB),
-        drawer: const AppDrawer(),
-        body: Stack(
-            children: [
-        SingleChildScrollView(
-        child: Column(
+      backgroundColor: const Color(0xFFF8F9FB),
+      drawer: const AppDrawer(),
+      body: Stack(
         children: [
-            const AppHeader(),
-        const SizedBox(height: 80),
-
-      Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: isMobile
-                ? double.infinity
-                : isTablet
-                ? 700
-                : 900,
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 16 : 0,
-            ),
-            child: Container(
-              padding: EdgeInsets.all(isMobile ? 24 : 40),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 20,
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                 Text(
-                  "Simulez votre prêt",
-                  style: TextStyle(
-                    fontSize: isMobile ? 22 : 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                  const SizedBox(height: 10),
-                  Text(
-                    "Ajustez les paramètres pour estimer votre crédit.",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: isMobile ? 14 : 16,
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const AppHeader(),
+                const SizedBox(height: 80),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: isMobile
+                          ? double.infinity
+                          : isTablet
+                          ? 700
+                          : 900,
                     ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-              // ===== MONTANT =====
-              Text(
-                "Montant du prêt : ${montant.toInt()} $currency",
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-                  SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      trackHeight: isMobile ? 3 : 4,
-                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-                    ),
-                    child: Slider(
-                      value: montant,
-                      min: 3000,
-                      max: 500000,
-                      divisions: 1000,
-                      onChanged: (value) {
-                        setState(() => montant = value);
-                      },
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-              // ===== DURÉE =====
-              Text(
-                "Durée : $duree mois",
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              Slider(
-                value: duree.toDouble(),
-                min: 6,
-                max: 120,
-                divisions: 19,
-                label: duree.toString(),
-                onChanged: (value) {
-                  setState(() => duree = value.toInt());
-                },
-              ),
-                  const SizedBox(height: 40),
-
-                  // ===== RÉSULTATS =====
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF061A3A),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      children: [
-                        _resultRow(
-                          "Mensualité du crédit",
-                          "${mensualite.toStringAsFixed(2)} $currency",
-                          isBold: true,
-                        ),
-                        const Divider(color: Colors.white30),
-                        _resultRow(
-                          "Taux d'interêt annuel du crédit",
-                          "3%",
-                        ),
-                        _resultRow(
-                          "Assurance mensuelle",
-                          "0%",
-                        ),
-                        _resultRow(
-                          "Total des mensualités (hors assurance)",
-                          "${totalMensualites.toStringAsFixed(2)} $currency",
-                        ),
-                        _resultRow(
-                          "Total des intérêts",
-                          "${totalInterets.toStringAsFixed(2)} $currency",
-                        ),
-                        _resultRow(
-                          "Total de l’assurance",
-                          "${totalAssurance.toStringAsFixed(2)} $currency",
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Center(
-                    child: SizedBox(
-                      width: isMobile ? double.infinity : null,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF5B400),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 16,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const LoanRequestPage(),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isMobile ? 16 : 0,
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.all(isMobile ? 24 : 40),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 20,
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "Continuer la demande",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.simulationTitle,
+                              style: TextStyle(
+                                fontSize: isMobile ? 22 : 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              l10n.simulationDescription,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: isMobile ? 14 : 16,
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                            Text(
+                              "${l10n.loanAmount}: ${montant.toInt()} $currency",
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            SliderTheme(
+                              data: SliderTheme.of(context).copyWith(
+                                trackHeight: isMobile ? 3 : 4,
+                                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                              ),
+                              child: Slider(
+                                value: montant,
+                                min: 3000,
+                                max: 500000,
+                                divisions: 1000,
+                                onChanged: (value) {
+                                  setState(() => montant = value);
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              "${l10n.duration}: $duree ${l10n.months}",
+                              style: const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            Slider(
+                              value: duree.toDouble(),
+                              min: 6,
+                              max: 120,
+                              divisions: 19,
+                              label: duree.toString(),
+                              onChanged: (value) {
+                                setState(() => duree = value.toInt());
+                              },
+                            ),
+                            const SizedBox(height: 40),
+                            Container(
+                              padding: const EdgeInsets.all(24),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF061A3A),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                children: [
+                                  _resultRow(l10n.monthlyPayment, "${mensualite.toStringAsFixed(2)} $currency", isBold: true),
+                                  const Divider(color: Colors.white30),
+                                  _resultRow(l10n.annualInterestRate, "3%"),
+                                  _resultRow(l10n.monthlyInsurance, "0%"),
+                                  _resultRow(l10n.totalPayments, "${totalMensualites.toStringAsFixed(2)} $currency"),
+                                  _resultRow(l10n.totalInterests, "${totalInterets.toStringAsFixed(2)} $currency"),
+                                  _resultRow(l10n.totalInsurance, "${totalAssurance.toStringAsFixed(2)} $currency"),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Center(
+                              child: SizedBox(
+                                width: isMobile ? double.infinity : null,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFF5B400),
+                                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const LoanRequestPage()),
+                                    );
+                                  },
+                                  child: Text(
+                                    l10n.continueRequest,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 80),
+                const FooterSection(),
+              ],
             ),
           ),
-        ),
-      ),
-
-          const SizedBox(height: 80),
-          const FooterSection(),
+          const WhatsAppButton(
+            phoneNumber: "+4915774851991",
+          ),
         ],
-        ),
-        ),
-
-              const WhatsAppButton(
-                phoneNumber: "+4915774851991",
-                message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
-              ),
-            ],
-        ),
+      ),
     );
   }
 
@@ -310,8 +271,7 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontWeight:
-              isBold ? FontWeight.bold : FontWeight.w500,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
             ),
           ),
         ],
@@ -319,16 +279,12 @@ class _LoanSimulationPageState extends State<LoanSimulationPage> {
           : Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white70),
-          ),
+          Text(label, style: const TextStyle(color: Colors.white70)),
           Text(
             value,
             style: TextStyle(
               color: Colors.white,
-              fontWeight:
-              isBold ? FontWeight.bold : FontWeight.normal,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],

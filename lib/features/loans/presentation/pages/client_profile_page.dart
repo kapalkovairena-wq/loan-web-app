@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../l10n/app_localizations.dart';
+
 import '../pages/loan_request_page.dart';
 import '../../presentation/auth/auth_gate.dart';
 
@@ -54,6 +56,8 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
     if (isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -64,7 +68,7 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
       return Scaffold(
         backgroundColor: const Color(0xFFF6F7FB),
         appBar: AppBar(
-          title: const Text("Mon profil"),
+          title: Text(t.profileTitle),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           elevation: 1,
@@ -75,15 +79,15 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
             children: [
               const Icon(Icons.person_outline, size: 80, color: Colors.grey),
               const SizedBox(height: 20),
-              const Text(
-                "Profil non encore créé",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Text(
+                t.profileNotCreatedTitle,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Pour compléter votre profil, veuillez effectuer\nvotre première demande de prêt.",
+              Text(
+                t.profileNotCreatedDescription,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
@@ -92,14 +96,17 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
                     context,
                     MaterialPageRoute(builder: (_) => const LoanRequestPage()),
                   );
-                  },
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF5B400),
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
                 ),
-                child: const Text(
-                  "Faire une demande de prêt",
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                child: Text(
+                  t.profileCreateLoanButton,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
@@ -111,7 +118,7 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       appBar: AppBar(
-        title: const Text("Mon profil"),
+        title: Text(t.profileTitle),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 1,
@@ -134,64 +141,53 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
                     ),
                   ),
                   const SizedBox(width: 16),
-          Expanded(  // ← force le texte à prendre tout l’espace restant
-            child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        profile!['full_name'],
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          profile!['full_name'],
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        profile!['profession'] ?? "—",
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                    ],
-                  ),
-          ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
+                        Text(
+                          profile!['profession'] ?? "—",
+                          style: TextStyle(color: Colors.grey[700]),
+                        ),
+                      ],
                     ),
-                    child:
-                    _statusBadge(profile!['loan_status']),
                   ),
+                  _statusBadge(context, profile!['loan_status']),
                 ],
               ),
 
               const SizedBox(height: 30),
 
-              /// ===== PERSONAL INFO =====
               _infoCard(
-                title: "Informations personnelles",
+                title: t.profilePersonalInfoTitle,
                 items: {
-                  "Date de naissance": profile!['date_of_birth'] ?? "—",
-                  "Pays": profile!['country'] ?? "—",
-                  "Ville": profile!['city'] ?? "—",
-                  "Adresse": profile!['address'] ?? "—",
+                  t.profileBirthDate: profile!['date_of_birth'] ?? "—",
+                  t.profileCountry: profile!['country'] ?? "—",
+                  t.profileCity: profile!['city'] ?? "—",
+                  t.profileAddress: profile!['address'] ?? "—",
                 },
               ),
 
-              /// ===== CONTACT =====
               _infoCard(
-                title: "Coordonnées",
+                title: t.profileContactTitle,
                 items: {
-                  "Email": profile!['email'],
-                  "Téléphone": profile!['phone'],
+                  t.profileEmail: profile!['email'],
+                  t.profilePhone: profile!['phone'],
                 },
               ),
 
-              /// ===== PROFESSIONAL =====
               _infoCard(
-                title: "Situation professionnelle",
+                title: t.profileProfessionalTitle,
                 items: {
-                  "Profession": profile!['profession'],
-                  "Source de revenus": profile!['income_source'],
+                  t.profileProfession: profile!['profession'],
+                  t.profileIncomeSource: profile!['income_source'],
                 },
               ),
             ],
@@ -213,10 +209,8 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            Text(title,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const Divider(height: 30),
             ...items.entries.map(
                   (e) => Padding(
@@ -245,16 +239,18 @@ class _ClientProfilePageState extends State<ClientProfilePage> {
     );
   }
 
-  Widget _statusBadge(String? status) {
+  Widget _statusBadge(BuildContext context, String? status) {
+    final t = AppLocalizations.of(context)!;
+
     Color color = Colors.orange;
-    String text = "En cours";
+    String text = t.profileStatusPending;
 
     if (status == "approved") {
       color = Colors.green;
-      text = "Approuvé";
+      text = t.profileStatusApproved;
     } else if (status == "rejected") {
       color = Colors.red;
-      text = "Refusé";
+      text = t.profileStatusRejected;
     }
 
     return Container(

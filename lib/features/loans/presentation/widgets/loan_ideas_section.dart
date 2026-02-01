@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoanIdeasSection extends StatelessWidget {
   const LoanIdeasSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
     final isTablet = screenWidth >= 600 && screenWidth < 1200;
@@ -18,9 +21,13 @@ class LoanIdeasSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _HeroImageSection(isMobile: isMobile, isTablet: isTablet),
+          _HeroImageSection(
+            isMobile: isMobile,
+            isTablet: isTablet,
+            l10n: l10n,
+          ),
           SizedBox(height: isMobile ? 40 : 80),
-          _ContentSection(isMobile: isMobile),
+          _ContentSection(isMobile: isMobile, l10n: l10n),
         ],
       ),
     );
@@ -33,21 +40,21 @@ class LoanIdeasSection extends StatelessWidget {
 class _HeroImageSection extends StatelessWidget {
   final bool isMobile;
   final bool isTablet;
+  final AppLocalizations l10n;
 
-  const _HeroImageSection({required this.isMobile, required this.isTablet});
+  const _HeroImageSection({
+    required this.isMobile,
+    required this.isTablet,
+    required this.l10n,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Hauteur adaptative
     double height = isMobile ? 300 : isTablet ? 450 : 500;
-
-    // Largeur max du texte
-    double textWidth = isMobile ? MediaQuery.of(context).size.width * 0.9 : 520;
-
-    // Padding du texte
+    double textWidth =
+    isMobile ? MediaQuery.of(context).size.width * 0.9 : 520;
     double padding = isMobile ? 12 : 40;
 
-    // Taille du texte
     double mainFontSize = isMobile ? 10 : 18;
     double subFontSize = isMobile ? 8 : 14;
 
@@ -62,8 +69,6 @@ class _HeroImageSection extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Container(color: Colors.black.withOpacity(0.15)),
-
-          // Texte hero
           Align(
             alignment: isMobile ? Alignment.bottomCenter : Alignment.bottomLeft,
             child: Padding(
@@ -88,9 +93,8 @@ class _HeroImageSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '« Un bon prêt ne complique pas votre avenir,'
-                            'il vous aide à le construire sereinement. »',
-                        textAlign: isMobile ? TextAlign.center : TextAlign.center,
+                        l10n.loanIdeasHeroQuote,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: mainFontSize,
                           fontStyle: FontStyle.italic,
@@ -99,9 +103,8 @@ class _HeroImageSection extends StatelessWidget {
                       ),
                       SizedBox(height: isMobile ? 8 : 16),
                       Text(
-                        'Solutions de prêts privés — simples, claires et adaptées '
-                            'à vos besoins personnels et professionnels.',
-                        textAlign: isMobile ? TextAlign.center : TextAlign.center,
+                        l10n.loanIdeasHeroSubtitle,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: subFontSize,
                           color: Colors.black54,
@@ -124,59 +127,64 @@ class _HeroImageSection extends StatelessWidget {
 /// =======================
 class _ContentSection extends StatelessWidget {
   final bool isMobile;
+  final AppLocalizations l10n;
 
-  const _ContentSection({required this.isMobile});
+  const _ContentSection({
+    required this.isMobile,
+    required this.l10n,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Sur mobile on empile gauche et droite verticalement
     return isMobile
         ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _LeftContent(),
-        SizedBox(height: 30),
-        _RightContent(),
+        _LeftContent(l10n: l10n),
+        const SizedBox(height: 30),
+        _RightContent(l10n: l10n),
       ],
     )
         : Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(flex: 3, child: _LeftContent()),
-        SizedBox(width: 40),
-        Expanded(flex: 2, child: _RightContent()),
+        Expanded(flex: 3, child: _LeftContent(l10n: l10n)),
+        const SizedBox(width: 40),
+        Expanded(flex: 2, child: _RightContent(l10n: l10n)),
       ],
     );
   }
 }
 
 class _LeftContent extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  const _LeftContent({required this.l10n});
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Nos solutions de prêts privés',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        Text(
+          l10n.loanIdeasTitle,
+          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
-        const Text(
-          'Nous proposons des solutions de prêts flexibles et transparentes, '
-              'adaptées aux besoins des particuliers et des professionnels.',
-          style: TextStyle(fontSize: 16),
+        Text(
+          l10n.loanIdeasDescription,
+          style: const TextStyle(fontSize: 16),
         ),
         const SizedBox(height: 30),
-        _bullet('Prêt personnel à court terme'),
-        _bullet('Prêt pour activités commerciales'),
-        _bullet('Prêt d’urgence'),
-        _bullet('Prêt d’investissement'),
-        _bullet('Prêt avec remboursement échelonné'),
+        _bullet(l10n.loanIdeasBulletPersonal),
+        _bullet(l10n.loanIdeasBulletBusiness),
+        _bullet(l10n.loanIdeasBulletEmergency),
+        _bullet(l10n.loanIdeasBulletInvestment),
+        _bullet(l10n.loanIdeasBulletInstallment),
         const SizedBox(height: 30),
         ElevatedButton(
-          onPressed: () =>
-              context.go('/offers'),
-          child: const Text('Découvrir nos offres'),
+          onPressed: () => context.go('/offers'),
+          child: Text(l10n.loanIdeasCta),
         ),
       ],
     );
@@ -197,6 +205,10 @@ class _LeftContent extends StatelessWidget {
 }
 
 class _RightContent extends StatelessWidget {
+  final AppLocalizations l10n;
+
+  const _RightContent({required this.l10n});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -205,31 +217,31 @@ class _RightContent extends StatelessWidget {
         color: Colors.deepPurple.shade900,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Pourquoi choisir notre service ?',
-            style: TextStyle(
+            l10n.loanIdeasWhyTitle,
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           _HighlightItem(
-            title: 'Processus rapide',
-            description: 'Décision de prêt rapide et sans procédures complexes.',
+            title: l10n.loanIdeasWhyFastTitle,
+            description: l10n.loanIdeasWhyFastDesc,
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           _HighlightItem(
-            title: 'Conditions claires',
-            description: 'Taux d’intérêt et pénalités définis à l’avance.',
+            title: l10n.loanIdeasWhyClearTitle,
+            description: l10n.loanIdeasWhyClearDesc,
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           _HighlightItem(
-            title: 'Suivi transparent',
-            description: 'Visualisez vos échéances et paiements à tout moment.',
+            title: l10n.loanIdeasWhyTrackingTitle,
+            description: l10n.loanIdeasWhyTrackingDesc,
           ),
         ],
       ),
@@ -241,20 +253,28 @@ class _HighlightItem extends StatelessWidget {
   final String title;
   final String description;
 
-  const _HighlightItem({required this.title, required this.description});
+  const _HighlightItem({
+    required this.title,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         const SizedBox(height: 5),
-        Text(description, style: const TextStyle(color: Colors.white70)),
+        Text(
+          description,
+          style: const TextStyle(color: Colors.white70),
+        ),
       ],
     );
   }

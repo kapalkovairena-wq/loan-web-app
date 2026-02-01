@@ -6,6 +6,7 @@ class SupabaseProfileService {
   static Future<void> createProfile(
       User user, {
         required String currency,
+        required String language,
       }) async {
     final url = Uri.parse(
       "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/create-profile",
@@ -33,6 +34,7 @@ class SupabaseProfileService {
         "email": email,
         "provider": provider,
         "currency": currency,
+        "language": language,
       }),
     );
 

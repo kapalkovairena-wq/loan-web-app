@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../presentation/auth/auth_gate.dart';
 
@@ -53,7 +54,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
     super.dispose();
   }
 
-  // ================= LOAD PROFILE =================
+  /* ================= LOAD ================= */
+
   Future<void> _loadBankDetails() async {
     final res = await supabase
         .from('profiles')
@@ -74,7 +76,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
     setState(() => initialLoading = false);
   }
 
-  // ================= SAVE =================
+  /* ================= SAVE ================= */
+
   Future<void> _saveBankDetails() async {
     if (!_formKey.currentState!.validate()) {
       debugPrint("❌ Form validation failed");
@@ -137,7 +140,6 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
         if (user == null) throw Exception("User not logged in");
         final idToken = await user.getIdToken();
 
-        // Appel via http
         final uri = Uri.parse(
           "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/remind_next_payment",
         );
@@ -173,9 +175,10 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
       );
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Coordonnées bancaires enregistrées avec succès"),
+          SnackBar(
+            content: Text(l10n.bankDetailsSaved),
             backgroundColor: Colors.green,
           ),
         );
@@ -186,9 +189,10 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
       debugPrint("📌 STACKTRACE:\n$stack");
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("❌ Une erreur est survenue : ${e.toString()}"),
+            content: Text(l10n.genericError(e.toString())),
             backgroundColor: Colors.red,
           ),
         );
@@ -199,12 +203,15 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
     }
   }
 
-  // ================= UI =================
+  /* ================= UI ================= */
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Vos coordonnées bancaires"),
+        title: Text(l10n.bankDetailsTitle),
       ),
       body: initialLoading
           ? const Center(child: CircularProgressIndicator())
@@ -215,40 +222,38 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
-                "Informations du compte bancaire",
-                style:
-                TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Text(
+                l10n.bankDetailsSubtitle,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 16),
 
               _field(
                 controller: receiverNameCtrl,
-                label: "Nom complet du receveur",
+                label: l10n.receiverFullName,
                 validator: _required,
               ),
-
               _field(
                 controller: ibanCtrl,
-                label: "IBAN",
+                label: l10n.iban,
                 validator: _required,
               ),
-
               _field(
                 controller: bicCtrl,
-                label: "BIC / SWIFT",
+                label: l10n.bic,
                 validator: _required,
               ),
-
               _field(
                 controller: bankNameCtrl,
-                label: "Nom de la banque",
+                label: l10n.bankName,
                 validator: _required,
               ),
-
               _field(
                 controller: bankAddressCtrl,
-                label: "Adresse de la banque",
+                label: l10n.bankAddress,
                 maxLines: 2,
                 validator: _required,
               ),
@@ -267,9 +272,10 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
                     color: Colors.white,
                   ),
                 )
-                    : const Text("Enregistrer"),
+                    : Text(l10n.save),
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 14),
                 ),
               ),
             ],
@@ -279,7 +285,8 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
     );
   }
 
-  // ================= HELPERS =================
+  /* ================= HELPERS ================= */
+
   Widget _field({
     required TextEditingController controller,
     required String label,
@@ -302,7 +309,7 @@ class _BankDetailsPageState extends State<BankDetailsPage> {
 
   String? _required(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "Champ requis";
+      return AppLocalizations.of(context)!.requiredField;
     }
     return null;
   }

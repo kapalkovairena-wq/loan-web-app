@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/app_drawer.dart';
@@ -13,7 +14,8 @@ class ContactPage extends StatefulWidget {
   State<ContactPage> createState() => _ContactPageState();
 }
 
-class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin {
+class _ContactPageState extends State<ContactPage>
+    with TickerProviderStateMixin {
   late AnimationController _formController;
   late AnimationController _infoController;
   late Animation<Offset> _formSlide;
@@ -25,37 +27,26 @@ class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin
   void initState() {
     super.initState();
 
-    // Animation formulaire
-    _formController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
+    _formController =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _infoController =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+
     _formSlide = Tween<Offset>(
       begin: const Offset(0, 0.2),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _formController, curve: Curves.easeOutCubic),
-    );
-    _formOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _formController, curve: Curves.easeIn),
-    );
+    ).animate(CurvedAnimation(parent: _formController, curve: Curves.easeOutCubic));
 
-    // Animation infos
-    _infoController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
     _infoSlide = Tween<Offset>(
       begin: const Offset(0, 0.2),
       end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _infoController, curve: Curves.easeOutCubic),
-    );
-    _infoOpacity = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _infoController, curve: Curves.easeIn),
-    );
+    ).animate(CurvedAnimation(parent: _infoController, curve: Curves.easeOutCubic));
 
-    // Lancement des animations avec un léger delay
+    _formOpacity =
+        Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: _formController, curve: Curves.easeIn));
+    _infoOpacity =
+        Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: _infoController, curve: Curves.easeIn));
+
     _formController.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 200), () {
         _infoController.forward();
@@ -72,8 +63,8 @@ class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final isMobile = width < 900;
+    final t = AppLocalizations.of(context)!;
+    final isMobile = MediaQuery.of(context).size.width < 900;
 
     return Scaffold(
       drawer: const AppDrawer(),
@@ -82,142 +73,119 @@ class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin
           SingleChildScrollView(
             child: Container(
               color: const Color(0xFFF8F8F8),
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const AppHeader(),
-                      const HeroBanner(),
-                      const SizedBox(height: 80),
+              child: Column(
+                children: [
+                  const AppHeader(),
+                  const HeroBanner(),
+                  const SizedBox(height: 80),
 
-                      // Responsive layout form + info avec animation
-                      LayoutBuilder(
-                        builder: (context, constraints) {
-                          if (isMobile) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SlideTransition(
-                                  position: _formSlide,
-                                  child: FadeTransition(
-                                    opacity: _formOpacity,
-                                    child: _contactForm(isMobile: isMobile),
-                                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: LayoutBuilder(
+                      builder: (_, __) {
+                        if (isMobile) {
+                          return Column(
+                            children: [
+                              SlideTransition(
+                                position: _formSlide,
+                                child: FadeTransition(
+                                  opacity: _formOpacity,
+                                  child: _contactForm(context),
                                 ),
-                                const SizedBox(height: 40),
-                                SlideTransition(
-                                  position: _infoSlide,
-                                  child: FadeTransition(
-                                    opacity: _infoOpacity,
-                                    child: _contactInfo(),
-                                  ),
+                              ),
+                              const SizedBox(height: 40),
+                              SlideTransition(
+                                position: _infoSlide,
+                                child: FadeTransition(
+                                  opacity: _infoOpacity,
+                                  child: _contactInfo(context),
                                 ),
-                              ],
-                            );
-                          } else {
-                            return Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 6,
-                                  child: SlideTransition(
-                                    position: _formSlide,
-                                    child: FadeTransition(
-                                      opacity: _formOpacity,
-                                      child: _contactForm(isMobile: isMobile),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 60),
-                                Expanded(
-                                  flex: 5,
-                                  child: SlideTransition(
-                                    position: _infoSlide,
-                                    child: FadeTransition(
-                                      opacity: _infoOpacity,
-                                      child: _contactInfo(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                        },
-                      ),
+                              ),
+                            ],
+                          );
+                        }
 
-                      const SizedBox(height: 80),
-                      const FooterSection(),
-                    ],
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 6,
+                              child: SlideTransition(
+                                position: _formSlide,
+                                child: FadeTransition(
+                                  opacity: _formOpacity,
+                                  child: _contactForm(context),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 60),
+                            Expanded(
+                              flex: 5,
+                              child: SlideTransition(
+                                position: _infoSlide,
+                                child: FadeTransition(
+                                  opacity: _infoOpacity,
+                                  child: _contactInfo(context),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
+
+                  const SizedBox(height: 80),
+                  const FooterSection(),
+                ],
               ),
             ),
           ),
-          const WhatsAppButton(
-            phoneNumber: "+4915774851991",
-            message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
-          ),
+          const WhatsAppButton(phoneNumber: "+4915774851991"),
         ],
       ),
     );
   }
 
-  // ---------------- FORMULAIRE ----------------
+  Widget _contactForm(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
 
-  Widget _contactForm({required bool isMobile}) {
     return Container(
-      padding: EdgeInsets.all(isMobile ? 24 : 50),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 30,
-            offset: Offset(0, 10),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 30, offset: Offset(0, 10)),
         ],
       ),
-      child: Form(
-        child: Column(
-          children: [
-            _formField(label: "Nom", hint: "Votre nom"),
-            _formField(
-              label: "E-mail",
-              hint: "Votre adresse e-mail",
-              keyboardType: TextInputType.emailAddress,
-            ),
-            _formField(
-              label: "Thème",
-              hint: "Demande de prêt, informations, assistance...",
-            ),
-            _formField(
-              label: "Message",
-              hint: "Décrivez votre besoin de prêt ou votre question",
-              maxLines: 5,
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFF6B400),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                child: const Text(
-                  "Envoyer un message",
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                ),
+      child: Column(
+        children: [
+          _formField(label: t.contactFormName, hint: t.contactFormNameHint),
+          _formField(
+            label: t.contactFormEmail,
+            hint: t.contactFormEmailHint,
+            keyboardType: TextInputType.emailAddress,
+          ),
+          _formField(label: t.contactFormSubject, hint: t.contactFormSubjectHint),
+          _formField(
+            label: t.contactFormMessage,
+            hint: t.contactFormMessageHint,
+            maxLines: 5,
+          ),
+          const SizedBox(height: 20),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFF6B400),
+                padding: const EdgeInsets.symmetric(vertical: 16),
               ),
+              child: Text(t.contactFormSubmit, style: const TextStyle(color: Colors.white)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -259,75 +227,30 @@ class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin
     );
   }
 
-  // ---------------- INFOS CONTACT ----------------
+  Widget _contactInfo(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
 
-  Widget _contactInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.only(bottom: 6),
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: Color(0xFFF6B400), width: 2),
-            ),
-          ),
-          child: const Text(
-            "Contactez-nous",
-            style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFFF6B400),
-            ),
-          ),
-        ),
+        Text(t.contactSectionLabel, style: const TextStyle(color: Color(0xFFF6B400))),
         const SizedBox(height: 20),
-        const Text(
-          "Contactez KreditSch",
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF1A1A1A),
-          ),
-        ),
+        Text(t.contactTitle,
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
         const SizedBox(height: 20),
-        const Text(
-          "Notre équipe KreditSch est à votre écoute pour toute demande "
-              "de prêt personnel, professionnel ou d’urgence. "
-              "Nous vous accompagnons à chaque étape de votre financement.",
-          style: TextStyle(
-            color: Color(0xFF555555),
-            height: 1.7,
-          ),
-        ),
+        Text(t.contactDescription),
         const SizedBox(height: 30),
-        _infoItem(
-          icon: "🏢",
-          title: "Allemagne",
-          text: "Audensstraße 2 – 61348 Bad Homburg v.d. Höhe",
-        ),
-        _infoItem(
-          icon: "📞",
-          title: "Téléphone",
-          text: "+49 1577 4851991",
-        ),
-        _infoItem(
-          icon: "✉️",
-          title: "E-mail",
-          text: "contact@kreditsch.de",
-        ),
+        _infoItem("🏢", t.contactAddressTitle, t.contactAddress),
+        _infoItem("📞", t.contactPhoneTitle, t.contactPhone),
+        _infoItem("✉️", t.contactEmailTitle, t.contactEmail),
       ],
     );
   }
 
-  Widget _infoItem({
-    required String icon,
-    required String title,
-    required String text,
-  }) {
+  Widget _infoItem(String icon, String title, String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 50,
@@ -337,21 +260,14 @@ class _ContactPageState extends State<ContactPage> with TickerProviderStateMixin
               borderRadius: BorderRadius.circular(6),
             ),
             alignment: Alignment.center,
-            child: Text(icon, style: const TextStyle(fontSize: 20)),
+            child: Text(icon),
           ),
           const SizedBox(width: 15),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Text(text),
-              ],
-            ),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(text),
+            ]),
           ),
         ],
       ),

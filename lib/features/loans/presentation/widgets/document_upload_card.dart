@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart'; // Pour kIsWeb
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 
 import '../widgets/web_card.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class DocumentUploadCard extends StatefulWidget {
   const DocumentUploadCard({super.key});
@@ -32,6 +32,7 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
 
   Future<void> _checkPermission() async {
     final supabase = Supabase.instance.client;
+
     final profile = await supabase
         .from('loan_requests')
         .select('document')
@@ -39,6 +40,7 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
         .maybeSingle();
 
     if (!mounted) return;
+
     setState(() {
       hasDocumentPermission = profile?['document'] == true;
       loading = false;
@@ -50,6 +52,7 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
       allowMultiple: false,
       withData: true,
     );
+
     if (result != null && result.files.single.bytes != null) {
       setState(() {
         selectedFileBytes = result.files.single.bytes!;
@@ -61,10 +64,12 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
   Future<void> _submitDocument() async {
     if (selectedFileBytes == null || selectedFileName == null) return;
 
+    final l10n = AppLocalizations.of(context)!;
+
     try {
-      // ⚡ Appel Edge Function pour upload
       final uri = Uri.parse(
-          "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/upload_user_document");
+        "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/upload_user_document",
+      );
 
       final response = await http.post(
         uri,
@@ -78,12 +83,12 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
           "firebase_uid": firebaseUid,
           "file_base64": base64Encode(selectedFileBytes!),
           "file_name": selectedFileName!,
-          "mime_type": "application/octet-stream", // adapter selon type
+          "mime_type": "application/octet-stream",
         }),
       );
 
       if (response.statusCode != 200) {
-        throw Exception("Erreur upload: ${response.body}");
+        throw Exception(response.body);
       }
 
       setState(() {
@@ -92,15 +97,15 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("✅ Document soumis avec succès"),
+        SnackBar(
+          content: Text(l10n.documentUploadSuccess),
           backgroundColor: Colors.green,
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("❌ Erreur lors de l'upload : $e"),
+          content: Text("${l10n.documentUploadError} $e"),
           backgroundColor: Colors.red,
         ),
       );
@@ -109,27 +114,32 @@ class _DocumentUploadCardState extends State<DocumentUploadCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) return const SizedBox();
+    final l10n = AppLocalizations.of(context)!;
 
-    if (!hasDocumentPermission) return const SizedBox();
+    if (loading || !hasDocumentPermission) {
+      return const SizedBox();
+    }
 
     return WebCard(
-      title: "Soumettre un document",
+      title: l10n.documentUploadTitle,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (selectedFileBytes != null)
-            Image.memory(selectedFileBytes!, height: 150),
+            Image.memory(
+              selectedFileBytes!,
+              height: 150,
+            ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
             icon: const Icon(Icons.upload_file),
-            label: const Text("Choisir un fichier / photo"),
+            label: Text(l10n.documentChooseFile),
             onPressed: _pickFile,
           ),
           const SizedBox(height: 12),
           ElevatedButton.icon(
             icon: const Icon(Icons.check),
-            label: const Text("Soumettre le document"),
+            label: Text(l10n.documentSubmit),
             onPressed:
             (selectedFileBytes != null && selectedFileName != null)
                 ? _submitDocument

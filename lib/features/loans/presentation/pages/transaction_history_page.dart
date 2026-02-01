@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../presentation/auth/auth_gate.dart';
 
@@ -34,16 +35,15 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
     }
   }
 
-  String formatDate(String isoDate) {
+  String formatDate(String isoDate, AppLocalizations l10n) {
     final date = DateTime.parse(isoDate).toLocal();
-    return DateFormat('dd/MM/yyyy à HH:mm', 'fr_FR').format(date);
+    return DateFormat('dd/MM/yyyy – HH:mm', l10n.localeName).format(date);
   }
 
   Future<void> _loadTransactions() async {
     setState(() => loading = true);
 
     try {
-      // 🔹 Remplace par l'URL de ton Edge Function
       final uri = Uri.parse(
           "https://yztryuurtkxoygpcmlmu.supabase.co/functions/v1/get_payment_proofs");
 
@@ -100,16 +100,31 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
     }
   }
 
+  String _statusLabel(String status, AppLocalizations l10n) {
+    switch (status) {
+      case "pending":
+        return l10n.pending;
+      case "approved":
+        return l10n.approved;
+      case "rejected":
+        return l10n.rejected;
+      default:
+        return status;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Historique des transactions"),
+        title: Text(l10n.transactionHistory),
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
           : transactions.isEmpty
-          ? const Center(child: Text("Aucune transaction soumise"))
+          ? Center(child: Text(l10n.noTransactionsSubmitted))
           : ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: transactions.length,
@@ -134,12 +149,13 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Soumis le : ${formatDate(tx['created_at'])}",
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          "${l10n.submittedOn} ${formatDate(tx['created_at'], l10n)}",
+                          style:
+                          const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Statut : $status",
+                          "${l10n.status}: ${_statusLabel(status, l10n)}",
                           style: TextStyle(
                               color: _statusColor(status),
                               fontWeight: FontWeight.bold),

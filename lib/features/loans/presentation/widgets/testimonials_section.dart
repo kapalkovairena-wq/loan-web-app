@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import '../../../../l10n/app_localizations.dart';
 
 class Testimonial {
   final String text;
@@ -16,30 +18,8 @@ class TestimonialsSection extends StatefulWidget {
 }
 
 class _TestimonialsSectionState extends State<TestimonialsSection> {
-  final List<Testimonial> testimonials = [
-    Testimonial(
-      "Grâce à ce service de prêt, j’ai pu lancer mon activité sans passer par une banque.",
-      "Aïcha M.",
-      "Entrepreneure",
-    ),
-    Testimonial(
-      "Les conditions sont claires, les intérêts transparents et le remboursement flexible.",
-      "Jean K.",
-      "Commerçant",
-    ),
-    Testimonial(
-      "J’ai obtenu un prêt rapidement pour une urgence familiale.",
-      "Fatou S.",
-      "Particulier",
-    ),
-    Testimonial(
-      "Une plateforme fiable qui met en relation prêteurs et emprunteurs en toute confiance.",
-      "Marc D.",
-      "Investisseur privé",
-    ),
-  ];
-
   int currentIndex = 0;
+  late List<Testimonial> testimonials;
 
   @override
   void initState() {
@@ -50,7 +30,7 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
   void _startAutoSlide() {
     Future.doWhile(() async {
       await Future.delayed(const Duration(seconds: 5));
-      if (!mounted) return false;
+      if (!mounted || testimonials.isEmpty) return false;
       setState(() {
         currentIndex = (currentIndex + 1) % testimonials.length;
       });
@@ -60,17 +40,23 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final l10n = AppLocalizations.of(context)!;
+    testimonials = [
+      Testimonial(l10n.testimonial1Text, l10n.testimonial1Name, l10n.testimonial1Role),
+      Testimonial(l10n.testimonial2Text, l10n.testimonial2Name, l10n.testimonial2Role),
+      Testimonial(l10n.testimonial3Text, l10n.testimonial3Name, l10n.testimonial3Role),
+      Testimonial(l10n.testimonial4Text, l10n.testimonial4Name, l10n.testimonial4Role),
+      Testimonial(l10n.testimonial5Text, l10n.testimonial5Name, l10n.testimonial5Role),
+      Testimonial(l10n.testimonial6Text, l10n.testimonial6Name, l10n.testimonial6Role),
+      Testimonial(l10n.testimonial7Text, l10n.testimonial7Name, l10n.testimonial7Role),
+      Testimonial(l10n.testimonial8Text, l10n.testimonial8Name, l10n.testimonial8Role),
+      Testimonial(l10n.testimonial9Text, l10n.testimonial9Name, l10n.testimonial9Role),
+    ];
 
+    final width = MediaQuery.of(context).size.width;
     final bool isMobile = width < 600;
     final bool isTablet = width >= 600 && width < 1100;
-
-    final double cardWidth = isMobile
-        ? width * 0.9
-        : isTablet
-        ? 600
-        : 720;
-
+    final double cardWidth = isMobile ? width * 0.9 : isTablet ? 600 : 720;
     final testimonial = testimonials[currentIndex];
 
     return Container(
@@ -85,13 +71,13 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
       ),
       child: Column(
         children: [
-          const Text(
-            "Témoignages",
-            style: TextStyle(color: Colors.white70),
+          Text(
+            l10n.testimonials0Label,
+            style: const TextStyle(color: Colors.white70),
           ),
           const SizedBox(height: 12),
           Text(
-            "Nous bénéficions de la confiance de plus de 50 pays à travers le monde.",
+            l10n.testimonials0Title,
             style: TextStyle(
               color: Colors.white,
               fontSize: isMobile ? 22 : 30,

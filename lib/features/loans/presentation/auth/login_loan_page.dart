@@ -5,6 +5,7 @@ import 'supabase_profile_service.dart';
 import 'register_loan_page.dart';
 import 'forgot_password_page.dart';
 import '../pages/loan_request_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoginLoanPage extends StatefulWidget {
   const LoginLoanPage({super.key});
@@ -20,14 +21,16 @@ class _LoginLoanPageState extends State<LoginLoanPage> {
   @override
   void initState() {
     super.initState();
-
     _authStream = FirebaseAuth.instance.authStateChanges();
 
     _authStream.listen((user) {
-      if (user != null) {
+      final locale = Localizations.localeOf(context);
+      final languageCode = locale.languageCode;
+      if (user != null && selectedCurrency != null) {
         SupabaseProfileService.createProfile(
           user,
           currency: selectedCurrency!,
+          language: languageCode,
         );
       }
     });
@@ -48,28 +51,30 @@ class _LoginLoanPageState extends State<LoginLoanPage> {
           return const LoanRequestPage();
         }
 
-        return const Login();
+        return const LoginLoan();
       },
     );
   }
 }
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginLoan extends StatefulWidget {
+  const LoginLoan({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginLoan> createState() => _LoginLoanState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginLoanState extends State<LoginLoan> {
   final emailCtrl = TextEditingController();
   final passCtrl = TextEditingController();
   final auth = AuthService();
   bool loading = false;
 
   Future<void> _login() async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty) {
-      _showMessage("Veuillez remplir tous les champs", isError: true);
+      _showMessage(l10n.fillAllFields, isError: true);
       return;
     }
 
@@ -80,17 +85,16 @@ class _LoginState extends State<Login> {
         passCtrl.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+
       if (e.code == 'user-not-found') {
-        _showMessage(
-          "Aucun compte trouvé. Veuillez vous inscrire.",
-          isError: true,
-        );
+        _showMessage(l10n.userNotFound, isError: true);
       } else if (e.code == 'wrong-password') {
-        _showMessage("Mot de passe incorrect", isError: true);
+        _showMessage(l10n.wrongPassword, isError: true);
       } else if (e.code == 'invalid-email') {
-        _showMessage("Email invalide", isError: true);
+        _showMessage(l10n.invalidEmail, isError: true);
       } else {
-        _showMessage("Erreur de connexion", isError: true);
+        _showMessage(l10n.loginError, isError: true);
       }
     } finally {
       setState(() => loading = false);
@@ -108,6 +112,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       body: Center(
@@ -124,57 +130,44 @@ class _LoginState extends State<Login> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // ===== LOGO =====
                   Center(
-                    child: Column(
-                      children: [
-                        Image.network(
-                          "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo.png",
-                          height: 60,
-                        ),
-                      ],
+                    child: Image.network(
+                      "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/logo.png",
+                      height: 60,
                     ),
                   ),
-
                   const SizedBox(height: 32),
-
-                  const Text(
-                    "Connexion",
-                    style: TextStyle(
+                  Text(
+                    l10n.login,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    "Accédez à votre espace client",
-                    style: TextStyle(color: Colors.black54),
+                  Text(
+                    l10n.loginSubtitle,
+                    style: const TextStyle(color: Colors.black54),
                   ),
-
                   const SizedBox(height: 24),
-
                   TextField(
                     controller: emailCtrl,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.email,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   TextField(
                     controller: passCtrl,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Mot de passe",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.password,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
-
                   const SizedBox(height: 12),
-
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -182,16 +175,13 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const ForgotPasswordPage(),
-                          ),
+                              builder: (_) => const ForgotPasswordPage()),
                         );
                       },
-                      child: const Text("Mot de passe oublié ?"),
+                      child: Text(l10n.forgotPassword),
                     ),
                   ),
-
                   const SizedBox(height: 16),
-
                   ElevatedButton(
                     onPressed: loading ? null : _login,
                     style: ElevatedButton.styleFrom(
@@ -199,49 +189,45 @@ class _LoginState extends State<Login> {
                     ),
                     child: loading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Se connecter"),
+                        : Text(l10n.loginButton),
                   ),
-
                   const SizedBox(height: 16),
                   const Divider(),
-
                   OutlinedButton.icon(
                     icon: Image.network(
                       "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/google.png",
                       height: 18,
                     ),
-                    label: const Text("Continuer avec Google"),
+                    label: Text(l10n.continueWithGoogle),
                     onPressed: () async {
+                      if (loading) return;
                       try {
+                        setState(() => loading = true);
                         await auth.signInWithGoogle();
                       } catch (_) {
-                        _showMessage(
-                          "Erreur lors de la connexion Google",
-                          isError: true,
-                        );
+                        _showMessage(l10n.googleLoginError, isError: true);
+                      } finally {
+                        setState(() => loading = false);
                       }
                     },
                   ),
-
                   const SizedBox(height: 24),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Pas encore de compte ?",
-                        style: TextStyle(color: Colors.black54),
+                      Text(
+                        l10n.noAccountYet,
+                        style: const TextStyle(color: Colors.black54),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const RegisterLoanPage(),
-                            ),
+                                builder: (_) => const RegisterLoanPage()),
                           );
                         },
-                        child: const Text("Créer un compte"),
+                        child: Text(l10n.registerButton),
                       ),
                     ],
                   ),

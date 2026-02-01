@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import '../../../../l10n/app_localizations.dart';
 
 class TestimonialsSection extends StatefulWidget {
   const TestimonialsSection({super.key});
@@ -13,48 +14,15 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
   int _currentIndex = 0;
   Timer? _timer;
 
-  final testimonials = const [
-    _Testimonial(
-      text:
-      "Grâce à KreditSch, j’ai obtenu un prêt professionnel en moins de 24 heures. "
-          "Les conditions étaient claires et adaptées à ma situation. Une vraie solution fiable.",
-      name: "Martin K.",
-      role: "Entrepreneur – Berlin",
-    ),
-    _Testimonial(
-      text:
-      "J’avais besoin d’un financement urgent pour des frais médicaux. "
-          "KreditSch a été rapide, humain et transparent. Je recommande sans hésiter.",
-      name: "Sophie L.",
-      role: "Salariée – Lyon",
-    ),
-    _Testimonial(
-      text:
-      "L’interface est simple et le suivi du prêt est très clair. "
-          "KreditSch m’a permis de concrétiser mon projet immobilier sereinement.",
-      name: "Julien R.",
-      role: "Investisseur – Bruxelles",
-    ),
-    _Testimonial(
-      text:
-      "Enfin une plateforme de prêt qui comprend les indépendants. "
-          "Aucune surprise, tout est expliqué dès le départ.",
-      name: "Nadia B.",
-      role: "Freelance – Paris",
-    ),
-    _Testimonial(
-      text:
-      "Un service client réactif et des offres adaptées. "
-          "KreditSch m’a accompagné du début à la fin.",
-      name: "Thomas W.",
-      role: "Dirigeant PME – Munich",
-    ),
-  ];
+  late List<_Testimonial> testimonials;
 
   @override
   void initState() {
     super.initState();
+
     _timer = Timer.periodic(const Duration(seconds: 5), (_) {
+      if (testimonials.isEmpty) return;
+
       _currentIndex = (_currentIndex + 1) % testimonials.length;
       _controller.animateToPage(
         _currentIndex,
@@ -74,9 +42,59 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    testimonials = [
+      _Testimonial(
+        text: l10n.testimonial1Text,
+        name: l10n.testimonial1Name,
+        role: l10n.testimonial1Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial2Text,
+        name: l10n.testimonial2Name,
+        role: l10n.testimonial2Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial3Text,
+        name: l10n.testimonial3Name,
+        role: l10n.testimonial3Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial4Text,
+        name: l10n.testimonial4Name,
+        role: l10n.testimonial4Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial5Text,
+        name: l10n.testimonial5Name,
+        role: l10n.testimonial5Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial6Text,
+        name: l10n.testimonial6Name,
+        role: l10n.testimonial6Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial7Text,
+        name: l10n.testimonial7Name,
+        role: l10n.testimonial7Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial8Text,
+        name: l10n.testimonial8Name,
+        role: l10n.testimonial8Role,
+      ),
+      _Testimonial(
+        text: l10n.testimonial9Text,
+        name: l10n.testimonial9Name,
+        role: l10n.testimonial9Role,
+      ),
+    ];
+
     return Stack(
       children: [
-        // IMAGE DE FOND
+        /// IMAGE DE FOND
         Positioned.fill(
           child: Image.network(
             "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/CRST-6687_Hom.webp",
@@ -84,7 +102,7 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
           ),
         ),
 
-        // OVERLAY (rend l'image discrète)
+        /// OVERLAY
         Positioned.fill(
           child: Container(
             decoration: BoxDecoration(
@@ -100,36 +118,35 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
           ),
         ),
 
-        // CONTENU
+        /// CONTENU
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 100),
           child: Column(
             children: [
-              const Text(
-                "Témoignages",
-                style: TextStyle(
+              Text(
+                l10n.testimonialsLabel,
+                style: const TextStyle(
                   color: Color(0xFFF6B400),
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Nous bénéficions de la confiance de milliers de clients à travers l’Europe.",
+              Text(
+                l10n.testimonialsTitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                "La satisfaction de nos clients est notre priorité. "
-                    "Découvrez ce qu’ils pensent de leur expérience avec KreditSch.",
+              Text(
+                l10n.testimonialsSubtitle,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white70,
                   height: 1.6,
                 ),
@@ -176,7 +193,7 @@ class _TestimonialsSectionState extends State<TestimonialsSection> {
   }
 }
 
-// ---------------- CARD ----------------
+/* ---------------- CARD ---------------- */
 
 class _TestimonialCard extends StatelessWidget {
   final _Testimonial testimonial;
@@ -226,9 +243,7 @@ class _TestimonialCard extends StatelessWidget {
                   children: [
                     Text(
                       testimonial.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     Text(
                       testimonial.role,
@@ -256,7 +271,7 @@ class _TestimonialCard extends StatelessWidget {
   }
 }
 
-// ---------------- MODEL ----------------
+/* ---------------- MODEL ---------------- */
 
 class _Testimonial {
   final String text;

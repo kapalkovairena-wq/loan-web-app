@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../../presentation/auth/auth_gate.dart';
 
@@ -22,7 +23,10 @@ class _UserDocumentsHistoryPageState
   @override
   void initState() {
     super.initState();
-    _loadHistory();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadHistory();
+    });
 
     if (FirebaseAuth.instance.currentUser == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -35,13 +39,15 @@ class _UserDocumentsHistoryPageState
   }
 
   Future<void> _loadHistory() async {
+    final l10n = AppLocalizations.of(context)!;
+
     setState(() => loading = true);
 
     try {
       final firebaseUid = FirebaseAuth.instance.currentUser?.uid;
 
       if (firebaseUid == null) {
-        throw "Utilisateur non connecté";
+        throw l10n.userNotLoggedIn;
       }
 
       final res = await http.post(
@@ -54,15 +60,13 @@ class _UserDocumentsHistoryPageState
           "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6dHJ5dXVydGt4b3lncGNtbG11Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg3OTM0OTAsImV4cCI6MjA4NDM2OTQ5MH0.wJB7hDwviguUl_p3W4XYMdGGWv-mbi2yR6vTub432ls",
           "x-edge-secret": "Mahugnon23",
         },
-        body: jsonEncode({
-          "firebase_uid": firebaseUid,
-        }),
+        body: jsonEncode({"firebase_uid": firebaseUid}),
       );
 
       final body = jsonDecode(res.body);
 
       if (res.statusCode != 200) {
-        throw body['error'] ?? "Erreur serveur";
+        throw body['error'] ?? l10n.serverError;
       }
 
       setState(() {
@@ -73,7 +77,7 @@ class _UserDocumentsHistoryPageState
       setState(() => loading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("❌ Erreur chargement: $e"),
+          content: Text("${l10n.errorLoading} $e"),
           backgroundColor: Colors.red,
         ),
       );
@@ -86,6 +90,8 @@ class _UserDocumentsHistoryPageState
         return Colors.green;
       case 'rejected':
         return Colors.red;
+      case "pending":
+        return Colors.orange;
       default:
         return Colors.orange;
     }
@@ -97,31 +103,37 @@ class _UserDocumentsHistoryPageState
         return Icons.check_circle;
       case 'rejected':
         return Icons.cancel;
+      case "pending":
+        return Icons.hourglass_top;
       default:
         return Icons.hourglass_top;
     }
   }
 
-  String _statusLabel(String status) {
+  String _statusLabel(String status, AppLocalizations l10n) {
     switch (status) {
-      case 'approved':
-        return 'Approuvé';
-      case 'rejected':
-        return 'Rejeté';
+      case "pending":
+        return l10n.pending;
+      case "approved":
+        return l10n.approved;
+      case "rejected":
+        return l10n.rejected;
       default:
-        return 'En attente';
+        return status;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (loading) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (documents.isEmpty) {
-      return const Center(
-        child: Text("Aucun document soumis"),
+      return Center(
+        child: Text(l10n.noDocumentsSubmitted),
       );
     }
 
@@ -130,6 +142,7 @@ class _UserDocumentsHistoryPageState
       itemCount: documents.length,
       itemBuilder: (context, index) {
         final doc = documents[index];
+        final status = doc['status'] ?? 'pending';
 
         return Card(
           margin: const EdgeInsets.only(bottom: 16),
@@ -156,7 +169,7 @@ class _UserDocumentsHistoryPageState
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) =>
-                    const Text("Image indisponible"),
+                        Text(l10n.imageUnavailable),
                   ),
                 ),
 
@@ -171,7 +184,7 @@ class _UserDocumentsHistoryPageState
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      _statusLabel(doc['status']),
+                      "${l10n.status}: ${_statusLabel(status, l10n)}",
                       style: TextStyle(
                         color: _statusColor(doc['status']),
                         fontWeight: FontWeight.bold,

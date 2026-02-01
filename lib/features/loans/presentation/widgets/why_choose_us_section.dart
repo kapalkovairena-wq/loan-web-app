@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class WhyChooseUsSection extends StatelessWidget {
   const WhyChooseUsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
     final isTablet = screenWidth >= 600 && screenWidth < 1200;
@@ -29,33 +31,22 @@ class WhyChooseUsSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Pourquoi nous choisir ?',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontSize: 14,
-                  ),
-                ),
+                Text(l10n.whyChooseUsTitle,
+                    style: const TextStyle(color: Colors.amber, fontSize: 14)),
                 SizedBox(height: 12),
-                Text(
-                  'Une communauté internationale de milliers de clients\nnous fait confiance.',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: titleFontSize,
-                    fontWeight: FontWeight.bold,
-                    height: 1.3,
-                  ),
-                ),
+                Text(l10n.whyChooseUsSubtitle,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: titleFontSize,
+                      fontWeight: FontWeight.bold,
+                      height: 1.3,
+                    )),
                 SizedBox(height: 20),
-                Text(
-                  'Particuliers, entrepreneurs et professionnels choisissent '
-                      'nos solutions de prêts pour leur simplicité, leur rapidité '
-                      'et la clarté de leurs conditions.',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: subtitleFontSize,
-                  ),
-                ),
+                Text(l10n.whyChooseUsDescription,
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: subtitleFontSize,
+                    )),
               ],
             ),
           ),
@@ -72,30 +63,38 @@ class WhyChooseUsSection extends StatelessWidget {
                 isMobile
                     ? Column(
                   children: [
-                    _InfoBox(text: 'Personnel qualifié', isYellow: false, height: blockHeight),
+                    _InfoBox(text: l10n.infoQualifiedStaff, isYellow: false, height: blockHeight),
                     SizedBox(height: blockSpacing),
-                    _InfoBox(text: 'Consultation gratuite', isYellow: true, height: blockHeight),
+                    _InfoBox(text: l10n.infoFreeConsultation, isYellow: true, height: blockHeight),
                     SizedBox(height: blockSpacing),
-                    _InfoBox(text: 'Vous gagnez du temps', isYellow: true, height: blockHeight),
+                    _InfoBox(text: l10n.infoSaveTime, isYellow: true, height: blockHeight),
                     SizedBox(height: blockSpacing),
-                    _InfoBox(text: 'Qualité de service optimale', isYellow: false, height: blockHeight),
+                    _InfoBox(text: l10n.infoOptimalService, isYellow: false, height: blockHeight),
                   ],
                 )
                     : Column(
                   children: [
                     Row(
                       children: [
-                        Expanded(child: _InfoBox(text: 'Personnel qualifié', isYellow: false, height: blockHeight)),
+                        Expanded(
+                            child: _InfoBox(
+                                text: l10n.infoQualifiedStaff, isYellow: false, height: blockHeight)),
                         SizedBox(width: blockSpacing),
-                        Expanded(child: _InfoBox(text: 'Consultation gratuite', isYellow: true, height: blockHeight)),
+                        Expanded(
+                            child: _InfoBox(
+                                text: l10n.infoFreeConsultation, isYellow: true, height: blockHeight)),
                       ],
                     ),
                     SizedBox(height: blockSpacing),
                     Row(
                       children: [
-                        Expanded(child: _InfoBox(text: 'Vous gagnez du temps', isYellow: true, height: blockHeight)),
+                        Expanded(
+                            child: _InfoBox(
+                                text: l10n.infoSaveTime, isYellow: true, height: blockHeight)),
                         SizedBox(width: blockSpacing),
-                        Expanded(child: _InfoBox(text: 'Qualité de service optimale', isYellow: false, height: blockHeight)),
+                        Expanded(
+                            child: _InfoBox(
+                                text: l10n.infoOptimalService, isYellow: false, height: blockHeight)),
                       ],
                     ),
                   ],
@@ -115,22 +114,22 @@ class WhyChooseUsSection extends StatelessWidget {
             child: isMobile
                 ? Column(
               children: [
-                _CounterItem(value: 2245, label: 'Clients satisfaits', icon: Icons.people),
+                _CounterItem(value: 2245, label: l10n.clientsSatisfied, icon: Icons.people),
                 SizedBox(height: 20),
-                _CounterItem(value: 10, label: 'Années d’activité', icon: Icons.timeline),
+                _CounterItem(value: 10, label: l10n.yearsActive, icon: Icons.timeline),
                 SizedBox(height: 20),
-                _CounterItem(value: 15, label: 'Experts financiers', icon: Icons.military_tech),
+                _CounterItem(value: 15, label: l10n.financialExperts, icon: Icons.military_tech),
                 SizedBox(height: 20),
-                _CounterItem(value: 12, label: 'Partenaires actifs', icon: Icons.handshake),
+                _CounterItem(value: 12, label: l10n.activePartners, icon: Icons.handshake),
               ],
             )
                 : Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                _CounterItem(value: 2245, label: 'Clients satisfaits', icon: Icons.people),
-                _CounterItem(value: 10, label: 'Années d’activité', icon: Icons.timeline),
-                _CounterItem(value: 15, label: 'Experts financiers', icon: Icons.military_tech),
-                _CounterItem(value: 12, label: 'Partenaires actifs', icon: Icons.handshake),
+              children: [
+                _CounterItem(value: 2245, label: l10n.clientsSatisfied, icon: Icons.people),
+                _CounterItem(value: 10, label: l10n.yearsActive, icon: Icons.timeline),
+                _CounterItem(value: 15, label: l10n.financialExperts, icon: Icons.military_tech),
+                _CounterItem(value: 12, label: l10n.activePartners, icon: Icons.handshake),
               ],
             ),
           ),
@@ -186,7 +185,7 @@ class _InfoBox extends StatelessWidget {
 class _CounterItem extends StatefulWidget {
   final int value;
   final String label;
-  final IconData icon; // <- nouvel attribut
+  final IconData icon;
 
   const _CounterItem({
     required this.value,
@@ -237,7 +236,7 @@ class _CounterItemState extends State<_CounterItem>
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(widget.icon, size: 36, color: Colors.amber), // <- icône ajoutée
+            Icon(widget.icon, size: 36, color: Colors.amber),
             const SizedBox(height: 12),
             Text(
               '${_animation.value}+',

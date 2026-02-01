@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoanServicesCardsSection extends StatelessWidget {
   const LoanServicesCardsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final screenWidth = MediaQuery.of(context).size.width;
+
     final isMobile = screenWidth < 600;
     final isTablet = screenWidth >= 600 && screenWidth < 1200;
 
@@ -15,7 +18,7 @@ class LoanServicesCardsSection extends StatelessWidget {
     final centralImageHeight = isMobile ? 250.0 : isTablet ? 380.0 : 480.0;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 80),
+      padding: const EdgeInsets.symmetric(vertical: 80),
       child: Column(
         children: [
           /// =======================
@@ -30,10 +33,9 @@ class LoanServicesCardsSection extends StatelessWidget {
                   imageUrl:
                   'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/top-view-of-businessmen-analyzing-management-statistics-while-working-at-company-investments-r6sdkfa7f0qarcxa8bmgf8ue5mupxbdnt3jijgp1qo.webp',
                   icon: Icons.savings_outlined,
-                  title: 'Prêts personnels',
-                  description:
-                  'Des solutions de financement souples pour faire face '
-                      'à vos besoins personnels et projets du quotidien.',
+                  title: loc.loanServicePersonalTitle,
+                  description: loc.loanServicePersonalDescription,
+                  buttonLabel: loc.learnMore,
                   isMobile: true,
                 ),
                 SizedBox(height: cardSpacing),
@@ -41,10 +43,9 @@ class LoanServicesCardsSection extends StatelessWidget {
                   imageUrl:
                   'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/businesswoman-leader-team-conference-on-meeting-presentation-to-planning-investment-project-working-r6sdiewmsrz7xdueyyc6l93weyrggmebv5b4l5od1s.webp',
                   icon: Icons.business_center_outlined,
-                  title: 'Prêts professionnels',
-                  description:
-                  'Financement adapté aux entrepreneurs, commerçants '
-                      'et porteurs de projets ambitieux.',
+                  title: loc.loanServiceBusinessTitle,
+                  description: loc.loanServiceBusinessDescription,
+                  buttonLabel: loc.learnMore,
                   isMobile: true,
                 ),
               ],
@@ -56,10 +57,9 @@ class LoanServicesCardsSection extends StatelessWidget {
                     imageUrl:
                     'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/top-view-of-businessmen-analyzing-management-statistics-while-working-at-company-investments-r6sdkfa7f0qarcxa8bmgf8ue5mupxbdnt3jijgp1qo.webp',
                     icon: Icons.savings_outlined,
-                    title: 'Prêts personnels',
-                    description:
-                    'Des solutions de financement souples pour faire face '
-                        'à vos besoins personnels et projets du quotidien.',
+                    title: loc.loanServicePersonalTitle,
+                    description: loc.loanServicePersonalDescription,
+                    buttonLabel: loc.learnMore,
                     isMobile: false,
                   ),
                 ),
@@ -69,10 +69,9 @@ class LoanServicesCardsSection extends StatelessWidget {
                     imageUrl:
                     'https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/businesswoman-leader-team-conference-on-meeting-presentation-to-planning-investment-project-working-r6sdiewmsrz7xdueyyc6l93weyrggmebv5b4l5od1s.webp',
                     icon: Icons.business_center_outlined,
-                    title: 'Prêts professionnels',
-                    description:
-                    'Financement adapté aux entrepreneurs, commerçants '
-                        'et porteurs de projets ambitieux.',
+                    title: loc.loanServiceBusinessTitle,
+                    description: loc.loanServiceBusinessDescription,
+                    buttonLabel: loc.learnMore,
                     isMobile: false,
                   ),
                 ),
@@ -80,7 +79,7 @@ class LoanServicesCardsSection extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 80),
+          const SizedBox(height: 80),
 
           /// =======================
           /// IMAGE CENTRALE
@@ -92,14 +91,18 @@ class LoanServicesCardsSection extends StatelessWidget {
             fit: BoxFit.cover,
           ),
 
-          SizedBox(height: 60),
+          const SizedBox(height: 60),
 
           /// =======================
           /// CARTE DU BAS
           /// =======================
           Padding(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-            child: const _BottomCard(),
+            child: _BottomCard(
+              title: loc.loanServiceSupportTitle,
+              description: loc.loanServiceSupportDescription,
+              buttonLabel: loc.learnMore,
+            ),
           ),
         ],
       ),
@@ -115,6 +118,7 @@ class _LoanCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
+  final String buttonLabel;
   final bool isMobile;
 
   const _LoanCard({
@@ -122,6 +126,7 @@ class _LoanCard extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.description,
+    required this.buttonLabel,
     required this.isMobile,
   });
 
@@ -153,24 +158,24 @@ class _LoanCard extends StatelessWidget {
           child: Column(
             children: [
               Icon(icon, size: 40, color: Colors.amber),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 title,
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
                 description,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.black54),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextButton(
-                onPressed: () =>
-                    context.go('/offers'),
-                child: const Text(
-                  'En savoir plus →',
-                  style: TextStyle(color: Colors.amber),
+                onPressed: () => context.go('/offers'),
+                child: Text(
+                  buttonLabel,
+                  style: const TextStyle(color: Colors.amber),
                 ),
               ),
             ],
@@ -185,7 +190,15 @@ class _LoanCard extends StatelessWidget {
 /// CARTE DU BAS
 /// =======================
 class _BottomCard extends StatelessWidget {
-  const _BottomCard();
+  final String title;
+  final String description;
+  final String buttonLabel;
+
+  const _BottomCard({
+    required this.title,
+    required this.description,
+    required this.buttonLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -209,26 +222,26 @@ class _BottomCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.support_agent, size: 40, color: Colors.amber),
-          SizedBox(height: 20),
-          const Text(
-            'Accompagnement personnalisé',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          const Icon(Icons.support_agent, size: 40, color: Colors.amber),
+          const SizedBox(height: 20),
+          Text(
+            title,
+            style:
+            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
-          const Text(
-            'Un suivi humain, réactif et confidentiel pour vous accompagner '
-                'à chaque étape de votre demande de prêt.',
+          Text(
+            description,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black54),
+            style: const TextStyle(color: Colors.black54),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextButton(
-            onPressed: () =>
-                context.go('/offers'),
-            child: const Text(
-              'En savoir plus →',
-              style: TextStyle(color: Colors.amber),
+            onPressed: () => context.go('/offers'),
+            child: Text(
+              buttonLabel,
+              style: const TextStyle(color: Colors.amber),
             ),
           ),
         ],

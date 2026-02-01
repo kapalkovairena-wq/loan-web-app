@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -14,6 +15,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   String? message;
 
   Future<void> resetPassword() async {
+    final l10n = AppLocalizations.of(context)!;
+
     setState(() {
       loading = true;
       message = null;
@@ -25,12 +28,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       );
 
       setState(() {
-        message =
-        "Un lien de réinitialisation a été envoyé à votre adresse e-mail.";
+        message = l10n.resetLinkSent;
       });
     } on FirebaseAuthException catch (e) {
       setState(() {
-        message = e.message ?? "Une erreur est survenue.";
+        message = e.message ?? l10n.errorOccurred;
       });
     } finally {
       setState(() => loading = false);
@@ -39,6 +41,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -50,30 +54,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  "Mot de passe oublié",
-                  style: TextStyle(
+                Text(
+                  l10n.forgotPasswordTitle,
+                  style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.",
-                  style: TextStyle(color: Colors.black54),
+                Text(
+                  l10n.forgotPasswordSubtitle,
+                  style: const TextStyle(color: Colors.black54),
                 ),
                 const SizedBox(height: 32),
-
                 TextField(
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: "Adresse e-mail",
+                  decoration: InputDecoration(
+                    labelText: l10n.emailAddress,
                   ),
                 ),
-
                 const SizedBox(height: 24),
-
                 ElevatedButton(
                   onPressed: loading ? null : resetPassword,
                   child: loading
@@ -82,27 +83,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     width: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                      : const Text("Envoyer le lien"),
+                      : Text(l10n.sendLink),
                 ),
-
                 if (message != null) ...[
                   const SizedBox(height: 16),
                   Text(
                     message!,
                     style: TextStyle(
-                      color: message!.startsWith("Un lien")
+                      color: message!.startsWith(l10n.resetLinkSent)
                           ? Colors.green
                           : Colors.red,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ],
-
                 const SizedBox(height: 24),
-
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text("Retour à la connexion"),
+                  child: Text(l10n.backToLogin),
                 ),
               ],
             ),

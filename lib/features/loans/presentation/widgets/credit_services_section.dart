@@ -1,11 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class CreditServicesSection extends StatelessWidget {
   const CreditServicesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
 
     /// Breakpoints
@@ -14,6 +16,8 @@ class CreditServicesSection extends StatelessWidget {
     /// 1 carte mobile, 2 partout ailleurs
     final int crossAxisCount = isMobile ? 1 : 2;
 
+    final cards = _localizedCards(l10n);
+
     return Column(
       children: [
         const SizedBox(height: 80),
@@ -21,14 +25,14 @@ class CreditServicesSection extends StatelessWidget {
         /// =======================
         /// TITRES
         /// =======================
-        const Text(
-          "Nos dossiers",
-          style: TextStyle(color: Colors.grey),
+        Text(
+          l10n.creditSectionLabel,
+          style: const TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 8),
-        const Text(
-          "Nos services de crédit",
-          style: TextStyle(
+        Text(
+          l10n.creditSectionTitle,
+          style: const TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
           ),
@@ -37,12 +41,12 @@ class CreditServicesSection extends StatelessWidget {
         const SizedBox(height: 12),
         SizedBox(
           width: isMobile ? double.infinity : 600,
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              "Nous proposons des solutions de financement flexibles et accessibles, adaptées à vos besoins personnels ou professionnels.",
+              l10n.creditSectionDescription,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black54),
+              style: const TextStyle(color: Colors.black54),
             ),
           ),
         ),
@@ -65,9 +69,9 @@ class CreditServicesSection extends StatelessWidget {
               mainAxisSpacing: 24,
               childAspectRatio: isMobile ? 1.25 : 1.6,
             ),
-            itemCount: _cards.length,
+            itemCount: cards.length,
             itemBuilder: (context, index) {
-              final card = _cards[index];
+              final card = cards[index];
               return LoanImageCard(
                 imageUrl: card.image,
                 overlayTitle: card.title,
@@ -84,7 +88,7 @@ class CreditServicesSection extends StatelessWidget {
 }
 
 /// =======================
-/// DATA SOURCE
+/// DATA SOURCE LOCALISÉE
 /// =======================
 class _CardData {
   final String image;
@@ -94,26 +98,26 @@ class _CardData {
   const _CardData(this.image, this.title, this.text);
 }
 
-const List<_CardData> _cards = [
+List<_CardData> _localizedCards(AppLocalizations l10n) => [
   _CardData(
     "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/financial-services-1536x1152.webp",
-    "Prêt personnel",
-    "Financez vos projets (voyages, équipements, mariages...) à un prix compétitif et avec une réponse rapide.",
+    l10n.creditPersonalTitle,
+    l10n.creditPersonalDescription,
   ),
   _CardData(
     "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/business-team-collaboration-discussing-working-analysis-with-financial-data-and-marketing-growth-1536x1024.webp",
-    "Prêt professionnel",
-    "Une solution simple et rapide pour soutenir votre entreprise : approvisionnement, trésorerie, développement.",
+    l10n.creditBusinessTitle,
+    l10n.creditBusinessDescription,
   ),
   _CardData(
     "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/financial-statistics-1536x1024.webp",
-    "Lignes de crédit flexibles",
-    "Accès rapide à des fonds immédiatement disponibles, sans obligation d’utilisation immédiate.",
+    l10n.creditFlexibleTitle,
+    l10n.creditFlexibleDescription,
   ),
   _CardData(
     "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/business-team-casual-collaboration-discussing-working-analysis-with-financial-data-and-marketing-1536x864.webp",
-    "Simulation et enquête",
-    "Estimez votre capacité de crédit et soumettez votre demande directement en ligne.",
+    l10n.creditSimulationTitle,
+    l10n.creditSimulationDescription,
   ),
 ];
 
@@ -149,15 +153,12 @@ class _LoanImageCardState extends State<LoanImageCard> {
         borderRadius: BorderRadius.circular(14),
         child: Stack(
           children: [
-            /// IMAGE
             Positioned.fill(
               child: Image.network(
                 widget.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
-
-            /// OVERLAY SOMBRE
             Positioned.fill(
               child: Container(
                 decoration: BoxDecoration(
@@ -172,8 +173,6 @@ class _LoanImageCardState extends State<LoanImageCard> {
                 ),
               ),
             ),
-
-            /// TEXTE GLASSMORPHISM
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOut,

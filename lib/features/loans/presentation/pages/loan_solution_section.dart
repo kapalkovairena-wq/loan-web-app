@@ -1,64 +1,64 @@
 import 'package:flutter/material.dart';
+import '../../../../l10n/app_localizations.dart';
 
 import '../widgets/app_header.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/whatsApp_button.dart';
 import '../widgets/footer_section.dart';
 
-
 class LoanSolutionSection extends StatelessWidget {
   const LoanSolutionSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final width = MediaQuery.of(context).size.width;
     final isMobile = width < 900;
 
     return Scaffold(
-        drawer: const AppDrawer(),
-        body: Stack(
-          children: [
-        SingleChildScrollView(
-        child: Container(
-      color: Colors.white,
-      child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppHeader(),
-              _heroSection(isMobile),
-              const SizedBox(height: 80),
-              _whiteCards(isMobile),
-              const SizedBox(height: 80),
-              _divider(),
-              const SizedBox(height: 80),
-              _greyCards(isMobile),
-              const SizedBox(height: 80),
-              FooterSection(),
-            ],
-          ),
-      ),
-    ),
-        ),
-            const WhatsAppButton(
-              phoneNumber: "+4915774851991",
-              message: "Bonjour, je souhaite plus d'informations sur vos prêts.",
+      drawer: const AppDrawer(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              color: Colors.white,
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AppHeader(),
+                    _heroSection(isMobile, l10n),
+                    const SizedBox(height: 80),
+                    _whiteCards(isMobile, l10n),
+                    const SizedBox(height: 80),
+                    _divider(l10n),
+                    const SizedBox(height: 80),
+                    _greyCards(isMobile, l10n),
+                    const SizedBox(height: 80),
+                    const FooterSection(),
+                  ],
+                ),
+              ),
             ),
-          ],
-        )
+          ),
+          const WhatsAppButton(
+            phoneNumber: "+4915774851991",
+          ),
+        ],
+      ),
     );
   }
 
   // ---------------- HERO ----------------
 
-  Widget _heroSection(bool isMobile) {
+  Widget _heroSection(bool isMobile, AppLocalizations l10n) {
     return isMobile
         ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _heroImage(),
         const SizedBox(height: 40),
-        _heroContent(),
+        _heroContent(l10n),
       ],
     )
         : Row(
@@ -66,7 +66,7 @@ class LoanSolutionSection extends StatelessWidget {
       children: [
         Expanded(child: _heroImage()),
         const SizedBox(width: 60),
-        Expanded(child: _heroContent()),
+        Expanded(child: _heroContent(l10n)),
       ],
     );
   }
@@ -81,41 +81,36 @@ class LoanSolutionSection extends StatelessWidget {
     );
   }
 
-  Widget _heroContent() {
+  Widget _heroContent(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "L'alternative pour l'ici et maintenant.",
-          style: TextStyle(
+        Text(
+          l10n.heroTitle2,
+          style: const TextStyle(
             fontSize: 36,
             fontWeight: FontWeight.bold,
             color: Color(0xFF2B1B3F),
           ),
         ),
         const SizedBox(height: 20),
-        const Text(
-          "Dans un contexte économique exigeant, accéder rapidement "
-              "à un financement fiable est devenu essentiel. "
-              "KreditSch propose des solutions de prêts flexibles, "
-              "transparentes et adaptées aux particuliers comme aux entreprises.",
-          style: TextStyle(
+        Text(
+          l10n.heroDescription,
+          style: const TextStyle(
             color: Color(0xFF555555),
             height: 1.7,
           ),
         ),
         const SizedBox(height: 20),
-        const _Bullet(text: "Prêts rapides avec réponse sous 24h."),
-        const _Bullet(text: "Durées flexibles de 6 à 60 mois."),
-        const _Bullet(
-            text:
-            "Solutions adaptées aux particuliers et professionnels."),
+        _Bullet(text: l10n.bulletFastLoans),
+        _Bullet(text: l10n.bulletFlexibleDuration),
+        _Bullet(text: l10n.bulletForAll),
         const SizedBox(height: 25),
         InkWell(
           onTap: () {},
-          child: const Text(
-            "Demander un prêt KreditSch Standard >",
-            style: TextStyle(
+          child: Text(
+            l10n.heroCTA,
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               color: Color(0xFF2B1B3F),
             ),
@@ -127,13 +122,11 @@ class LoanSolutionSection extends StatelessWidget {
 
   // ---------------- CARTES BLANCHES ----------------
 
-  Widget _whiteCards(bool isMobile) {
+  Widget _whiteCards(bool isMobile, AppLocalizations l10n) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
-        final itemWidth = isMobile
-            ? maxWidth
-            : (maxWidth - 60) / 3; // 3 cartes desktop
+        final itemWidth = isMobile ? maxWidth : (maxWidth - 60) / 3;
 
         return Wrap(
           spacing: 30,
@@ -141,32 +134,26 @@ class LoanSolutionSection extends StatelessWidget {
           children: [
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "☂️",
-                title: "Prêt à faible risque",
-                text:
-                "Des mensualités fixes et transparentes "
-                    "pour une meilleure maîtrise de votre budget.",
+                title: l10n.cardLowRisk,
+                text: l10n.cardLowRiskDesc,
               ),
             ),
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "📌",
-                title: "Prêts ciblés",
-                text:
-                "Financement dédié : logement, auto, études, "
-                    "projets personnels ou trésorerie.",
+                title: l10n.cardTargeted,
+                text: l10n.cardTargetedDesc,
               ),
             ),
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "💰",
-                title: "Montant flexible",
-                text:
-                "Empruntez entre 1 000 € et 500 000 € "
-                    "selon votre profil et votre besoin.",
+                title: l10n.cardFlexibleAmount,
+                text: l10n.cardFlexibleAmountDesc,
               ),
             ),
           ],
@@ -177,16 +164,15 @@ class LoanSolutionSection extends StatelessWidget {
 
   // ---------------- DIVIDER ----------------
 
-  Widget _divider() {
+  Widget _divider(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(40),
       width: double.infinity,
       color: const Color(0xFFE6E6E6),
-      child: const Text(
-        "Si cette solution de prêt ne correspond pas à votre situation, "
-            "KreditSch vous propose d'autres options de financement.",
+      child: Text(
+        l10n.dividerText,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           color: Color(0xFF2B1B3F),
         ),
@@ -196,13 +182,11 @@ class LoanSolutionSection extends StatelessWidget {
 
   // ---------------- CARTES GRISES ----------------
 
-  Widget _greyCards(bool isMobile) {
+  Widget _greyCards(bool isMobile, AppLocalizations l10n) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
-        final itemWidth = isMobile
-            ? maxWidth
-            : (maxWidth - 30) / 2; // 2 cartes desktop
+        final itemWidth = isMobile ? maxWidth : (maxWidth - 30) / 2;
 
         return Wrap(
           spacing: 30,
@@ -210,44 +194,37 @@ class LoanSolutionSection extends StatelessWidget {
           children: [
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "🎯",
-                title: "Prêts personnalisés",
-                text:
-                "Des offres adaptées à votre situation financière "
-                    "et à votre capacité de remboursement.",
+                title: l10n.cardPersonalized,
+                text: l10n.cardPersonalizedDesc,
                 grey: true,
               ),
             ),
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "🌱",
-                title: "Prêts responsables",
-                text:
-                "Financements pensés pour des projets durables "
-                    "et à impact positif.",
+                title: l10n.cardResponsible,
+                text: l10n.cardResponsibleDesc,
                 grey: true,
               ),
             ),
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "🏥",
-                title: "Prêts thématiques",
-                text:
-                "Santé, études, mobilité, logement ou entrepreneuriat.",
+                title: l10n.cardThematic,
+                text: l10n.cardThematicDesc,
                 grey: true,
               ),
             ),
             _AnimatedCard(
               width: itemWidth,
-              child: const _Card(
+              child: _Card(
                 icon: "🤝",
-                title: "Partenaires financiers",
-                text:
-                "Accès à des solutions issues de partenaires "
-                    "financiers nationaux et internationaux.",
+                title: l10n.cardPartners,
+                text: l10n.cardPartnersDesc,
                 grey: true,
               ),
             ),
@@ -258,14 +235,13 @@ class LoanSolutionSection extends StatelessWidget {
   }
 }
 
+// ----------------- COMPONENTS (_AnimatedCard & _Card & _Bullet) -----------------
+
 class _AnimatedCard extends StatefulWidget {
   final Widget child;
   final double width;
 
-  const _AnimatedCard({
-    required this.child,
-    required this.width,
-  });
+  const _AnimatedCard({required this.child, required this.width});
 
   @override
   State<_AnimatedCard> createState() => _AnimatedCardState();
@@ -290,12 +266,8 @@ class _AnimatedCardState extends State<_AnimatedCard>
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    _offset = Tween<Offset>(
-      begin: const Offset(0, 0.08),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _offset = Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
   }
@@ -320,8 +292,6 @@ class _AnimatedCardState extends State<_AnimatedCard>
     super.dispose();
   }
 }
-
-// ---------------- COMPONENTS ----------------
 
 class _Bullet extends StatelessWidget {
   final String text;

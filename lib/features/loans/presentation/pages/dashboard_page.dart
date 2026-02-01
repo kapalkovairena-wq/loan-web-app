@@ -11,17 +11,24 @@ import '../widgets/repayment_bank_card.dart';
 import '../widgets/trust_card.dart';
 import '../widgets/quick_actions.dart';
 import '../../presentation/auth/auth_gate.dart';
-
+import '../../../../widgets/language_selector.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       appBar: AppBar(
-        title: const Text("Tableau de bord"),
+        title: Text(l10n.dashboardTitle),
+        actions: const [
+          LanguageSelector(),
+          SizedBox(width: 16),
+        ],
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -51,7 +58,6 @@ class _DashboardBodyState extends State<_DashboardBody> {
     super.initState();
     _fetchLoan();
 
-    // Rafraîchir toutes les secondes
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _fetchLoan());
 
     if (FirebaseAuth.instance.currentUser == null) {
@@ -73,7 +79,6 @@ class _DashboardBodyState extends State<_DashboardBody> {
           .maybeSingle();
 
       if (!mounted) return;
-      debugPrint('loanData: $data');
 
       setState(() {
         loanData = data;
@@ -119,13 +124,13 @@ class _DashboardBodyState extends State<_DashboardBody> {
                       ? _MobileLayout(
                     showRepaymentBankCard: showRepayment,
                     showBankDetailsCard: showBankDetails,
-                    documentUploadCard : documentUpload,
+                    documentUploadCard: documentUpload,
                     hasLoanAmount: hasLoanAmount,
                   )
                       : _WebLayout(
                     showRepaymentBankCard: showRepayment,
                     showBankDetailsCard: showBankDetails,
-                    documentUploadCard : documentUpload,
+                    documentUploadCard: documentUpload,
                     hasLoanAmount: hasLoanAmount,
                   ),
                 ],
@@ -143,20 +148,22 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Row(
       children: [
-        Expanded(  // ← force le texte à prendre tout l’espace restant
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                "Bonjour 👋",
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                l10n.dashboardHello,
+                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
-                "Bienvenue dans votre espace client sécurisé",
-                style: TextStyle(color: Colors.grey),
+                l10n.dashboardWelcome,
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           ),
@@ -167,16 +174,15 @@ class _Header extends StatelessWidget {
             color: Colors.green.withOpacity(0.1),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Text(
-            "🔒 Données protégées",
-            style: TextStyle(color: Colors.green),
+          child: Text(
+            l10n.dashboardSecureData,
+            style: const TextStyle(color: Colors.green),
           ),
         ),
       ],
     );
   }
 }
-
 
 class _MobileLayout extends StatelessWidget {
   final bool showRepaymentBankCard;

@@ -95,8 +95,42 @@ class _AdminDocumentsPageState extends State<AdminDocumentsPage> {
     }
 
     if (documents.isEmpty) {
-      return const Center(child: Text("Aucun document en attente"));
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("Validation des documents"),
+          actions: [
+            IconButton(
+              tooltip: "Historique des documents",
+              icon: const Icon(Icons.history),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const AdminDocumentsHistoryPage(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.inbox, size: 48, color: Colors.grey[400]),
+              const SizedBox(height: 12),
+              Text(
+                "Aucun document à valider pour le moment",
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
+
 
     return Scaffold(
         appBar: AppBar(

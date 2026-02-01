@@ -5,6 +5,7 @@ import 'supabase_profile_service.dart';
 import 'register_page.dart';
 import 'forgot_password_page.dart';
 import '../pages/home_page.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,10 +25,13 @@ class _LoginPageState extends State<LoginPage> {
     _authStream = FirebaseAuth.instance.authStateChanges();
 
     _authStream.listen((user) {
-      if (user != null) {
+      final locale = Localizations.localeOf(context);
+      final languageCode = locale.languageCode;
+      if (user != null && selectedCurrency != null) {
         SupabaseProfileService.createProfile(
           user,
           currency: selectedCurrency!,
+          language: languageCode,
         );
       }
     });
@@ -35,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return StreamBuilder<User?>(
       stream: _authStream,
       builder: (context, snapshot) {
@@ -67,9 +73,20 @@ class _LoginState extends State<Login> {
   final auth = AuthService();
   bool loading = false;
 
+  void _showMessage(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
+      ),
+    );
+  }
+
   Future<void> _login() async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (emailCtrl.text.isEmpty || passCtrl.text.isEmpty) {
-      _showMessage("Veuillez remplir tous les champs", isError: true);
+      _showMessage(l10n.fillAllFields, isError: true);
       return;
     }
 
@@ -80,34 +97,26 @@ class _LoginState extends State<Login> {
         passCtrl.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+
       if (e.code == 'user-not-found') {
-        _showMessage(
-          "Aucun compte trouvé. Veuillez vous inscrire.",
-          isError: true,
-        );
+        _showMessage(l10n.noAccountFound, isError: true);
       } else if (e.code == 'wrong-password') {
-        _showMessage("Mot de passe incorrect", isError: true);
+        _showMessage(l10n.incorrectPassword, isError: true);
       } else if (e.code == 'invalid-email') {
-        _showMessage("Email invalide", isError: true);
+        _showMessage(l10n.invalidEmail, isError: true);
       } else {
-        _showMessage("Erreur de connexion", isError: true);
+        _showMessage(l10n.loginError, isError: true);
       }
     } finally {
       setState(() => loading = false);
     }
   }
 
-  void _showMessage(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: isError ? Colors.red : Colors.green,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF6F7FB),
       body: Center(
@@ -138,17 +147,17 @@ class _LoginState extends State<Login> {
 
                   const SizedBox(height: 32),
 
-                  const Text(
-                    "Connexion",
-                    style: TextStyle(
+                  Text(
+                    l10n.login,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    "Accédez à votre espace client",
-                    style: TextStyle(color: Colors.black54),
+                  Text(
+                    l10n.loginSubtitle,
+                    style: const TextStyle(color: Colors.black54),
                   ),
 
                   const SizedBox(height: 24),
@@ -156,9 +165,9 @@ class _LoginState extends State<Login> {
                   TextField(
                     controller: emailCtrl,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.email,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
 
@@ -167,9 +176,9 @@ class _LoginState extends State<Login> {
                   TextField(
                     controller: passCtrl,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: "Mot de passe",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.password,
+                      border: const OutlineInputBorder(),
                     ),
                   ),
 
@@ -186,7 +195,7 @@ class _LoginState extends State<Login> {
                           ),
                         );
                       },
-                      child: const Text("Mot de passe oublié ?"),
+                      child: Text(l10n.forgotPassword),
                     ),
                   ),
 
@@ -199,7 +208,7 @@ class _LoginState extends State<Login> {
                     ),
                     child: loading
                         ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Se connecter"),
+                        : Text(l10n.loginButton),
                   ),
 
                   const SizedBox(height: 16),
@@ -210,13 +219,13 @@ class _LoginState extends State<Login> {
                       "https://yztryuurtkxoygpcmlmu.supabase.co/storage/v1/object/public/loan/google.png",
                       height: 18,
                     ),
-                    label: const Text("Continuer avec Google"),
+                    label: Text(l10n.continueWithGoogle),
                     onPressed: () async {
                       try {
                         await auth.signInWithGoogle();
                       } catch (_) {
                         _showMessage(
-                          "Erreur lors de la connexion Google",
+                          l10n.googleSignInError,
                           isError: true,
                         );
                       }
@@ -228,9 +237,9 @@ class _LoginState extends State<Login> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Pas encore de compte ?",
-                        style: TextStyle(color: Colors.black54),
+                      Text(
+                        l10n.noAccountYet,
+                        style: const TextStyle(color: Colors.black54),
                       ),
                       TextButton(
                         onPressed: () {
@@ -241,7 +250,7 @@ class _LoginState extends State<Login> {
                             ),
                           );
                         },
-                        child: const Text("Créer un compte"),
+                        child: Text(l10n.createAccount),
                       ),
                     ],
                   ),

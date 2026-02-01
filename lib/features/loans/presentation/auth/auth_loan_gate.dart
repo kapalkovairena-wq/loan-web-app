@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../l10n/app_localizations.dart';
 import 'supabase_profile_service.dart';
 import 'login_loan_page.dart';
 import '../pages/loan_request_page.dart';
@@ -23,11 +24,14 @@ class _AuthLoanGateState extends State<AuthLoanGate> {
     _authStream = FirebaseAuth.instance.authStateChanges();
 
     _authStream.listen((user) async {
+      final locale = Localizations.localeOf(context);
+      final languageCode = locale.languageCode;
       if (user != null && !_profileCreated) {
         try {
           await SupabaseProfileService.createProfile(
             user,
             currency: selectedCurrency!,
+            language: languageCode,
           );
           _profileCreated = true;
           print("Profil Supabase créé avec succès pour ${user.uid}");
@@ -43,12 +47,23 @@ class _AuthLoanGateState extends State<AuthLoanGate> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return StreamBuilder<User?>(
       stream: _authStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 12),
+                  Text(l10n.loading),
+                ],
+              ),
+            ),
           );
         }
 

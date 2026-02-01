@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class WhyChooseUsLoanSection extends StatelessWidget {
   const WhyChooseUsLoanSection({super.key});
@@ -30,10 +31,11 @@ class _TopDarkSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final horizontalPadding = isMobile ? 16.0 : 60.0;
     final verticalPadding = isMobile ? 30.0 : 80.0;
 
-    // Ajustement de police
     final titleFontSize = isMobile ? 22.0 : 34.0;
     final subtitleFontSize = isMobile ? 14.0 : 20.0;
 
@@ -62,52 +64,34 @@ class _TopDarkSection extends StatelessWidget {
   }
 
   Widget _TextColumn(BuildContext context, double titleFontSize, double subtitleFontSize) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Pourquoi nous ?',
-          style: TextStyle(
-            color: Colors.amber,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        Text(l10n.whyUsTitle, style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.w600)),
         const SizedBox(height: 12),
-        Text(
-          'Votre partenaire de prêts privés de confiance',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: titleFontSize,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        Text(l10n.whyUsSubtitle,
+            style: TextStyle(color: Colors.white, fontSize: titleFontSize, fontWeight: FontWeight.bold)),
         const SizedBox(height: 20),
-        Text(
-          'Nous combinons rapidité, transparence et accompagnement '
-              'personnalisé pour vous offrir des solutions de prêts simples, '
-              'efficaces et adaptées à vos objectifs.',
-          style: TextStyle(color: Colors.white70, height: 1.6, fontSize: subtitleFontSize),
-        ),
+        Text(l10n.whyUsDescription,
+            style: TextStyle(color: Colors.white70, height: 1.6, fontSize: subtitleFontSize)),
         const SizedBox(height: 40),
-        _progress('Rapidité de traitement', 0.95),
+        _progress(l10n.fastProcessing, 0.95),
         const SizedBox(height: 20),
-        _progress('Sécurité & fiabilité', 0.98),
+        _progress(l10n.securityReliability, 0.98),
         const SizedBox(height: 30),
-        _checkItem('Amélioration continue de nos offres'),
-        _checkItem('Engagement envers nos clients'),
-        _checkItem('Conditions claires et sans surprise'),
+        _checkItem(l10n.continuousImprovement),
+        _checkItem(l10n.clientCommitment),
+        _checkItem(l10n.clearConditions),
         const SizedBox(height: 40),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.amber,
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
           ),
-          onPressed: () =>
-              context.go('/request'),
-          child: const Text(
-            'Faire une demande',
-            style: TextStyle(color: Colors.black),
-          ),
+          onPressed: () => context.go('/request'),
+          child: Text(l10n.submitRequest, style: const TextStyle(color: Colors.black)),
         ),
       ],
     );
@@ -136,13 +120,10 @@ class _TopDarkSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label, style: const TextStyle(color: Colors.white)),
-            Text('${(value * 100).round()}%', style: const TextStyle(color: Colors.white)),
-          ],
-        ),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(label, style: const TextStyle(color: Colors.white)),
+          Text('${(value * 100).round()}%', style: const TextStyle(color: Colors.white)),
+        ]),
         const SizedBox(height: 8),
         LinearProgressIndicator(
           value: value,
@@ -202,7 +183,7 @@ class _BottomImageSection extends StatelessWidget {
           )
               : Row(
             children: [
-              Expanded(child: const _BottomText()),
+              const Expanded(child: _BottomText()),
               _BottomButton(),
             ],
           ),
@@ -217,19 +198,15 @@ class _BottomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text(
-          'Nos solutions de financement',
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 16),
-        Text(
-          'Bien plus qu’un prêt, nous vous accompagnons à chaque étape '
-              'de votre projet personnel ou professionnel.',
-          style: TextStyle(color: Colors.black54),
-        ),
+      children: [
+        Text(l10n.financingSolutionsTitle,
+            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 16),
+        Text(l10n.financingSolutionsDesc, style: const TextStyle(color: Colors.black54)),
       ],
     );
   }
@@ -238,14 +215,15 @@ class _BottomText extends StatelessWidget {
 class _BottomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.amber,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 18),
       ),
-      onPressed: () =>
-          context.go('/offers'),
-      child: const Text('Voir les offres', style: TextStyle(color: Colors.black)),
+      onPressed: () => context.go('/offers'),
+      child: Text(l10n.viewOffers, style: const TextStyle(color: Colors.black)),
     );
   }
 }
