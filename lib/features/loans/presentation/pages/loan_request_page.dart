@@ -398,6 +398,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
       if (!mounted) return;
 
       Future<void> triggerEmailFunction({
+        required String firebase_uid,
         required String clientName,
         required String clientEmail,
         required String phone,
@@ -421,6 +422,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
         await supabase.functions.invoke(
           'send_loan_emails',
           body: {
+            "firebase_uid": firebase_uid,
             "clientName": clientName,
             "clientEmail": clientEmail,
             "phone": phone,
@@ -445,6 +447,7 @@ class _LoanRequestPageState extends State<LoanRequestPage> {
 
       // ===== ENVOI MAILS =====
       await triggerEmailFunction(
+        firebase_uid: firebaseUser.uid,
         clientName: nameController.text,
         clientEmail: emailController.text,
         phone: phoneController.text,
