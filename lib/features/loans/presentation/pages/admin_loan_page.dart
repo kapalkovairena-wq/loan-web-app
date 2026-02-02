@@ -173,6 +173,7 @@ class _AdminLoanPageState extends State<AdminLoanPage> {
           "clientEmail": loanData['email'],
           "pdfBase64": pdfBase64,
           "loanRequestId": loanData['id'],
+          "firebase_uid": loanData['firebase_uid'],
         }),
       );
 
