@@ -1365,4 +1365,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String genericError(Object error) {
     return '❌ Er is een fout opgetreden: $error';
   }
+
+  @override
+  String get textyellowcard =>
+      'Sie verwirklichen Ihre Projekte, \n wir finanzieren Ihre Ambitionen.';
 }

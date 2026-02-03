@@ -519,5 +519,7 @@
   "save": "Enregistrer",
   "requiredField": "Champ requis",
   "bankDetailsSaved": "Coordonnées bancaires enregistrées avec succès",
-  "genericError": "❌ Une erreur est survenue : {error}"
+  "genericError": "❌ Une erreur est survenue : {error}",
+
+  "textyellowcard": "Vous développez vos projets,\n nous finançons votre ambition."
 }

@@ -2670,6 +2670,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'❌ Une erreur est survenue : {error}'**
   String genericError(Object error);
+
+  /// No description provided for @textyellowcard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vous développez vos projets,\n nous finançons votre ambition.'**
+  String get textyellowcard;
 }
 
 class _AppLocalizationsDelegate

@@ -519,5 +519,7 @@
   "save": "Save",
   "requiredField": "Required field",
   "bankDetailsSaved": "Bank details saved successfully",
-  "genericError": "❌ An error occurred: {error}"
+  "genericError": "❌ An error occurred: {error}",
+
+  "textyellowcard": "You develop your projects, \n we finance your ambition."
 }

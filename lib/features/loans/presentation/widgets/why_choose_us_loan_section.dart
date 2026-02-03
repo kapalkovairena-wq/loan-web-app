@@ -49,7 +49,7 @@ class _TopDarkSection extends StatelessWidget {
         children: [
           _TextColumn(context, titleFontSize, subtitleFontSize),
           const SizedBox(height: 20),
-          _YellowCard(isMobile: isMobile),
+          _YellowCard(context, isMobile: isMobile),
         ],
       )
           : Row(
@@ -57,7 +57,7 @@ class _TopDarkSection extends StatelessWidget {
         children: [
           Expanded(flex: 3, child: _TextColumn(context, titleFontSize, subtitleFontSize)),
           const SizedBox(width: 40),
-          Expanded(flex: 2, child: _YellowCard(isMobile: isMobile)),
+          Expanded(flex: 2, child: _YellowCard(context, isMobile: isMobile)),
         ],
       ),
     );
@@ -97,18 +97,18 @@ class _TopDarkSection extends StatelessWidget {
     );
   }
 
-  Widget _YellowCard({required bool isMobile}) {
+  Widget _YellowCard(BuildContext context, {required bool isMobile}) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: EdgeInsets.all(isMobile ? 20 : 40),
       color: Colors.amber,
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(Icons.lock_outline, size: 40),
           SizedBox(height: 20),
-          Text(
-            'Vous développez vos projets,\n'
-                'nous finançons votre ambition.',
+          Text(l10n.textyellowcard,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ],

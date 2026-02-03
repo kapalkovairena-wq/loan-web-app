@@ -479,5 +479,7 @@
   "save": "Opslaan",
   "requiredField": "Verplicht veld",
   "bankDetailsSaved": "Bankgegevens succesvol opgeslagen",
-  "genericError": "❌ Er is een fout opgetreden: {error}"
+  "genericError": "❌ Er is een fout opgetreden: {error}",
+
+  "textyellowcard": "Sie verwirklichen Ihre Projekte, \n wir finanzieren Ihre Ambitionen."
 }

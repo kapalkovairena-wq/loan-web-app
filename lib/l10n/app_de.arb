@@ -519,5 +519,7 @@
   "save": "Speichern",
   "requiredField": "Pflichtfeld",
   "bankDetailsSaved": "Bankdaten erfolgreich gespeichert",
-  "genericError": "❌ Ein Fehler ist aufgetreten: {error}"
+  "genericError": "❌ Ein Fehler ist aufgetreten: {error}",
+
+  "textyellowcard": "Sie entwickeln Ihre Projekte, \n wir finanzieren Ihre Ambitionen."
 }
