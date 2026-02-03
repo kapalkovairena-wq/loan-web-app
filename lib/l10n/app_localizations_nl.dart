@@ -9,64 +9,63 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get drawerHome => 'Page d\'accueil';
+  String get drawerHome => 'Startpagina';
 
   @override
-  String get drawerDashboard => 'Mon tableau de bord';
+  String get drawerDashboard => 'Mijn dashboard';
 
   @override
-  String get drawerAdminDashboard => 'Tableau de bord administrateur';
+  String get drawerAdminDashboard => 'Beheerdersdashboard';
 
   @override
-  String get drawerLoanRequest => 'Demander un prêt';
+  String get drawerLoanRequest => 'Een lening aanvragen';
 
   @override
-  String get drawerOffers => 'Découvrir nos offres';
+  String get drawerOffers => 'Ontdek onze aanbiedingen';
 
   @override
-  String get drawerInvestment => 'Investissement';
+  String get drawerInvestment => 'Investering';
 
   @override
   String get drawerContact => 'Contact';
 
   @override
-  String get drawerAbout => 'À propos de nous';
+  String get drawerAbout => 'Over ons';
 
   @override
-  String get drawerLogout => 'Se déconnecter';
+  String get drawerLogout => 'Uitloggen';
 
   @override
-  String get heroTitle =>
-      'Des services de prêts\npour développer votre entreprise';
+  String get heroTitle => 'Leningsdiensten\nom uw bedrijf te laten groeien';
 
   @override
   String get heroSubtitle =>
-      'Une solution moderne, simple et sécurisée pour gérer vos prêts et investissements.';
+      'Een moderne, eenvoudige en veilige oplossing om uw leningen en investeringen te beheren.';
 
   @override
-  String get heroLogin => 'Se connecter';
+  String get heroLogin => 'Inloggen';
 
   @override
-  String get heroRegister => 'S\'inscrire';
+  String get heroRegister => 'Registreren';
 
   @override
-  String get heroAdminAccess => 'Accéder à l’espace administrateur';
+  String get heroAdminAccess => 'Toegang tot het beheerderspaneel';
 
   @override
-  String get heroUserAccess => 'Accéder à mon espace';
+  String get heroUserAccess => 'Toegang tot mijn account';
 
   @override
-  String get bankDetailsTitle => 'Vos coordonnées bancaires';
+  String get bankDetailsTitle => 'Uw bankgegevens';
 
   @override
-  String get bankDetailsEmptyTitle => 'Aucune information bancaire enregistrée';
+  String get bankDetailsEmptyTitle => 'Geen bankgegevens opgeslagen';
 
   @override
   String get bankDetailsEmptyDescription =>
-      'Veuillez renseigner vos coordonnées pour recevoir les fonds.';
+      'Vul uw gegevens in om fondsen te ontvangen.';
 
   @override
-  String get bankReceiver => 'Bénéficiaire';
+  String get bankReceiver => 'Ontvanger';
 
   @override
   String get bankIban => 'IBAN';
@@ -75,364 +74,363 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bankBic => 'BIC';
 
   @override
-  String get bankName => 'Nom de la banque';
+  String get bankName => 'Banknaam';
 
   @override
-  String get bankAddress => 'Adresse de la banque';
+  String get bankAddress => 'Adres van de bank';
 
   @override
-  String get creditSectionLabel => 'Nos dossiers';
+  String get creditSectionLabel => 'Onze dossiers';
 
   @override
-  String get creditSectionTitle => 'Nos services de crédit';
+  String get creditSectionTitle => 'Onze kredietdiensten';
 
   @override
   String get creditSectionDescription =>
-      'Nous proposons des solutions de financement flexibles et accessibles, adaptées à vos besoins personnels ou professionnels.';
+      'Wij bieden flexibele en toegankelijke financieringsoplossingen, afgestemd op uw persoonlijke of zakelijke behoeften.';
 
   @override
-  String get creditPersonalTitle => 'Prêt personnel';
+  String get creditPersonalTitle => 'Persoonlijke lening';
 
   @override
   String get creditPersonalDescription =>
-      'Financez vos projets (voyages, équipements, mariages...) à un prix compétitif et avec une réponse rapide.';
+      'Financier uw projecten (reizen, apparatuur, bruiloften...) tegen een concurrerende prijs met snelle goedkeuring.';
 
   @override
-  String get creditBusinessTitle => 'Prêt professionnel';
+  String get creditBusinessTitle => 'Zakelijke lening';
 
   @override
   String get creditBusinessDescription =>
-      'Une solution simple et rapide pour soutenir votre entreprise : approvisionnement, trésorerie, développement.';
+      'Een eenvoudige en snelle oplossing om uw bedrijf te ondersteunen: voorraad, cashflow, groei.';
 
   @override
-  String get creditFlexibleTitle => 'Lignes de crédit flexibles';
+  String get creditFlexibleTitle => 'Flexibele kredietlijnen';
 
   @override
   String get creditFlexibleDescription =>
-      'Accès rapide à des fonds immédiatement disponibles, sans obligation d’utilisation immédiate.';
+      'Snelle toegang tot direct beschikbare fondsen, zonder verplichting tot onmiddellijk gebruik.';
 
   @override
-  String get creditSimulationTitle => 'Simulation et enquête';
+  String get creditSimulationTitle => 'Simulatie en beoordeling';
 
   @override
   String get creditSimulationDescription =>
-      'Estimez votre capacité de crédit et soumettez votre demande directement en ligne.';
+      'Schat uw kredietcapaciteit en dien uw aanvraag direct online in.';
 
   @override
-  String get documentUploadTitle => 'Soumettre un document';
+  String get documentUploadTitle => 'Een document indienen';
 
   @override
-  String get documentChooseFile => 'Choisir un fichier ou une photo';
+  String get documentChooseFile => 'Kies een bestand of foto';
 
   @override
-  String get documentSubmit => 'Soumettre le document';
+  String get documentSubmit => 'Document indienen';
 
   @override
-  String get documentUploadSuccess => '✅ Document soumis avec succès';
+  String get documentUploadSuccess => '✅ Document succesvol ingediend';
 
   @override
-  String get documentUploadError => '❌ Erreur lors de l’envoi du document :';
+  String get documentUploadError => '❌ Fout bij het indienen van het document:';
 
   @override
-  String get newsletterTitle => 'Abonnez-vous à notre newsletter';
+  String get newsletterTitle => 'Abonneer u op onze nieuwsbrief';
 
   @override
   String get newsletterDescription =>
-      'Restez informé(e) des fonctionnalités et technologies de nos produits en constante évolution.';
+      'Blijf op de hoogte van de functies en technologieën van onze voortdurend evoluerende producten.';
 
   @override
   String get newsletterDescriptionShort =>
-      'Restez informé(e) des nouveautés et évolutions.';
+      'Blijf op de hoogte van nieuws en updates.';
 
   @override
-  String get newsletterEmailHint => 'Votre adresse e-mail';
+  String get newsletterEmailHint => 'Uw e-mailadres';
 
   @override
-  String get newsletterSubscribe => 'S’abonner';
+  String get newsletterSubscribe => 'Abonneren';
 
   @override
-  String get footerServices => 'Services';
+  String get footerServices => 'Diensten';
 
   @override
-  String get footerInformation => 'Information';
+  String get footerInformation => 'Informatie';
 
   @override
-  String get footerHome => 'Page d’accueil';
+  String get footerHome => 'Startpagina';
 
   @override
-  String get footerOffers => 'Découvrir nos offres';
+  String get footerOffers => 'Ontdek onze aanbiedingen';
 
   @override
-  String get footerInvestment => 'Investissement';
+  String get footerInvestment => 'Investering';
 
   @override
   String get footerContact => 'Contact';
 
   @override
-  String get footerAbout => 'À propos de nous';
+  String get footerAbout => 'Over ons';
 
   @override
-  String get footerPrivacy => 'Protection des données';
+  String get footerPrivacy => 'Privacybeleid';
 
   @override
-  String get footerSecurity => 'Sécurité';
+  String get footerSecurity => 'Beveiliging';
 
   @override
-  String get footerTerms => 'CGV';
+  String get footerTerms => 'Algemene voorwaarden';
 
   @override
   String get footerBrandDescription =>
-      'Nous redonnons aux gens le contrôle de leur argent grâce à des solutions de financement modernes.';
+      'Wij geven mensen weer controle over hun geld met moderne financieringsoplossingen.';
 
   @override
-  String get footerSimulationButton => 'Voir une simulation';
+  String get footerSimulationButton => 'Bekijk een simulatie';
 
   @override
   String get footerAddress => 'Audenstraße 2 – 4, 61348 Bad Homburg';
 
   @override
-  String get footerOpeningHours => 'Lun - Sam : 9h00 - 17h00';
+  String get footerOpeningHours => 'Ma - Za: 09:00 - 17:00';
 
   @override
   String get footerCopyright =>
-      '© Copyright 2026 KreditSch. Tous droits réservés.';
+      '© Copyright 2026 KreditSch. Alle rechten voorbehouden.';
 
   @override
-  String get loanVisionTitle => 'Notre vision et notre mission';
+  String get loanVisionTitle => 'Onze visie en missie';
 
   @override
   String get loanVisionContent =>
-      'Chez KreditSch, nous simplifions l’accès au crédit en proposant des solutions de prêts rapides, transparentes et adaptées à chaque profil, afin de redonner à chacun le contrôle de ses projets financiers.';
+      'Bij KreditSch maken we krediettoegang eenvoudig met snelle, transparante en op maat gemaakte leningen, zodat iedereen de controle over zijn financiële projecten terugkrijgt.';
 
   @override
-  String get loanSolutionsTitle => 'Solutions de prêts intelligentes';
+  String get loanSolutionsTitle => 'Slimme leningoplossingen';
 
   @override
   String get loanSolutionsContent =>
-      'KreditSch est reconnue pour ses offres de prêts personnels, professionnels et d’urgence, alliant rapidité, sécurité et conditions flexibles pour accompagner chaque étape de votre vie.';
+      'KreditSch staat bekend om persoonlijke, zakelijke en noodleningen, die snelheid, veiligheid en flexibele voorwaarden combineren voor elke fase van uw leven.';
 
   @override
-  String get loanStatApproved => 'Demandes de prêts approuvées';
+  String get loanStatApproved => 'Goedgekeurde leningsaanvragen';
 
   @override
-  String get loanStatTypes => 'Types de prêts disponibles';
+  String get loanStatTypes => 'Beschikbare leningtypes';
 
   @override
-  String get loanStatExperience => 'Années d’expertise financière';
+  String get loanStatExperience => 'Jaren financiële expertise';
 
   @override
-  String get loanStatExperts => 'Experts crédit dédiés';
+  String get loanStatExperts => 'Toegewijde kredietexperts';
 
   @override
   String get loanFeaturePersonalTitle =>
-      'Financez vos projets personnels simplement';
+      'Financier uw persoonlijke projecten eenvoudig';
 
   @override
   String get loanFeaturePersonalDescription =>
-      'Obtenez un prêt privé flexible pour vos besoins personnels avec des intérêts transparents et un remboursement adapté.';
+      'Krijg een flexibele particuliere lening met transparante rente en aangepaste terugbetaling.';
 
   @override
-  String get loanFeatureBusinessTitle => 'Soutenez les entrepreneurs et PME';
+  String get loanFeatureBusinessTitle => 'Ondersteun ondernemers en MKB';
 
   @override
   String get loanFeatureBusinessDescription =>
-      'Investissez ou empruntez pour développer une activité grâce à notre réseau de prêteurs privés vérifiés.';
+      'Investeer of leen om een bedrijf te laten groeien via ons netwerk van gecontroleerde particuliere geldschieters.';
 
   @override
   String get loanFeatureFastTitle =>
-      'Prêt rapide, sans procédure bancaire lourde';
+      'Snelle lening zonder zware bankprocedures';
 
   @override
   String get loanFeatureFastDescription =>
-      'Validation rapide, pénalités claires et conditions définies à l’avance entre prêteur et emprunteur.';
+      'Snelle goedkeuring, duidelijke boetes en vooraf bepaalde voorwaarden tussen kredietgever en kredietnemer.';
 
   @override
-  String get loanFeatureCta => 'Demander un prêt >';
+  String get loanFeatureCta => 'Een lening aanvragen >';
 
   @override
   String get loanIdeasHeroQuote =>
-      '« Un bon prêt ne complique pas votre avenir, il vous aide à le construire sereinement. »';
+      '« Een goede lening bemoeilijkt uw toekomst niet, hij helpt u deze rustig op te bouwen. »';
 
   @override
   String get loanIdeasHeroSubtitle =>
-      'Solutions de prêts privés — simples, claires et adaptées à vos besoins personnels et professionnels.';
+      'Privéleningen — eenvoudig, duidelijk en afgestemd op uw persoonlijke en zakelijke behoeften.';
 
   @override
-  String get loanIdeasTitle => 'Nos solutions de prêts privés';
+  String get loanIdeasTitle => 'Onze oplossingen voor privéleningen';
 
   @override
   String get loanIdeasDescription =>
-      'Nous proposons des solutions de prêts flexibles et transparentes, adaptées aux besoins des particuliers et des professionnels.';
+      'Wij bieden flexibele en transparante leningen, afgestemd op de behoeften van particulieren en bedrijven.';
 
   @override
-  String get loanIdeasBulletPersonal => 'Prêt personnel à court terme';
+  String get loanIdeasBulletPersonal => 'Kortlopende persoonlijke lening';
 
   @override
-  String get loanIdeasBulletBusiness => 'Prêt pour activités commerciales';
+  String get loanIdeasBulletBusiness => 'Zakelijke lening';
 
   @override
-  String get loanIdeasBulletEmergency => 'Prêt d’urgence';
+  String get loanIdeasBulletEmergency => 'Noodlening';
 
   @override
-  String get loanIdeasBulletInvestment => 'Prêt d’investissement';
+  String get loanIdeasBulletInvestment => 'Investeringslening';
 
   @override
-  String get loanIdeasBulletInstallment => 'Prêt avec remboursement échelonné';
+  String get loanIdeasBulletInstallment => 'Lening met gespreide terugbetaling';
 
   @override
-  String get loanIdeasCta => 'Découvrir nos offres';
+  String get loanIdeasCta => 'Ontdek onze aanbiedingen';
 
   @override
-  String get loanIdeasWhyTitle => 'Pourquoi choisir notre service ?';
+  String get loanIdeasWhyTitle => 'Waarom onze service kiezen?';
 
   @override
-  String get loanIdeasWhyFastTitle => 'Processus rapide';
+  String get loanIdeasWhyFastTitle => 'Snel proces';
 
   @override
   String get loanIdeasWhyFastDesc =>
-      'Décision de prêt rapide et sans procédures complexes.';
+      'Snelle kredietbeslissing zonder complexe procedures.';
 
   @override
-  String get loanIdeasWhyClearTitle => 'Conditions claires';
+  String get loanIdeasWhyClearTitle => 'Duidelijke voorwaarden';
 
   @override
-  String get loanIdeasWhyClearDesc =>
-      'Taux d’intérêt et pénalités définis à l’avance.';
+  String get loanIdeasWhyClearDesc => 'Rente en boetes vooraf gedefinieerd.';
 
   @override
-  String get loanIdeasWhyTrackingTitle => 'Suivi transparent';
+  String get loanIdeasWhyTrackingTitle => 'Transparante opvolging';
 
   @override
   String get loanIdeasWhyTrackingDesc =>
-      'Visualisez vos échéances et paiements à tout moment.';
+      'Bekijk uw termijnen en betalingen op elk moment.';
 
   @override
-  String get loanProcessSubtitle => 'Notre processus de prêt';
+  String get loanProcessSubtitle => 'Ons leenproces';
 
   @override
-  String get loanProcessTitle => 'Votre prêt en 3 étapes';
+  String get loanProcessTitle => 'Uw lening in 3 stappen';
 
   @override
   String get loanProcessDescription =>
-      'Que ce soit pour un projet, un besoin de trésorerie ou un investissement, notre objectif est de vous aider à aller de l’avant en toute confiance.';
+      'Of het nu gaat om een project, een cashflowbehoefte of een investering, ons doel is u te helpen vooruit te gaan met vertrouwen.';
 
   @override
-  String get step1Title => 'Simulez votre prêt';
+  String get step1Title => 'Simuleer uw lening';
 
   @override
   String get step1Description =>
-      'Choisissez le montant et la durée souhaités. Recevez un devis clair et sans engagement en quelques clics.';
+      'Kies het gewenste bedrag en de looptijd. Ontvang een duidelijke en vrijblijvende offerte in enkele klikken.';
 
   @override
-  String get step2Title => 'Soumettez votre demande';
+  String get step2Title => 'Dien uw aanvraag in';
 
   @override
   String get step2Description =>
-      'Remplissez le formulaire sécurisé sans aucun document papier. Votre dossier est traité rapidement.';
+      'Vul het beveiligde formulier in zonder papieren documenten. Uw dossier wordt snel verwerkt.';
 
   @override
-  String get step3Title => 'Recevez les fonds';
+  String get step3Title => 'Ontvang de fondsen';
 
   @override
   String get step3Description =>
-      'Une fois votre demande approuvée, le montant est versé directement sur votre compte.';
+      'Zodra uw aanvraag is goedgekeurd, wordt het bedrag rechtstreeks op uw rekening gestort.';
 
   @override
-  String get loanCtaTitle => 'Démarrez votre projet de prêt dès maintenant';
+  String get loanCtaTitle => 'Start uw leenproject nu';
 
   @override
   String get loanCtaDescription =>
-      'Vous avez un projet en tête ? Nous vous aidons à le concrétiser rapidement grâce à un prêt simple, sécurisé et 100 % en ligne.';
+      'Heeft u een project in gedachten? Wij helpen u het snel te realiseren met een eenvoudige, veilige en volledig online lening.';
 
   @override
-  String get loanCtaButton => 'Soumettre une demande';
+  String get loanCtaButton => 'Dien een aanvraag in';
 
   @override
-  String get loanServicePersonalTitle => 'Prêts personnels';
+  String get loanServicePersonalTitle => 'Persoonlijke leningen';
 
   @override
   String get loanServicePersonalDescription =>
-      'Des solutions de financement souples pour faire face à vos besoins personnels et projets du quotidien.';
+      'Flexibele financieringsoplossingen voor uw persoonlijke behoeften en dagelijkse projecten.';
 
   @override
-  String get loanServiceBusinessTitle => 'Prêts professionnels';
+  String get loanServiceBusinessTitle => 'Zakelijke leningen';
 
   @override
   String get loanServiceBusinessDescription =>
-      'Financement adapté aux entrepreneurs, commerçants et porteurs de projets ambitieux.';
+      'Financiering op maat voor ondernemers, handelaars en ambitieuze projectdragers.';
 
   @override
-  String get loanServiceSupportTitle => 'Accompagnement personnalisé';
+  String get loanServiceSupportTitle => 'Persoonlijke begeleiding';
 
   @override
   String get loanServiceSupportDescription =>
-      'Un suivi humain, réactif et confidentiel pour vous accompagner à chaque étape de votre demande de prêt.';
+      'Menselijke, snelle en vertrouwelijke ondersteuning bij elke stap van uw leenaanvraag.';
 
   @override
-  String get learnMore => 'En savoir plus →';
+  String get learnMore => 'Meer informatie →';
 
   @override
-  String get loanStatusTitle => 'Statut de votre prêt';
+  String get loanStatusTitle => 'Status van uw lening';
 
   @override
-  String get loanStatusNoneTitle => 'Aucune demande en cours';
+  String get loanStatusNoneTitle => 'Geen lopende aanvragen';
 
   @override
-  String get loanStatusActionRequest => 'Faire une demande';
+  String get loanStatusActionRequest => 'Een aanvraag doen';
 
   @override
-  String get loanStatusPendingTitle => '⏳ Demande en cours';
+  String get loanStatusPendingTitle => '⏳ Aanvraag in behandeling';
 
   @override
   String get loanStatusPendingDescription =>
-      'Notre équipe analyse actuellement votre dossier.';
+      'Ons team beoordeelt momenteel uw dossier.';
 
   @override
-  String get loanStatusApprovedTitle => '✅ Demande approuvée';
+  String get loanStatusApprovedTitle => '✅ Aanvraag goedgekeurd';
 
   @override
   String get loanStatusApprovedDescription =>
-      'Les fonds seront bientôt disponibles sur votre compte.';
+      'De fondsen zullen binnenkort beschikbaar zijn op uw rekening.';
 
   @override
-  String get loanStatusRejectedTitle => '❌ Demande refusée';
+  String get loanStatusRejectedTitle => '❌ Aanvraag geweigerd';
 
   @override
   String get loanStatusRejectedDescription =>
-      'Vous pouvez soumettre une nouvelle demande à tout moment.';
+      'U kunt op elk moment een nieuwe aanvraag indienen.';
 
   @override
-  String get quickActionsTitle => 'Actions rapides';
+  String get quickActionsTitle => 'Snelle acties';
 
   @override
-  String get quickActionProfile => 'Profil';
+  String get quickActionProfile => 'Profiel';
 
   @override
-  String get quickActionNewRequest => 'Nouvelle demande';
+  String get quickActionNewRequest => 'Nieuwe aanvraag';
 
   @override
-  String get quickActionBankDetails => 'Mes coordonnées bancaires';
+  String get quickActionBankDetails => 'Mijn bankgegevens';
 
   @override
-  String get quickActionLoanHistory => 'Historique des demandes';
+  String get quickActionLoanHistory => 'Aanvraaggeschiedenis';
 
   @override
-  String get quickActionPaymentHistory => 'Historique des paiements';
+  String get quickActionPaymentHistory => 'Betalingsgeschiedenis';
 
   @override
-  String get quickActionDocumentsHistory => 'Historique des documents';
+  String get quickActionDocumentsHistory => 'Documentengeschiedenis';
 
   @override
-  String get quickActionSupport => 'Support';
+  String get quickActionSupport => 'Ondersteuning';
 
   @override
-  String get paymentBankDetailsTitle => 'Coordonnées bancaires de paiement';
+  String get paymentBankDetailsTitle => 'Betalingsbankgegevens';
 
   @override
-  String get noPaymentInfo => 'Aucune information de paiement disponible';
+  String get noPaymentInfo => 'Geen betalingsinformatie beschikbaar';
 
   @override
-  String get receiver => 'Receveur';
+  String get receiver => 'Ontvanger';
 
   @override
   String get iban => 'IBAN';
@@ -441,126 +439,126 @@ class AppLocalizationsNl extends AppLocalizations {
   String get bic => 'BIC / SWIFT';
 
   @override
-  String get amountToPay => 'Montant à payer';
+  String get amountToPay => 'Te betalen bedrag';
 
   @override
-  String get documentPreview => 'Aperçu du document';
+  String get documentPreview => 'Documentvoorbeeld';
 
   @override
-  String get confirmSubmission => 'Confirmer la soumission';
+  String get confirmSubmission => 'Bevestig inzending';
 
   @override
-  String get submitProof => 'Soumettre une preuve';
+  String get submitProof => 'Bewijs indienen';
 
   @override
-  String get uploadSuccess => '✅ Preuve envoyée avec succès';
+  String get uploadSuccess => '✅ Bewijs succesvol verzonden';
 
   @override
   String uploadError(Object error) {
-    return '❌ Erreur lors de l\'envoi : $error';
+    return '❌ Fout bij het verzenden: $error';
   }
 
   @override
-  String get teamTitle => 'Notre équipe';
+  String get teamTitle => 'Ons team';
 
   @override
   String get teamDescription =>
-      'Fondée par des experts de la finance et du digital, KreditSch accompagne depuis plusieurs années des milliers de clients dans la réalisation de leurs projets grâce à des solutions de prêt simples, rapides et transparentes.\n\nNotre équipe internationale travaille chaque jour avec une seule ambition : rendre l’accès au crédit plus juste, plus humain et accessible à tous.';
+      'Opgericht door experts in financiën en digitalisering, begeleidt KreditSch al jaren duizenden klanten bij het realiseren van hun projecten met eenvoudige, snelle en transparante leenoplossingen.\n\nOns internationale team werkt elke dag met één ambitie: krediettoegang eerlijker, menselijker en voor iedereen toegankelijk maken.';
 
   @override
-  String get teamCta => 'Découvrez nos solutions de prêt >';
+  String get teamCta => 'Ontdek onze leenoplossingen >';
 
   @override
-  String get testimonialsLabel => 'Témoignages';
+  String get testimonialsLabel => 'Getuigenissen';
 
   @override
   String get testimonialsTitle =>
-      'Nous bénéficions de la confiance de milliers de clients à travers l’Europe.';
+      'Wij genieten het vertrouwen van duizenden klanten in heel Europa.';
 
   @override
   String get testimonialsSubtitle =>
-      'La satisfaction de nos clients est notre priorité. Découvrez ce qu’ils pensent de leur expérience avec KreditSch.';
+      'De tevredenheid van onze klanten is onze prioriteit. Ontdek wat zij van hun ervaring met KreditSch vinden.';
 
   @override
   String get testimonial1Text =>
-      'Grâce à KreditSch, j’ai obtenu un prêt professionnel en moins de 24 heures. Les conditions étaient claires et adaptées à ma situation. Une vraie solution fiable.';
+      'Dankzij KreditSch kreeg ik binnen 24 uur een zakelijke lening. De voorwaarden waren duidelijk en passend bij mijn situatie. Een echt betrouwbare oplossing.';
 
   @override
   String get testimonial1Name => 'Martin K.';
 
   @override
-  String get testimonial1Role => 'Entrepreneur – Berlin';
+  String get testimonial1Role => 'Ondernemer – Berlijn';
 
   @override
   String get testimonial2Text =>
-      'J’avais besoin d’un financement urgent pour des frais médicaux. KreditSch a été rapide, humain et transparent. Je recommande sans hésiter.';
+      'Ik had dringend financiering nodig voor medische kosten. KreditSch was snel, menselijk en transparant. Ik beveel het zonder aarzeling aan.';
 
   @override
   String get testimonial2Name => 'Sophie L.';
 
   @override
-  String get testimonial2Role => 'Salariée – Lyon';
+  String get testimonial2Role => 'Werknemer – Lyon';
 
   @override
   String get testimonial3Text =>
-      'L’interface est simple et le suivi du prêt est très clair. KreditSch m’a permis de concrétiser mon projet immobilier sereinement.';
+      'De interface is eenvoudig en het leenproces is zeer duidelijk. KreditSch stelde mij in staat mijn vastgoedproject rustig te realiseren.';
 
   @override
   String get testimonial3Name => 'Julien R.';
 
   @override
-  String get testimonial3Role => 'Investisseur – Bruxelles';
+  String get testimonial3Role => 'Investeerder – Brussel';
 
   @override
   String get testimonial4Text =>
-      'Enfin une plateforme de prêt qui comprend les indépendants. Aucune surprise, tout est expliqué dès le départ.';
+      'Eindelijk een leenplatform dat zelfstandigen begrijpt. Geen verrassingen, alles wordt vanaf het begin uitgelegd.';
 
   @override
   String get testimonial4Name => 'Nadia B.';
 
   @override
-  String get testimonial4Role => 'Freelance – Paris';
+  String get testimonial4Role => 'Freelancer – Parijs';
 
   @override
   String get testimonial5Text =>
-      'Un service client réactif et des offres adaptées. KreditSch m’a accompagné du début à la fin.';
+      'Een responsieve klantenservice en passende aanbiedingen. KreditSch begeleidde mij van begin tot eind.';
 
   @override
   String get testimonial5Name => 'Thomas W.';
 
   @override
-  String get testimonial5Role => 'Dirigeant PME – Munich';
+  String get testimonial5Role => 'MKB-eigenaar – München';
 
   @override
-  String get testimonials0Label => 'Témoignages';
+  String get testimonials0Label => 'Getuigenissen';
 
   @override
   String get testimonials0Title =>
-      'Nous bénéficions de la confiance de plus de 50 pays à travers le monde.';
+      'Wij genieten het vertrouwen van meer dan 50 landen wereldwijd.';
 
   @override
   String get testimonial6Text =>
-      'Grâce à ce service de prêt, j’ai pu lancer mon activité sans passer par une banque.';
+      'Dankzij deze leenservice kon ik mijn bedrijf starten zonder een bank te gebruiken.';
 
   @override
   String get testimonial6Name => 'Aïcha M.';
 
   @override
-  String get testimonial6Role => 'Entrepreneure';
+  String get testimonial6Role => 'Ondernemer';
 
   @override
   String get testimonial7Text =>
-      'Les conditions sont claires, les intérêts transparents et le remboursement flexible.';
+      'De voorwaarden zijn duidelijk, de rente transparant en de terugbetaling flexibel.';
 
   @override
   String get testimonial7Name => 'Jean K.';
 
   @override
-  String get testimonial7Role => 'Commerçant';
+  String get testimonial7Role => 'Handelaar';
 
   @override
   String get testimonial8Text =>
-      'J’ai obtenu un prêt rapidement pour une urgence familiale.';
+      'Ik kreeg snel een lening voor een familie-noodsituatie.';
 
   @override
   String get testimonial8Name => 'Fatou S.';
@@ -570,187 +568,188 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get testimonial9Text =>
-      'Une plateforme fiable qui met en relation prêteurs et emprunteurs en toute confiance.';
+      'Een betrouwbaar platform dat kredietgevers en kredietnemers met vertrouwen verbindt.';
 
   @override
   String get testimonial9Name => 'Marc D.';
 
   @override
-  String get testimonial9Role => 'Investisseur privé';
+  String get testimonial9Role => 'Privé-investeerder';
 
   @override
-  String get trustCardTitle => 'Pourquoi nous faire confiance ?';
+  String get trustCardTitle => 'Waarom ons vertrouwen?';
 
   @override
-  String get trustCardItem1 => 'Taux transparents';
+  String get trustCardItem1 => 'Transparante tarieven';
 
   @override
-  String get trustCardItem2 => 'Analyse rapide';
+  String get trustCardItem2 => 'Snelle analyse';
 
   @override
-  String get trustCardItem3 => 'Données sécurisées';
+  String get trustCardItem3 => 'Veilige gegevens';
 
   @override
-  String get trustCardItem4 => 'Assistance dédiée';
+  String get trustCardItem4 => 'Toegewijde ondersteuning';
 
   @override
   String get whatsappDefaultMessage =>
-      'Bonjour, j\'ai une question concernant votre service de prêt.';
+      'Hallo, ik heb een vraag over uw leenservice.';
 
   @override
-  String get whatsappError => 'Impossible d\'ouvrir WhatsApp';
+  String get whatsappError => 'Kan WhatsApp niet openen';
 
   @override
-  String get whyUsTitle => 'Pourquoi nous ?';
+  String get whyUsTitle => 'Waarom wij?';
 
   @override
-  String get whyUsSubtitle => 'Votre partenaire de prêts privés de confiance';
+  String get whyUsSubtitle => 'Uw vertrouwde partner voor privéleningen';
 
   @override
   String get whyUsDescription =>
-      'Nous combinons rapidité, transparence et accompagnement personnalisé pour vous offrir des solutions de prêts simples, efficaces et adaptées à vos objectifs.';
+      'Wij combineren snelheid, transparantie en persoonlijke begeleiding om u eenvoudige, effectieve en op uw doelen afgestemde leenoplossingen te bieden.';
 
   @override
-  String get fastProcessing => 'Rapidité de traitement';
+  String get fastProcessing => 'Snelle verwerking';
 
   @override
-  String get securityReliability => 'Sécurité & fiabilité';
+  String get securityReliability => 'Veiligheid & betrouwbaarheid';
 
   @override
-  String get continuousImprovement => 'Amélioration continue de nos offres';
+  String get continuousImprovement =>
+      'Continue verbetering van onze aanbiedingen';
 
   @override
-  String get clientCommitment => 'Engagement envers nos clients';
+  String get clientCommitment => 'Betrokkenheid bij onze klanten';
 
   @override
-  String get clearConditions => 'Conditions claires et sans surprise';
+  String get clearConditions => 'Duidelijke voorwaarden zonder verrassingen';
 
   @override
-  String get submitRequest => 'Soumettre la demande';
+  String get submitRequest => 'Dien aanvraag in';
 
   @override
-  String get financingSolutionsTitle => 'Nos solutions de financement';
+  String get financingSolutionsTitle => 'Onze financieringsoplossingen';
 
   @override
   String get financingSolutionsDesc =>
-      'Bien plus qu’un prêt, nous vous accompagnons à chaque étape de votre projet personnel ou professionnel.';
+      'Veel meer dan een lening – wij begeleiden u bij elke stap van uw persoonlijke of professionele project.';
 
   @override
-  String get viewOffers => 'Voir les offres';
+  String get viewOffers => 'Bekijk de aanbiedingen';
 
   @override
-  String get whyChooseUsTitle => 'Pourquoi nous choisir ?';
+  String get whyChooseUsTitle => 'Waarom voor ons kiezen?';
 
   @override
   String get whyChooseUsSubtitle =>
-      'Une communauté internationale de milliers de clients\nnous fait confiance.';
+      'Een internationale gemeenschap van duizenden klanten\nvertrouwt ons.';
 
   @override
   String get whyChooseUsDescription =>
-      'Particuliers, entrepreneurs et professionnels choisissent nos solutions de prêts pour leur simplicité, leur rapidité et la clarté de leurs conditions.';
+      'Particulieren, ondernemers en professionals kiezen voor onze leenoplossingen vanwege hun eenvoud, snelheid en duidelijke voorwaarden.';
 
   @override
-  String get infoQualifiedStaff => 'Personnel qualifié';
+  String get infoQualifiedStaff => 'Gekwalificeerd personeel';
 
   @override
-  String get infoFreeConsultation => 'Consultation gratuite';
+  String get infoFreeConsultation => 'Gratis consultatie';
 
   @override
-  String get infoSaveTime => 'Vous gagnez du temps';
+  String get infoSaveTime => 'Bespaar tijd';
 
   @override
-  String get infoOptimalService => 'Qualité de service optimale';
+  String get infoOptimalService => 'Optimale servicekwaliteit';
 
   @override
-  String get clientsSatisfied => 'Clients satisfaits';
+  String get clientsSatisfied => 'Tevreden klanten';
 
   @override
-  String get yearsActive => 'Années d’activité';
+  String get yearsActive => 'Actieve jaren';
 
   @override
-  String get financialExperts => 'Experts financiers';
+  String get financialExperts => 'Financiële experts';
 
   @override
-  String get activePartners => 'Partenaires actifs';
+  String get activePartners => 'Actieve partners';
 
   @override
-  String get fillAllFields => 'Veuillez remplir tous les champs';
+  String get fillAllFields => 'Vul alle velden in';
 
   @override
   String get accountAlreadyExists =>
-      'Ce compte existe déjà. Veuillez vous connecter.';
+      'Dit account bestaat al. Log alstublieft in.';
 
   @override
-  String get invalidEmail => 'Email invalide';
+  String get invalidEmail => 'Ongeldig e-mailadres';
 
   @override
-  String get weakPassword => 'Mot de passe trop faible (min. 6 caractères)';
+  String get weakPassword => 'Wachtwoord te zwak (min. 6 tekens)';
 
   @override
-  String get registrationError => 'Erreur lors de la création du compte';
+  String get registrationError => 'Fout bij het aanmaken van het account';
 
   @override
-  String get createAccount => 'Créer un compte';
+  String get createAccount => 'Account aanmaken';
 
   @override
-  String get joinKreditSch => 'Rejoignez KreditSch en quelques secondes';
+  String get joinKreditSch => 'Word in enkele seconden lid van KreditSch';
 
   @override
-  String get currency => 'Devise';
+  String get currency => 'Valuta';
 
   @override
-  String get email => 'Email';
+  String get email => 'E-mail';
 
   @override
-  String get password => 'Mot de passe';
+  String get password => 'Wachtwoord';
 
   @override
-  String get createMyAccount => 'Créer mon compte';
+  String get createMyAccount => 'Maak mijn account aan';
 
   @override
-  String get continueWithGoogle => 'Continuer avec Google';
+  String get continueWithGoogle => 'Doorgaan met Google';
 
   @override
-  String get selectCurrency => 'Veuillez sélectionner une devise';
+  String get selectCurrency => 'Selecteer een valuta';
 
   @override
-  String get alreadyHaveAccount => 'Déjà un compte ?';
+  String get alreadyHaveAccount => 'Heeft u al een account?';
 
   @override
-  String get signIn => 'Se connecter';
+  String get signIn => 'Inloggen';
 
   @override
-  String get googleAuthError => 'Erreur lors de l\'inscription Google';
+  String get googleAuthError => 'Fout bij Google-registratie';
 
   @override
-  String get loggingOut => 'Déconnexion en cours…';
+  String get loggingOut => 'Uitloggen…';
 
   @override
-  String get noAccountFound => 'Aucun compte trouvé. Veuillez vous inscrire.';
+  String get noAccountFound => 'Geen account gevonden. Registreer alstublieft.';
 
   @override
-  String get incorrectPassword => 'Mot de passe incorrect';
+  String get incorrectPassword => 'Onjuist wachtwoord';
 
   @override
-  String get loginError => 'Erreur de connexion';
+  String get loginError => 'Fout bij het inloggen';
 
   @override
   String get login => 'Connexion';
 
   @override
-  String get loginSubtitle => 'Accédez à votre espace client';
+  String get loginSubtitle => 'Toegang tot uw account';
 
   @override
-  String get forgotPassword => 'Mot de passe oublié ?';
+  String get forgotPassword => 'Wachtwoord vergeten?';
 
   @override
-  String get loginButton => 'Se connecter';
+  String get loginButton => 'Inloggen';
 
   @override
-  String get googleSignInError => 'Erreur lors de la connexion Google';
+  String get googleSignInError => 'Fout bij Google-aanmelding';
 
   @override
-  String get noAccountYet => 'Pas encore de compte ?';
+  String get noAccountYet => 'Nog geen account?';
 
   @override
   String get emailAlreadyInUse =>
@@ -766,280 +765,278 @@ class AppLocalizationsNl extends AppLocalizations {
   String get registerSubtitle => 'Rejoignez KreditSch en quelques secondes';
 
   @override
-  String get registerButton => 'Créer un compte';
+  String get registerButton => 'Account aanmaken';
 
   @override
   String get googleRegisterError => 'Erreur lors de l\'inscription Google';
 
   @override
-  String get userNotFound => 'Aucun compte trouvé. Veuillez vous inscrire.';
+  String get userNotFound => 'Geen account gevonden. Registreer alstublieft.';
 
   @override
-  String get wrongPassword => 'Mot de passe incorrect';
+  String get wrongPassword => 'Onjuist wachtwoord';
 
   @override
-  String get googleLoginError => 'Erreur lors de la connexion Google';
+  String get googleLoginError => 'Fout bij Google-aanmelding';
 
   @override
-  String get forgotPasswordTitle => 'Mot de passe oublié';
+  String get forgotPasswordTitle => 'Wachtwoord vergeten';
 
   @override
   String get forgotPasswordSubtitle =>
-      'Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.';
+      'Voer uw e-mailadres in om een resetlink te ontvangen.';
 
   @override
-  String get emailAddress => 'Adresse e-mail';
+  String get emailAddress => 'E-mailadres';
 
   @override
-  String get sendLink => 'Envoyer le lien';
+  String get sendLink => 'Verzend link';
 
   @override
-  String get resetLinkSent =>
-      'Un lien de réinitialisation a été envoyé à votre adresse e-mail.';
+  String get resetLinkSent => 'Een resetlink is naar uw e-mailadres verzonden.';
 
   @override
-  String get errorOccurred => 'Erreur lors de l\'envoi';
+  String get errorOccurred => 'Fout bij het verzenden';
 
   @override
-  String get backToLogin => 'Retour à la connexion';
+  String get backToLogin => 'Terug naar inloggen';
 
   @override
-  String get loading => 'Chargement…';
+  String get loading => 'Laden…';
 
   @override
-  String get userNotLoggedIn => 'Utilisateur non connecté';
+  String get userNotLoggedIn => 'Gebruiker niet ingelogd';
 
   @override
-  String get serverError => 'Erreur serveur';
+  String get serverError => 'Serverfout';
 
   @override
-  String get errorLoading => '❌ Erreur chargement:';
+  String get errorLoading => '❌ Fout bij laden:';
 
   @override
-  String get noDocumentsSubmitted => 'Aucun document soumis';
+  String get noDocumentsSubmitted => 'Geen documenten ingediend';
 
   @override
-  String get imageUnavailable => 'Image indisponible';
+  String get imageUnavailable => 'Afbeelding niet beschikbaar';
 
   @override
-  String get approved => 'Approuvé';
+  String get approved => 'Goedgekeurd';
 
   @override
-  String get rejected => 'Rejeté';
+  String get rejected => 'Afgewezen';
 
   @override
-  String get pending => 'En attente';
+  String get pending => 'In afwachting';
 
   @override
-  String get transactionHistory => 'Historique des transactions';
+  String get transactionHistory => 'Transactiegeschiedenis';
 
   @override
-  String get noTransactionsSubmitted => 'Aucune transaction soumise';
+  String get noTransactionsSubmitted => 'Geen transacties ingediend';
 
   @override
-  String get submittedOn => 'Soumis le :';
+  String get submittedOn => 'Ingediend op:';
 
   @override
-  String get status => 'Statut';
+  String get status => 'Status';
 
   @override
-  String get errorFetching => '❌ Erreur récupération:';
+  String get errorFetching => '❌ Fout bij ophalen:';
 
   @override
-  String get heroTitle2 => 'L\'alternative pour l\'ici et maintenant.';
+  String get heroTitle2 => 'Het alternatief voor hier en nu.';
 
   @override
   String get heroDescription =>
-      'Dans un contexte économique exigeant, accéder rapidement à un financement fiable est devenu essentiel. KreditSch propose des solutions de prêts flexibles, transparentes et adaptées aux particuliers comme aux entreprises.';
+      'In een veeleisende economische context is snel toegang tot betrouwbare financiering essentieel. KreditSch biedt flexibele, transparante en passende leenoplossingen voor zowel particulieren als bedrijven.';
 
   @override
-  String get bulletFastLoans => 'Prêts rapides avec réponse sous 24h.';
+  String get bulletFastLoans => 'Snelle leningen met antwoord binnen 24 uur.';
 
   @override
-  String get bulletFlexibleDuration => 'Durées flexibles de 6 à 60 mois.';
+  String get bulletFlexibleDuration =>
+      'Flexibele looptijden van 6 tot 60 maanden.';
 
   @override
-  String get bulletForAll =>
-      'Solutions adaptées aux particuliers et professionnels.';
+  String get bulletForAll => 'Oplossingen voor particulieren en professionals.';
 
   @override
-  String get heroCTA => 'Demander un prêt KreditSch Standard >';
+  String get heroCTA => 'Vraag een standaard KreditSch-lening aan >';
 
   @override
-  String get cardLowRisk => 'Prêt à faible risque';
+  String get cardLowRisk => 'Lening met laag risico';
 
   @override
   String get cardLowRiskDesc =>
-      'Des mensualités fixes et transparentes pour une meilleure maîtrise de votre budget.';
+      'Vaste en transparante maandlasten voor beter budgetbeheer.';
 
   @override
-  String get cardTargeted => 'Prêts ciblés';
+  String get cardTargeted => 'Gerichte leningen';
 
   @override
   String get cardTargetedDesc =>
-      'Financement dédié : logement, auto, études, projets personnels ou trésorerie.';
+      'Specifieke financiering: woning, auto, studie, persoonlijke projecten of werkkapitaal.';
 
   @override
-  String get cardFlexibleAmount => 'Montant flexible';
+  String get cardFlexibleAmount => 'Flexibel bedrag';
 
   @override
   String get cardFlexibleAmountDesc =>
-      'Empruntez entre 1 000 € et 500 000 € selon votre profil et votre besoin.';
+      'Lenen van €1.000 tot €500.000, afhankelijk van uw profiel en behoefte.';
 
   @override
   String get dividerText =>
-      'Si cette solution de prêt ne correspond pas à votre situation, KreditSch vous propose d\'autres options de financement.';
+      'Als deze leenoplossing niet bij uw situatie past, biedt KreditSch andere financieringsopties.';
 
   @override
-  String get cardPersonalized => 'Prêts personnalisés';
+  String get cardPersonalized => 'Gepersonaliseerde leningen';
 
   @override
   String get cardPersonalizedDesc =>
-      'Des offres adaptées à votre situation financière et à votre capacité de remboursement.';
+      'Aanbiedingen aangepast aan uw financiële situatie en terugbetalingscapaciteit.';
 
   @override
-  String get cardResponsible => 'Prêts responsables';
+  String get cardResponsible => 'Verantwoorde leningen';
 
   @override
   String get cardResponsibleDesc =>
-      'Financements pensés pour des projets durables et à impact positif.';
+      'Financiering gericht op duurzame projecten met positieve impact.';
 
   @override
-  String get cardThematic => 'Prêts thématiques';
+  String get cardThematic => 'Thematische leningen';
 
   @override
   String get cardThematicDesc =>
-      'Santé, études, mobilité, logement ou entrepreneuriat.';
+      'Gezondheid, studie, mobiliteit, huisvesting of ondernemerschap.';
 
   @override
-  String get cardPartners => 'Partenaires financiers';
+  String get cardPartners => 'Financiële partners';
 
   @override
   String get cardPartnersDesc =>
-      'Accès à des solutions issues de partenaires financiers nationaux et internationaux.';
+      'Toegang tot oplossingen van nationale en internationale financiële partners.';
 
   @override
-  String get simulationTitle => 'Simulez votre prêt';
+  String get simulationTitle => 'Simuleer uw lening';
 
   @override
   String get simulationDescription =>
-      'Ajustez les paramètres pour estimer votre crédit.';
+      'Pas de parameters aan om uw krediet te schatten.';
 
   @override
-  String get loanAmount => 'Montant du prêt';
+  String get loanAmount => 'Leningbedrag';
 
   @override
-  String get duration => 'Durée';
+  String get duration => 'Looptijd';
 
   @override
-  String get months => 'mois';
+  String get months => 'maanden';
 
   @override
-  String get monthlyPayment => 'Mensualité';
+  String get monthlyPayment => 'Maandlasten';
 
   @override
-  String get annualInterestRate => 'Taux d\'intérêt annuel du crédit';
+  String get annualInterestRate => 'Jaarlijkse rente';
 
   @override
-  String get monthlyInsurance => 'Assurance mensuelle';
+  String get monthlyInsurance => 'Maandelijkse verzekering';
 
   @override
-  String get totalPayments => 'Total des mensualités (hors assurance)';
+  String get totalPayments => 'Totaal van de aflossingen (excl. verzekering)';
 
   @override
-  String get totalInterests => 'Total des intérêts';
+  String get totalInterests => 'Totale rente';
 
   @override
-  String get totalInsurance => 'Total de l’assurance';
+  String get totalInsurance => 'Totale verzekering';
 
   @override
-  String get continueRequest => 'Continuer la demande';
+  String get continueRequest => 'Doorgaan met aanvraag';
 
   @override
-  String get personalInfoTitle => 'Informations personnelles';
+  String get personalInfoTitle => 'Persoonlijke informatie';
 
   @override
-  String get fullNameLabel => 'Nom complet *';
+  String get fullNameLabel => 'Volledige naam *';
 
   @override
-  String get fullNameHint => 'Votre nom complet';
+  String get fullNameHint => 'Uw volledige naam';
 
   @override
-  String get emailLabel => 'Email *';
+  String get emailLabel => 'E-mail *';
 
   @override
-  String get emailHint => 'exemple@email.com';
+  String get emailHint => 'voorbeeld@email.com';
 
   @override
-  String get phoneLabel => 'Téléphone *';
+  String get phoneLabel => 'Telefoon *';
 
   @override
-  String get phoneHint => '+49 00000000000';
+  String get phoneHint => '+31 0000000000';
 
   @override
-  String get dobLabel => 'Date de naissance';
+  String get dobLabel => 'Geboortedatum';
 
   @override
-  String get dobHint => 'JJ/MM/AAAA';
+  String get dobHint => 'DD/MM/JJJJ';
 
   @override
-  String get addressLabel => 'Adresse *';
+  String get addressLabel => 'Adres *';
 
   @override
   String get addressHint => '';
 
   @override
-  String get cityLabel => 'Ville';
+  String get cityLabel => 'Stad';
 
   @override
-  String get countryLabel => 'Pays';
+  String get countryLabel => 'Land';
 
   @override
-  String get requiredDocsTitle => 'Documents requis';
+  String get requiredDocsTitle => 'Vereiste documenten';
 
   @override
   String get identityDoc =>
-      'Pièce d\'identité (Carte d\'identité / Passeport / Permis)';
+      'Identiteitsbewijs (ID-kaart / Paspoort / Rijbewijs)';
 
   @override
-  String get addressProof => 'Justificatif de domicile';
+  String get addressProof => 'Bewijs van adres';
 
   @override
-  String get noFileSelected => 'Aucun fichier sélectionné';
+  String get noFileSelected => 'Geen bestand geselecteerd';
 
   @override
-  String get documentAdded => 'Document ajouté';
+  String get documentAdded => 'Document toegevoegd';
 
   @override
-  String get uploadButton => 'Télécharger';
+  String get uploadButton => 'Uploaden';
 
   @override
-  String get financialInfoTitle => 'Informations financières';
+  String get financialInfoTitle => 'Financiële informatie';
 
   @override
-  String get amountLabel => 'Montant demandé';
+  String get amountLabel => 'Aanvraagbedrag';
 
   @override
-  String get durationLabel => 'Durée (mois)';
+  String get durationLabel => 'Looptijd (maanden)';
 
   @override
-  String get incomeLabel => 'Source de revenus';
+  String get incomeLabel => 'Inkomstbron';
 
   @override
-  String get professionLabel => 'Profession';
+  String get professionLabel => 'Beroep';
 
   @override
-  String get fillRequiredFields =>
-      'Veuillez compléter tous les champs obligatoires';
+  String get fillRequiredFields => 'Vul alle verplichte velden in';
 
   @override
-  String get invalidAmountOrDuration => 'Montant ou durée invalide';
+  String get invalidAmountOrDuration => 'Ongeldig bedrag of looptijd';
 
   @override
-  String get notAuthenticated => 'Utilisateur non authentifié';
+  String get notAuthenticated => 'Gebruiker niet geverifieerd';
 
   @override
-  String get requestSuccessTitle => 'Demande envoyée avec succès';
+  String get requestSuccessTitle => 'Aanvraag succesvol verzonden';
 
   @override
   String requestSuccessContent(
@@ -1052,154 +1049,154 @@ class AppLocalizationsNl extends AppLocalizations {
     Object totalInterest,
     Object totalAmount,
   ) {
-    return 'Merci $name,\n\nMontant : $amount $currency\nDurée : $duration mois\nTaux annuel : 3%\n\nMensualité : $monthlyPayment $currency\nTotal mensualités : $totalPayments $currency\nTotal intérêts : $totalInterest $currency\nTotal à rembourser : $totalAmount $currency';
+    return 'Dank u $name,\n\nBedrag: $amount $currency\nLooptijd: $duration maanden\nJaarlijkse rente: 3%\n\nMaandelijkse aflossing: $monthlyPayment $currency\nTotaal aflossingen: $totalPayments $currency\nTotale rente: $totalInterest $currency\nTotaal terug te betalen: $totalAmount $currency';
   }
 
   @override
   String get okButton => 'OK';
 
   @override
-  String get loanOffersHeroTitle => 'Nos offres de financement';
+  String get loanOffersHeroTitle => 'Onze financieringsaanbiedingen';
 
   @override
   String get loanOffersHeroSubtitle =>
-      'Des solutions de crédit rapides, transparentes et adaptées à vos besoins personnels et professionnels.';
+      'Snelle, transparante kredietoplossingen afgestemd op uw persoonlijke en professionele behoeften.';
 
   @override
-  String get loanOffersTitle => 'Nos offres';
+  String get loanOffersTitle => 'Onze aanbiedingen';
 
   @override
   String get loanOffersSubtitle =>
-      'Découvrez les solutions de crédit que nous mettons à votre disposition.';
+      'Ontdek de kredietoplossingen die wij voor u beschikbaar stellen.';
 
   @override
-  String get offerPersonalTitle => 'Prêt personnel';
+  String get offerPersonalTitle => 'Persoonlijke lening';
 
   @override
   String get offerPersonalDesc =>
-      'Financez vos projets personnels avec des conditions flexibles et un traitement rapide.';
+      'Financier uw persoonlijke projecten met flexibele voorwaarden en snelle verwerking.';
 
   @override
-  String get offerBusinessTitle => 'Prêt entrepreneurial';
+  String get offerBusinessTitle => 'Ondernemerslening';
 
   @override
   String get offerBusinessDesc =>
-      'Un accompagnement financier pour développer et faire grandir votre entreprise.';
+      'Financiële ondersteuning om uw bedrijf te laten groeien.';
 
   @override
-  String get offerInvestmentTitle => 'Prêt investissement';
+  String get offerInvestmentTitle => 'Investeringslening';
 
   @override
   String get offerInvestmentDesc =>
-      'Investissez dans l’immobilier ou d’autres opportunités rentables.';
+      'Investeren in vastgoed of andere rendabele kansen.';
 
   @override
-  String get offerEmergencyTitle => 'Prêt d’urgence';
+  String get offerEmergencyTitle => 'Noodlening';
 
   @override
   String get offerEmergencyDesc =>
-      'Une solution rapide pour faire face aux imprévus financiers.';
+      'Een snelle oplossing voor onverwachte financiële situaties.';
 
   @override
-  String get loanOffersCtaTitle => 'Prêt à faire votre demande ?';
+  String get loanOffersCtaTitle => 'Klaar om uw aanvraag te doen?';
 
   @override
   String get loanOffersCtaSubtitle =>
-      'Contactez-nous dès aujourd’hui et bénéficiez d’un accompagnement personnalisé.';
+      'Neem vandaag contact met ons op en ontvang persoonlijke begeleiding.';
 
   @override
-  String get loanOffersCtaButton => 'Faire une demande';
+  String get loanOffersCtaButton => 'Dien een aanvraag in';
 
   @override
-  String get loanHistoryTitle => 'Historique des demandes';
+  String get loanHistoryTitle => 'Aanvraaggeschiedenis';
 
   @override
-  String get loanHistoryEmpty => 'Aucune demande trouvée';
+  String get loanHistoryEmpty => 'Geen aanvragen gevonden';
 
   @override
-  String get loanSubmittedOn => 'Soumise le';
+  String get loanSubmittedOn => 'Ingediend op';
 
   @override
-  String get personalInformation => 'Informations personnelles';
+  String get personalInformation => 'Persoonlijke informatie';
 
   @override
-  String get financialInformation => 'Informations financières';
+  String get financialInformation => 'Financiële informatie';
 
   @override
-  String get loanSummary => 'Récapitulatif du crédit';
+  String get loanSummary => 'Kredietoverzicht';
 
   @override
-  String get phone => 'Téléphone';
+  String get phone => 'Telefoon';
 
   @override
-  String get address => 'Adresse';
+  String get address => 'Adres';
 
   @override
-  String get city => 'Ville';
+  String get city => 'Stad';
 
   @override
-  String get country => 'Pays';
+  String get country => 'Land';
 
   @override
-  String get profession => 'Profession';
+  String get profession => 'Beroep';
 
   @override
-  String get incomeSource => 'Source de revenus';
+  String get incomeSource => 'Inkomstbron';
 
   @override
-  String get requestedAmount => 'Montant demandé';
+  String get requestedAmount => 'Aanvraagbedrag';
 
   @override
-  String get totalInterest => 'Intérêts';
+  String get totalInterest => 'Rente';
 
   @override
-  String get totalToRepay => 'Total à rembourser';
+  String get totalToRepay => 'Totaal terug te betalen';
 
   @override
-  String get submittedDocuments => 'Documents soumis';
+  String get submittedDocuments => 'Ingediende documenten';
 
   @override
-  String get identityDocument => 'Pièce d\'identité';
+  String get identityDocument => 'Identiteitsbewijs';
 
   @override
-  String get statusPending => 'En cours';
+  String get statusPending => 'In behandeling';
 
   @override
-  String get statusApproved => 'Approuvée';
+  String get statusApproved => 'Goedgekeurd';
 
   @override
-  String get statusRejected => 'Refusée';
+  String get statusRejected => 'Afgewezen';
 
   @override
-  String get dashboardTitle => 'Tableau de bord';
+  String get dashboardTitle => 'Dashboard';
 
   @override
-  String get dashboardHello => 'Bonjour 👋';
+  String get dashboardHello => 'Hallo 👋';
 
   @override
-  String get dashboardWelcome => 'Bienvenue dans votre espace client sécurisé';
+  String get dashboardWelcome => 'Welkom in uw beveiligde klantenomgeving';
 
   @override
-  String get dashboardSecureData => '🔒 Données protégées';
+  String get dashboardSecureData => '🔒 Gegevens beschermd';
 
   @override
   String get contactSectionLabel => 'Contact';
 
   @override
-  String get contactTitle => 'Contactez KreditSch';
+  String get contactTitle => 'Neem contact op met KreditSch';
 
   @override
   String get contactDescription =>
-      'Notre équipe KreditSch est à votre écoute pour toute demande de prêt personnel, professionnel ou d’urgence.';
+      'Ons team staat klaar voor al uw vragen over persoonlijke, zakelijke of noodleningen.';
 
   @override
-  String get contactAddressTitle => 'Allemagne';
+  String get contactAddressTitle => 'Duitsland';
 
   @override
   String get contactAddress => 'Audensstraße 2 – 61348 Bad Homburg v.d. Höhe';
 
   @override
-  String get contactPhoneTitle => 'Téléphone';
+  String get contactPhoneTitle => 'Telefoon';
 
   @override
   String get contactPhone => '+49 1577 4851991';
@@ -1211,163 +1208,161 @@ class AppLocalizationsNl extends AppLocalizations {
   String get contactEmail => 'contact@kreditsch.de';
 
   @override
-  String get contactFormName => 'Nom';
+  String get contactFormName => 'Naam';
 
   @override
-  String get contactFormNameHint => 'Votre nom';
+  String get contactFormNameHint => 'Uw naam';
 
   @override
   String get contactFormEmail => 'E-mail';
 
   @override
-  String get contactFormEmailHint => 'Votre adresse e-mail';
+  String get contactFormEmailHint => 'Uw e-mailadres';
 
   @override
-  String get contactFormSubject => 'Thème';
+  String get contactFormSubject => 'Onderwerp';
 
   @override
   String get contactFormSubjectHint =>
-      'Demande de prêt, informations, assistance...';
+      'Leningsaanvraag, informatie, ondersteuning...';
 
   @override
-  String get contactFormMessage => 'Message';
+  String get contactFormMessage => 'Bericht';
 
   @override
-  String get contactFormMessageHint =>
-      'Décrivez votre besoin ou votre question';
+  String get contactFormMessageHint => 'Beschrijf uw behoefte of vraag';
 
   @override
-  String get contactFormSubmit => 'Envoyer un message';
+  String get contactFormSubmit => 'Verstuur bericht';
 
   @override
-  String get profileTitle => 'Mon profil';
+  String get profileTitle => 'Mijn profiel';
 
   @override
-  String get profileNotCreatedTitle => 'Profil non encore créé';
+  String get profileNotCreatedTitle => 'Profiel nog niet aangemaakt';
 
   @override
   String get profileNotCreatedDescription =>
-      'Pour compléter votre profil, veuillez effectuer\nvotre première demande de prêt.';
+      'Om uw profiel te voltooien, dient u eerst een leningaanvraag in.';
 
   @override
-  String get profileCreateLoanButton => 'Faire une demande de prêt';
+  String get profileCreateLoanButton => 'Dien een leningaanvraag in';
 
   @override
-  String get profilePersonalInfoTitle => 'Informations personnelles';
+  String get profilePersonalInfoTitle => 'Persoonlijke informatie';
 
   @override
-  String get profileContactTitle => 'Coordonnées';
+  String get profileContactTitle => 'Contactgegevens';
 
   @override
-  String get profileProfessionalTitle => 'Situation professionnelle';
+  String get profileProfessionalTitle => 'Beroepssituatie';
 
   @override
-  String get profileBirthDate => 'Date de naissance';
+  String get profileBirthDate => 'Geboortedatum';
 
   @override
-  String get profileCountry => 'Pays';
+  String get profileCountry => 'Land';
 
   @override
-  String get profileCity => 'Ville';
+  String get profileCity => 'Stad';
 
   @override
-  String get profileAddress => 'Adresse';
+  String get profileAddress => 'Adres';
 
   @override
-  String get profileEmail => 'Email';
+  String get profileEmail => 'E-mail';
 
   @override
-  String get profilePhone => 'Téléphone';
+  String get profilePhone => 'Telefoon';
 
   @override
-  String get profileProfession => 'Profession';
+  String get profileProfession => 'Beroep';
 
   @override
-  String get profileIncomeSource => 'Source de revenus';
+  String get profileIncomeSource => 'Inkomstbron';
 
   @override
-  String get profileStatusPending => 'En cours';
+  String get profileStatusPending => 'In behandeling';
 
   @override
-  String get profileStatusApproved => 'Approuvé';
+  String get profileStatusApproved => 'Goedgekeurd';
 
   @override
-  String get profileStatusRejected => 'Refusé';
+  String get profileStatusRejected => 'Afgewezen';
 
   @override
-  String get aboutContactUs => 'Écrivez-nous';
+  String get aboutContactUs => 'Schrijf ons';
 
   @override
   String get aboutLabel => 'Via KreditSch';
 
   @override
-  String get aboutTitle => 'Des solutions de prêt adaptées à chaque projet';
+  String get aboutTitle => 'Leningsoplossingen voor elk project';
 
   @override
   String get aboutDescription =>
-      'KreditSch accompagne particuliers et entrepreneurs avec des solutions de prêt fiables, transparentes et rapides, adaptées à vos besoins financiers réels.';
+      'KreditSch ondersteunt particulieren en ondernemers met betrouwbare, transparante en snelle leningen, afgestemd op uw werkelijke financiële behoeften.';
 
   @override
-  String get aboutFeaturePersonalLoanTitle => 'Prêt personnel flexible';
+  String get aboutFeaturePersonalLoanTitle => 'Flexibele persoonlijke lening';
 
   @override
   String get aboutFeaturePersonalLoanDesc =>
-      'Financez vos projets personnels avec des conditions claires et sans surprise.';
+      'Financier uw persoonlijke projecten met duidelijke en voorspelbare voorwaarden.';
 
   @override
-  String get aboutFeatureBusinessLoanTitle => 'Prêt professionnel';
+  String get aboutFeatureBusinessLoanTitle => 'Zakelijke lening';
 
   @override
   String get aboutFeatureBusinessLoanDesc =>
-      'Un soutien financier solide pour développer votre activité en toute sérénité.';
+      'Sterke financiële ondersteuning voor het veilig laten groeien van uw bedrijf.';
 
   @override
-  String get aboutFeatureFastPaymentTitle => 'Décaissement rapide';
+  String get aboutFeatureFastPaymentTitle => 'Snelle uitbetaling';
 
   @override
   String get aboutFeatureFastPaymentDesc =>
-      'Recevez vos fonds rapidement après validation de votre dossier.';
+      'Ontvang uw geld snel na goedkeuring van uw aanvraag.';
 
   @override
-  String get aboutFeatureSecurityTitle => 'Processus sécurisé';
+  String get aboutFeatureSecurityTitle => 'Beveiligd proces';
 
   @override
   String get aboutFeatureSecurityDesc =>
-      'Vos données sont protégées selon les normes les plus strictes.';
+      'Uw gegevens worden beschermd volgens de strengste normen.';
 
   @override
-  String get supportTitle => 'Support';
+  String get supportTitle => 'Ondersteuning';
 
   @override
-  String get supportChatTitle => 'Chat support';
+  String get supportChatTitle => 'Chat ondersteuning';
 
   @override
-  String get newConversation => 'Nouvelle discussion';
+  String get newConversation => 'Nieuw gesprek';
 
   @override
-  String get supportTyping => 'Le support est en train d’écrire…';
+  String get supportTyping => 'Ondersteuning is aan het typen…';
 
   @override
-  String get messageHint => 'Votre message...';
+  String get messageHint => 'Uw bericht...';
 
   @override
-  String get bankDetailsSubtitle => 'Informations du compte bancaire';
+  String get bankDetailsSubtitle => 'Bankrekeninginformatie';
 
   @override
-  String get receiverFullName => 'Nom complet du receveur';
+  String get receiverFullName => 'Volledige naam ontvanger';
 
   @override
-  String get save => 'Enregistrer';
+  String get save => 'Opslaan';
 
   @override
-  String get requiredField => 'Champ requis';
+  String get requiredField => 'Verplicht veld';
 
   @override
-  String get bankDetailsSaved =>
-      'Coordonnées bancaires enregistrées avec succès';
+  String get bankDetailsSaved => 'Bankgegevens succesvol opgeslagen';
 
   @override
   String genericError(Object error) {
-    return '❌ Une erreur est survenue : $error';
+    return '❌ Er is een fout opgetreden: $error';
   }
 }
