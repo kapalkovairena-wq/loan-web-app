@@ -2368,7 +2368,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactEmail.
   ///
   /// In fr, this message translates to:
-  /// **'contact@kreditsch.de'**
+  /// **'kontakt@kreditsch.de'**
   String get contactEmail;
 
   /// No description provided for @contactFormName.

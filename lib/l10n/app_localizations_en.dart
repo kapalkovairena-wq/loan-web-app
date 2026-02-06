@@ -1203,7 +1203,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contactEmailTitle => 'Email';
 
   @override
-  String get contactEmail => 'contact@kreditsch.de';
+  String get contactEmail => 'kontakt@kreditsch.de';
 
   @override
   String get contactFormName => 'Name';
