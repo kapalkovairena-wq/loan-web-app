@@ -1933,7 +1933,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneHint.
   ///
   /// In fr, this message translates to:
-  /// **'+49 00000000000'**
+  /// **'+41798079255'**
   String get phoneHint;
 
   /// No description provided for @dobLabel.
@@ -2356,7 +2356,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactPhone.
   ///
   /// In fr, this message translates to:
-  /// **'+49 1577 4851991'**
+  /// **'+41798079255'**
   String get contactPhone;
 
   /// No description provided for @contactEmailTitle.

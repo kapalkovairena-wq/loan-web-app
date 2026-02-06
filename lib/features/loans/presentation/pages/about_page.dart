@@ -82,7 +82,7 @@ class AboutPage extends StatelessWidget {
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
-                                const Text("(+49) 1577 4851991"),
+                                const Text("+41798079255"),
                               ],
                             ),
                           ],
@@ -234,7 +234,7 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           const WhatsAppButton(
-            phoneNumber: "+4915774851991",
+            phoneNumber: "+41798079255",
           ),
         ],
       ),

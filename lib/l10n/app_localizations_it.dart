@@ -974,7 +974,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get phoneLabel => 'Téléphone *';
 
   @override
-  String get phoneHint => '+49 00000000000';
+  String get phoneHint => '+41798079255';
 
   @override
   String get dobLabel => 'Date de naissance';
@@ -1202,7 +1202,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get contactPhoneTitle => 'Téléphone';
 
   @override
-  String get contactPhone => '+49 1577 4851991';
+  String get contactPhone => '+41798079255';
 
   @override
   String get contactEmailTitle => 'E-mail';

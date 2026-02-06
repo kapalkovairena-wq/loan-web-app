@@ -95,7 +95,7 @@ class _PremiumContactCard extends StatelessWidget {
             if (!isMobile) ...[
               const SizedBox(width: 10),
               const Text(
-                '+41 79 807 92 25',
+                '+41798079255',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 15,

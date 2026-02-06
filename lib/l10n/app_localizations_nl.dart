@@ -1199,7 +1199,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get contactPhoneTitle => 'Telefoon';
 
   @override
-  String get contactPhone => '+49 1577 4851991';
+  String get contactPhone => '+41798079255';
 
   @override
   String get contactEmailTitle => 'E-mail';
@@ -1368,5 +1368,5 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get textyellowcard =>
-      'Sie verwirklichen Ihre Projekte, \n wir finanzieren Ihre Ambitionen.';
+      'U ontwikkelt uw projecten, \n wij financieren uw ambitie.';
 }

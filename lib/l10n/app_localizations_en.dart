@@ -972,7 +972,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneLabel => 'Phone *';
 
   @override
-  String get phoneHint => '+49 00000000000';
+  String get phoneHint => '+41798079255';
 
   @override
   String get dobLabel => 'Date of Birth';
@@ -1197,7 +1197,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contactPhoneTitle => 'Phone';
 
   @override
-  String get contactPhone => '+49 1577 4851991';
+  String get contactPhone => '+41798079255';
 
   @override
   String get contactEmailTitle => 'Email';

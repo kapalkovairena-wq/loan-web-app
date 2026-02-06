@@ -141,7 +141,7 @@ class _ContactPageState extends State<ContactPage>
               ),
             ),
           ),
-          const WhatsAppButton(phoneNumber: "+4915774851991"),
+          const WhatsAppButton(phoneNumber: "+41798079255"),
         ],
       ),
     );
