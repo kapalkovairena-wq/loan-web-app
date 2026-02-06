@@ -324,8 +324,8 @@ class FooterSection extends StatelessWidget {
         _ContactRow(Icons.location_on, l10n.footerAddress),
         _ContactRow(Icons.email, "kontakt@kreditsch.de",
             onTap: () => _launchURL("mailto:kontakt@kreditsch.de")),
-        _ContactRow(Icons.phone, "+41 798079225",
-            onTap: () => _launchURL("tel:+41798079225")),
+        _ContactRow(Icons.phone, "+41798079255",
+            onTap: () => _launchURL("tel:+41798079255")),
         _ContactRow(Icons.access_time, l10n.footerOpeningHours),
       ],
     );
