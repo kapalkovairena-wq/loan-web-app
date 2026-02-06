@@ -67,7 +67,7 @@ class _AdminUsersMessagePageState extends State<AdminUsersMessagePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Message à ${user['email']}"),
+        title: Text("Message à ${user['email']} \n Langue : ${user['language']}"),
         content: SingleChildScrollView(
           child: Column(
             children: [
