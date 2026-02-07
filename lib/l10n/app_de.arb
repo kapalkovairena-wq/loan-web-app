@@ -229,7 +229,6 @@
 
   "fillAllFields": "Bitte füllen Sie alle Felder aus",
   "accountAlreadyExists": "Dieses Konto existiert bereits. Bitte anmelden.",
-  "invalidEmail": "Ungültige E-Mail",
   "weakPassword": "Schwaches Passwort (mindestens 6 Zeichen)",
   "registrationError": "Fehler beim Erstellen des Kontos",
   "createAccount": "Konto erstellen",
@@ -246,11 +245,8 @@
 
   "loggingOut": "Abmeldung läuft…",
 
-  "fillAllFields": "Bitte alle Felder ausfüllen",
   "noAccountFound": "Kein Konto gefunden. Bitte registrieren.",
   "incorrectPassword": "Falsches Passwort",
-  "invalidEmail": "Ungültige E-Mail",
-  "loginError": "Fehler beim Anmelden",
   "login": "Anmelden",
   "loginSubtitle": "Zugang zu Ihrem Kundenbereich",
   "email": "E-Mail",
@@ -262,9 +258,7 @@
   "noAccountYet": "Noch kein Konto?",
   "createAccount": "Konto erstellen",
 
-  "fillAllFields": "Bitte alle Felder ausfüllen",
   "emailAlreadyInUse": "Dieses Konto existiert bereits. Bitte anmelden.",
-  "invalidEmail": "Ungültige E-Mail",
   "weakPassword": "Passwort zu schwach (min. 6 Zeichen)",
   "registerError": "Fehler beim Erstellen des Kontos",
   "register": "Konto erstellen",
@@ -279,7 +273,6 @@
   "alreadyHaveAccount": "Bereits ein Konto?",
   "loginButton": "Anmelden",
 
-  "fillAllFields": "Bitte alle Felder ausfüllen",
   "userNotFound": "Kein Konto gefunden. Bitte registrieren.",
   "wrongPassword": "Falsches Passwort",
   "invalidEmail": "Ungültige E-Mail",

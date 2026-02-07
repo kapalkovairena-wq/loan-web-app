@@ -768,7 +768,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get registerButton => 'Account aanmaken';
 
   @override
-  String get googleRegisterError => 'Erreur lors de l\'inscription Google';
+  String get googleRegisterError => 'Fout bij registratie met Google';
 
   @override
   String get userNotFound => 'Geen account gevonden. Registreer alstublieft.';

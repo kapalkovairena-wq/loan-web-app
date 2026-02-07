@@ -246,11 +246,8 @@
 
   "loggingOut": "Logging out…",
 
-  "fillAllFields": "Please fill in all fields",
   "noAccountFound": "No account found. Please register.",
   "incorrectPassword": "Incorrect password",
-  "invalidEmail": "Invalid email",
-  "loginError": "Login error",
   "login": "Login",
   "loginSubtitle": "Access your client area",
   "email": "Email",
@@ -262,9 +259,7 @@
   "noAccountYet": "No account yet?",
   "createAccount": "Create account",
 
-  "fillAllFields": "Please fill in all fields",
   "emailAlreadyInUse": "This account already exists. Please log in.",
-  "invalidEmail": "Invalid email",
   "weakPassword": "Password too weak (min. 6 characters)",
   "registerError": "Error creating account",
   "register": "Create account",
@@ -279,10 +274,8 @@
   "alreadyHaveAccount": "Already have an account?",
   "loginButton": "Login",
 
-  "fillAllFields": "Please fill in all fields",
   "userNotFound": "No account found. Please register.",
   "wrongPassword": "Incorrect password",
-  "invalidEmail": "Invalid email",
   "loginError": "Login error",
   "login": "Login",
   "loginSubtitle": "Access your client area",

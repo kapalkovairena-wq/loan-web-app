@@ -246,10 +246,8 @@
 
   "loggingOut": "Déconnexion en cours…",
 
-  "fillAllFields": "Veuillez remplir tous les champs",
   "noAccountFound": "Aucun compte trouvé. Veuillez vous inscrire.",
   "incorrectPassword": "Mot de passe incorrect",
-  "invalidEmail": "Email invalide",
   "loginError": "Erreur de connexion",
   "login": "Connexion",
   "loginSubtitle": "Accédez à votre espace client",
@@ -262,9 +260,7 @@
   "noAccountYet": "Pas encore de compte ?",
   "createAccount": "Créer un compte",
 
-  "fillAllFields": "Veuillez remplir tous les champs",
   "emailAlreadyInUse": "Ce compte existe déjà. Veuillez vous connecter.",
-  "invalidEmail": "Email invalide",
   "weakPassword": "Mot de passe trop faible (min. 6 caractères)",
   "registerError": "Erreur lors de la création du compte",
   "register": "Créer un compte",
@@ -279,11 +275,8 @@
   "alreadyHaveAccount": "Déjà un compte ?",
   "loginButton": "Se connecter",
 
-  "fillAllFields": "Veuillez remplir tous les champs",
   "userNotFound": "Aucun compte trouvé. Veuillez vous inscrire.",
   "wrongPassword": "Mot de passe incorrect",
-  "invalidEmail": "Email invalide",
-  "loginError": "Erreur de connexion",
   "login": "Connexion",
   "loginSubtitle": "Accédez à votre espace client",
   "email": "Email",

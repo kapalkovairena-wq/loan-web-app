@@ -239,6 +239,7 @@
   "password": "Wachtwoord",
   "createMyAccount": "Maak mijn account aan",
   "continueWithGoogle": "Doorgaan met Google",
+  "googleRegisterError": "Fout bij registratie met Google",
   "selectCurrency": "Selecteer een valuta",
   "alreadyHaveAccount": "Heeft u al een account?",
   "signIn": "Inloggen",

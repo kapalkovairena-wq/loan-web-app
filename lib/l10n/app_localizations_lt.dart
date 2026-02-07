@@ -9,64 +9,63 @@ class AppLocalizationsLt extends AppLocalizations {
   AppLocalizationsLt([String locale = 'lt']) : super(locale);
 
   @override
-  String get drawerHome => 'Page d\'accueil';
+  String get drawerHome => 'Pagrindinis puslapis';
 
   @override
-  String get drawerDashboard => 'Mon tableau de bord';
+  String get drawerDashboard => 'Mano prietaisų skydelis';
 
   @override
-  String get drawerAdminDashboard => 'Tableau de bord administrateur';
+  String get drawerAdminDashboard => 'Administratoriaus skydelis';
 
   @override
-  String get drawerLoanRequest => 'Demander un prêt';
+  String get drawerLoanRequest => 'Prašyti paskolos';
 
   @override
-  String get drawerOffers => 'Découvrir nos offres';
+  String get drawerOffers => 'Peržiūrėti pasiūlymus';
 
   @override
-  String get drawerInvestment => 'Investissement';
+  String get drawerInvestment => 'Investavimas';
 
   @override
-  String get drawerContact => 'Contact';
+  String get drawerContact => 'Kontaktai';
 
   @override
-  String get drawerAbout => 'À propos de nous';
+  String get drawerAbout => 'Apie mus';
 
   @override
-  String get drawerLogout => 'Se déconnecter';
+  String get drawerLogout => 'Atsijungti';
 
   @override
-  String get heroTitle =>
-      'Des services de prêts\npour développer votre entreprise';
+  String get heroTitle => 'Paskolų paslaugos\njūsų verslo plėtrai';
 
   @override
   String get heroSubtitle =>
-      'Une solution moderne, simple et sécurisée pour gérer vos prêts et investissements.';
+      'Modernus, paprastas ir saugus sprendimas paskoloms ir investicijoms valdyti.';
 
   @override
-  String get heroLogin => 'Se connecter';
+  String get heroLogin => 'Prisijungti';
 
   @override
-  String get heroRegister => 'S\'inscrire';
+  String get heroRegister => 'Registruotis';
 
   @override
-  String get heroAdminAccess => 'Accéder à l’espace administrateur';
+  String get heroAdminAccess => 'Administratoriaus prieiga';
 
   @override
-  String get heroUserAccess => 'Accéder à mon espace';
+  String get heroUserAccess => 'Mano paskyra';
 
   @override
-  String get bankDetailsTitle => 'Vos coordonnées bancaires';
+  String get bankDetailsTitle => 'Jūsų banko duomenys';
 
   @override
-  String get bankDetailsEmptyTitle => 'Aucune information bancaire enregistrée';
+  String get bankDetailsEmptyTitle => 'Banko duomenys nenurodyti';
 
   @override
   String get bankDetailsEmptyDescription =>
-      'Veuillez renseigner vos coordonnées pour recevoir les fonds.';
+      'Įveskite savo banko duomenis, kad galėtumėte gauti lėšas.';
 
   @override
-  String get bankReceiver => 'Bénéficiaire';
+  String get bankReceiver => 'Gavėjas';
 
   @override
   String get bankIban => 'IBAN';
@@ -75,364 +74,362 @@ class AppLocalizationsLt extends AppLocalizations {
   String get bankBic => 'BIC';
 
   @override
-  String get bankName => 'Nom de la banque';
+  String get bankName => 'Banko pavadinimas';
 
   @override
-  String get bankAddress => 'Adresse de la banque';
+  String get bankAddress => 'Banko adresas';
 
   @override
-  String get creditSectionLabel => 'Nos dossiers';
+  String get creditSectionLabel => 'Mūsų bylos';
 
   @override
-  String get creditSectionTitle => 'Nos services de crédit';
+  String get creditSectionTitle => 'Mūsų kreditavimo paslaugos';
 
   @override
   String get creditSectionDescription =>
-      'Nous proposons des solutions de financement flexibles et accessibles, adaptées à vos besoins personnels ou professionnels.';
+      'Siūlome lanksčius ir prieinamus finansavimo sprendimus, pritaikytus asmeniniams ir profesiniams poreikiams.';
 
   @override
-  String get creditPersonalTitle => 'Prêt personnel';
+  String get creditPersonalTitle => 'Asmeninė paskola';
 
   @override
   String get creditPersonalDescription =>
-      'Financez vos projets (voyages, équipements, mariages...) à un prix compétitif et avec une réponse rapide.';
+      'Finansuokite savo projektus (keliones, įrangą, vestuves…) konkurencingomis sąlygomis ir greitu atsakymu.';
 
   @override
-  String get creditBusinessTitle => 'Prêt professionnel';
+  String get creditBusinessTitle => 'Verslo paskola';
 
   @override
   String get creditBusinessDescription =>
-      'Une solution simple et rapide pour soutenir votre entreprise : approvisionnement, trésorerie, développement.';
+      'Greitas ir paprastas sprendimas jūsų verslo palaikymui: apyvartinės lėšos, plėtra, atsargos.';
 
   @override
-  String get creditFlexibleTitle => 'Lignes de crédit flexibles';
+  String get creditFlexibleTitle => 'Lanksčios kredito linijos';
 
   @override
   String get creditFlexibleDescription =>
-      'Accès rapide à des fonds immédiatement disponibles, sans obligation d’utilisation immédiate.';
+      'Greita prieiga prie iš karto prieinamų lėšų be įsipareigojimo jas panaudoti nedelsiant.';
 
   @override
-  String get creditSimulationTitle => 'Simulation et enquête';
+  String get creditSimulationTitle => 'Simuliacija ir paraiška';
 
   @override
   String get creditSimulationDescription =>
-      'Estimez votre capacité de crédit et soumettez votre demande directement en ligne.';
+      'Įvertinkite savo kreditingumą ir pateikite paraišką internetu.';
 
   @override
-  String get documentUploadTitle => 'Soumettre un document';
+  String get documentUploadTitle => 'Pateikti dokumentą';
 
   @override
-  String get documentChooseFile => 'Choisir un fichier ou une photo';
+  String get documentChooseFile => 'Pasirinkti failą arba nuotrauką';
 
   @override
-  String get documentSubmit => 'Soumettre le document';
+  String get documentSubmit => 'Pateikti dokumentą';
 
   @override
-  String get documentUploadSuccess => '✅ Document soumis avec succès';
+  String get documentUploadSuccess => '✅ Dokumentas sėkmingai pateiktas';
 
   @override
-  String get documentUploadError => '❌ Erreur lors de l’envoi du document :';
+  String get documentUploadError => '❌ Klaida siunčiant dokumentą:';
 
   @override
-  String get newsletterTitle => 'Abonnez-vous à notre newsletter';
+  String get newsletterTitle => 'Prenumeruokite naujienlaiškį';
 
   @override
   String get newsletterDescription =>
-      'Restez informé(e) des fonctionnalités et technologies de nos produits en constante évolution.';
+      'Gaukite naujausią informaciją apie mūsų nuolat tobulėjančius produktus ir technologijas.';
 
   @override
-  String get newsletterDescriptionShort =>
-      'Restez informé(e) des nouveautés et évolutions.';
+  String get newsletterDescriptionShort => 'Sekite naujienas ir atnaujinimus.';
 
   @override
-  String get newsletterEmailHint => 'Votre adresse e-mail';
+  String get newsletterEmailHint => 'Jūsų el. pašto adresas';
 
   @override
-  String get newsletterSubscribe => 'S’abonner';
+  String get newsletterSubscribe => 'Prenumeruoti';
 
   @override
-  String get footerServices => 'Services';
+  String get footerServices => 'Paslaugos';
 
   @override
-  String get footerInformation => 'Information';
+  String get footerInformation => 'Informacija';
 
   @override
-  String get footerHome => 'Page d’accueil';
+  String get footerHome => 'Pagrindinis puslapis';
 
   @override
-  String get footerOffers => 'Découvrir nos offres';
+  String get footerOffers => 'Pasiūlymai';
 
   @override
-  String get footerInvestment => 'Investissement';
+  String get footerInvestment => 'Investavimas';
 
   @override
-  String get footerContact => 'Contact';
+  String get footerContact => 'Kontaktai';
 
   @override
-  String get footerAbout => 'À propos de nous';
+  String get footerAbout => 'Apie mus';
 
   @override
-  String get footerPrivacy => 'Protection des données';
+  String get footerPrivacy => 'Duomenų apsauga';
 
   @override
-  String get footerSecurity => 'Sécurité';
+  String get footerSecurity => 'Saugumas';
 
   @override
-  String get footerTerms => 'CGV';
+  String get footerTerms => 'Taisyklės';
 
   @override
   String get footerBrandDescription =>
-      'Nous redonnons aux gens le contrôle de leur argent grâce à des solutions de financement modernes.';
+      'Suteikiame žmonėms galimybę valdyti savo finansus naudodami modernius finansavimo sprendimus.';
 
   @override
-  String get footerSimulationButton => 'Voir une simulation';
+  String get footerSimulationButton => 'Peržiūrėti simuliaciją';
 
   @override
-  String get footerAddress => 'Audenstraße 2 – 4, 61348 Bad Homburg';
+  String get footerAddress => 'Audenstraße 2–4, 61348 Bad Homburg';
 
   @override
-  String get footerOpeningHours => 'Lun - Sam : 9h00 - 17h00';
+  String get footerOpeningHours => 'Pirm.–Šešt.: 9:00–17:00';
 
   @override
-  String get footerCopyright =>
-      '© Copyright 2026 KreditSch. Tous droits réservés.';
+  String get footerCopyright => '© 2026 KreditSch. Visos teisės saugomos.';
 
   @override
-  String get loanVisionTitle => 'Notre vision et notre mission';
+  String get loanVisionTitle => 'Mūsų vizija ir misija';
 
   @override
   String get loanVisionContent =>
-      'Chez KreditSch, nous simplifions l’accès au crédit en proposant des solutions de prêts rapides, transparentes et adaptées à chaque profil, afin de redonner à chacun le contrôle de ses projets financiers.';
+      'KreditSch supaprastina prieigą prie kredito, siūlydama greitus, skaidrius ir individualius paskolų sprendimus kiekvienam profiliui.';
 
   @override
-  String get loanSolutionsTitle => 'Solutions de prêts intelligentes';
+  String get loanSolutionsTitle => 'Išmanūs paskolų sprendimai';
 
   @override
   String get loanSolutionsContent =>
-      'KreditSch est reconnue pour ses offres de prêts personnels, professionnels et d’urgence, alliant rapidité, sécurité et conditions flexibles pour accompagner chaque étape de votre vie.';
+      'KreditSch siūlo asmenines, verslo ir skubias paskolas, derinančias greitį, saugumą ir lankstias sąlygas.';
 
   @override
-  String get loanStatApproved => 'Demandes de prêts approuvées';
+  String get loanStatApproved => 'Patvirtintos paskolos';
 
   @override
-  String get loanStatTypes => 'Types de prêts disponibles';
+  String get loanStatTypes => 'Paskolų tipai';
 
   @override
-  String get loanStatExperience => 'Années d’expertise financière';
+  String get loanStatExperience => 'Finansinės patirties metai';
 
   @override
-  String get loanStatExperts => 'Experts crédit dédiés';
+  String get loanStatExperts => 'Kredito ekspertai';
 
   @override
   String get loanFeaturePersonalTitle =>
-      'Financez vos projets personnels simplement';
+      'Lengvas asmeninių projektų finansavimas';
 
   @override
   String get loanFeaturePersonalDescription =>
-      'Obtenez un prêt privé flexible pour vos besoins personnels avec des intérêts transparents et un remboursement adapté.';
+      'Gaukite lanksčią asmeninę paskolą su skaidriomis palūkanomis ir pritaikytu grąžinimu.';
 
   @override
-  String get loanFeatureBusinessTitle => 'Soutenez les entrepreneurs et PME';
+  String get loanFeatureBusinessTitle => 'Parama verslininkams ir MVĮ';
 
   @override
   String get loanFeatureBusinessDescription =>
-      'Investissez ou empruntez pour développer une activité grâce à notre réseau de prêteurs privés vérifiés.';
+      'Investuokite arba skolinkitės savo verslo augimui per patikrintą privačių skolintojų tinklą.';
 
   @override
   String get loanFeatureFastTitle =>
-      'Prêt rapide, sans procédure bancaire lourde';
+      'Greita paskola be sudėtingų bankinių procedūrų';
 
   @override
   String get loanFeatureFastDescription =>
-      'Validation rapide, pénalités claires et conditions définies à l’avance entre prêteur et emprunteur.';
+      'Greitas patvirtinimas, aiškios sąlygos ir iš anksto nustatytos taisyklės.';
 
   @override
-  String get loanFeatureCta => 'Demander un prêt >';
+  String get loanFeatureCta => 'Prašyti paskolos >';
 
   @override
   String get loanIdeasHeroQuote =>
-      '« Un bon prêt ne complique pas votre avenir, il vous aide à le construire sereinement. »';
+      '„Gera paskola neapsunkina jūsų ateities — ji padeda ją kurti.“';
 
   @override
   String get loanIdeasHeroSubtitle =>
-      'Solutions de prêts privés — simples, claires et adaptées à vos besoins personnels et professionnels.';
+      'Privatūs paskolų sprendimai — paprasti, aiškūs ir pritaikyti jūsų poreikiams.';
 
   @override
-  String get loanIdeasTitle => 'Nos solutions de prêts privés';
+  String get loanIdeasTitle => 'Mūsų privačių paskolų sprendimai';
 
   @override
   String get loanIdeasDescription =>
-      'Nous proposons des solutions de prêts flexibles et transparentes, adaptées aux besoins des particuliers et des professionnels.';
+      'Siūlome lanksčius ir skaidrius paskolų sprendimus privatiems ir verslo klientams.';
 
   @override
-  String get loanIdeasBulletPersonal => 'Prêt personnel à court terme';
+  String get loanIdeasBulletPersonal => 'Trumpalaikė asmeninė paskola';
 
   @override
-  String get loanIdeasBulletBusiness => 'Prêt pour activités commerciales';
+  String get loanIdeasBulletBusiness => 'Verslo veiklos paskola';
 
   @override
-  String get loanIdeasBulletEmergency => 'Prêt d’urgence';
+  String get loanIdeasBulletEmergency => 'Skubi paskola';
 
   @override
-  String get loanIdeasBulletInvestment => 'Prêt d’investissement';
+  String get loanIdeasBulletInvestment => 'Investicinė paskola';
 
   @override
-  String get loanIdeasBulletInstallment => 'Prêt avec remboursement échelonné';
+  String get loanIdeasBulletInstallment => 'Paskola su daliniu grąžinimu';
 
   @override
-  String get loanIdeasCta => 'Découvrir nos offres';
+  String get loanIdeasCta => 'Peržiūrėti pasiūlymus';
 
   @override
-  String get loanIdeasWhyTitle => 'Pourquoi choisir notre service ?';
+  String get loanIdeasWhyTitle => 'Kodėl rinktis mus?';
 
   @override
-  String get loanIdeasWhyFastTitle => 'Processus rapide';
+  String get loanIdeasWhyFastTitle => 'Greitas procesas';
 
   @override
   String get loanIdeasWhyFastDesc =>
-      'Décision de prêt rapide et sans procédures complexes.';
+      'Greitas sprendimas be sudėtingų procedūrų.';
 
   @override
-  String get loanIdeasWhyClearTitle => 'Conditions claires';
+  String get loanIdeasWhyClearTitle => 'Aiškios sąlygos';
 
   @override
   String get loanIdeasWhyClearDesc =>
-      'Taux d’intérêt et pénalités définis à l’avance.';
+      'Palūkanos ir mokesčiai nustatyti iš anksto.';
 
   @override
-  String get loanIdeasWhyTrackingTitle => 'Suivi transparent';
+  String get loanIdeasWhyTrackingTitle => 'Skaidrus stebėjimas';
 
   @override
   String get loanIdeasWhyTrackingDesc =>
-      'Visualisez vos échéances et paiements à tout moment.';
+      'Bet kada peržiūrėkite savo mokėjimus ir terminus.';
 
   @override
-  String get loanProcessSubtitle => 'Notre processus de prêt';
+  String get loanProcessSubtitle => 'Mūsų paskolos procesas';
 
   @override
-  String get loanProcessTitle => 'Votre prêt en 3 étapes';
+  String get loanProcessTitle => 'Jūsų paskola per 3 žingsnius';
 
   @override
   String get loanProcessDescription =>
-      'Que ce soit pour un projet, un besoin de trésorerie ou un investissement, notre objectif est de vous aider à aller de l’avant en toute confiance.';
+      'Nesvarbu, ar tai projektas, apyvartinės lėšos ar investicija — padedame jums judėti pirmyn užtikrintai.';
 
   @override
-  String get step1Title => 'Simulez votre prêt';
+  String get step1Title => 'Simuliuokite paskolą';
 
   @override
   String get step1Description =>
-      'Choisissez le montant et la durée souhaités. Recevez un devis clair et sans engagement en quelques clics.';
+      'Pasirinkite sumą ir laikotarpį. Gaukite aiškų pasiūlymą per kelias akimirkas.';
 
   @override
-  String get step2Title => 'Soumettez votre demande';
+  String get step2Title => 'Pateikite paraišką';
 
   @override
   String get step2Description =>
-      'Remplissez le formulaire sécurisé sans aucun document papier. Votre dossier est traité rapidement.';
+      'Užpildykite saugią formą be popierinių dokumentų. Paraiška apdorojama greitai.';
 
   @override
-  String get step3Title => 'Recevez les fonds';
+  String get step3Title => 'Gaukite lėšas';
 
   @override
   String get step3Description =>
-      'Une fois votre demande approuvée, le montant est versé directement sur votre compte.';
+      'Patvirtinus paraišką, lėšos pervedamos tiesiai į jūsų sąskaitą.';
 
   @override
-  String get loanCtaTitle => 'Démarrez votre projet de prêt dès maintenant';
+  String get loanCtaTitle => 'Pradėkite savo paskolos projektą dabar';
 
   @override
   String get loanCtaDescription =>
-      'Vous avez un projet en tête ? Nous vous aidons à le concrétiser rapidement grâce à un prêt simple, sécurisé et 100 % en ligne.';
+      'Turite idėją? Padėsime ją įgyvendinti greitai su saugia 100 % internetine paskola.';
 
   @override
-  String get loanCtaButton => 'Soumettre une demande';
+  String get loanCtaButton => 'Pateikti paraišką';
 
   @override
-  String get loanServicePersonalTitle => 'Prêts personnels';
+  String get loanServicePersonalTitle => 'Asmeninės paskolos';
 
   @override
   String get loanServicePersonalDescription =>
-      'Des solutions de financement souples pour faire face à vos besoins personnels et projets du quotidien.';
+      'Lankstūs finansavimo sprendimai kasdieniams poreikiams.';
 
   @override
-  String get loanServiceBusinessTitle => 'Prêts professionnels';
+  String get loanServiceBusinessTitle => 'Verslo paskolos';
 
   @override
   String get loanServiceBusinessDescription =>
-      'Financement adapté aux entrepreneurs, commerçants et porteurs de projets ambitieux.';
+      'Finansavimas verslininkams ir ambicingiems projektams.';
 
   @override
-  String get loanServiceSupportTitle => 'Accompagnement personnalisé';
+  String get loanServiceSupportTitle => 'Asmeninė pagalba';
 
   @override
   String get loanServiceSupportDescription =>
-      'Un suivi humain, réactif et confidentiel pour vous accompagner à chaque étape de votre demande de prêt.';
+      'Žmogiška, greita ir konfidenciali pagalba kiekviename etape.';
 
   @override
-  String get learnMore => 'En savoir plus →';
+  String get learnMore => 'Sužinoti daugiau →';
 
   @override
-  String get loanStatusTitle => 'Statut de votre prêt';
+  String get loanStatusTitle => 'Jūsų paskolos būsena';
 
   @override
-  String get loanStatusNoneTitle => 'Aucune demande en cours';
+  String get loanStatusNoneTitle => 'Nėra aktyvių paraiškų';
 
   @override
-  String get loanStatusActionRequest => 'Faire une demande';
+  String get loanStatusActionRequest => 'Pateikti paraišką';
 
   @override
-  String get loanStatusPendingTitle => '⏳ Demande en cours';
+  String get loanStatusPendingTitle => '⏳ Paraiška nagrinėjama';
 
   @override
   String get loanStatusPendingDescription =>
-      'Notre équipe analyse actuellement votre dossier.';
+      'Mūsų komanda šiuo metu vertina jūsų paraišką.';
 
   @override
-  String get loanStatusApprovedTitle => '✅ Demande approuvée';
+  String get loanStatusApprovedTitle => '✅ Paraiška patvirtinta';
 
   @override
   String get loanStatusApprovedDescription =>
-      'Les fonds seront bientôt disponibles sur votre compte.';
+      'Lėšos netrukus bus pervestos į jūsų sąskaitą.';
 
   @override
-  String get loanStatusRejectedTitle => '❌ Demande refusée';
+  String get loanStatusRejectedTitle => '❌ Paraiška atmesta';
 
   @override
   String get loanStatusRejectedDescription =>
-      'Vous pouvez soumettre une nouvelle demande à tout moment.';
+      'Galite bet kada pateikti naują paraišką.';
 
   @override
-  String get quickActionsTitle => 'Actions rapides';
+  String get quickActionsTitle => 'Greitosios veiksmų nuorodos';
 
   @override
-  String get quickActionProfile => 'Profil';
+  String get quickActionProfile => 'Profilis';
 
   @override
-  String get quickActionNewRequest => 'Nouvelle demande';
+  String get quickActionNewRequest => 'Nauja paraiška';
 
   @override
-  String get quickActionBankDetails => 'Mes coordonnées bancaires';
+  String get quickActionBankDetails => 'Banko duomenys';
 
   @override
-  String get quickActionLoanHistory => 'Historique des demandes';
+  String get quickActionLoanHistory => 'Paraiškų istorija';
 
   @override
-  String get quickActionPaymentHistory => 'Historique des paiements';
+  String get quickActionPaymentHistory => 'Mokėjimų istorija';
 
   @override
-  String get quickActionDocumentsHistory => 'Historique des documents';
+  String get quickActionDocumentsHistory => 'Dokumentų istorija';
 
   @override
-  String get quickActionSupport => 'Support';
+  String get quickActionSupport => 'Pagalba';
 
   @override
-  String get paymentBankDetailsTitle => 'Coordonnées bancaires de paiement';
+  String get paymentBankDetailsTitle => 'Mokėjimo banko duomenys';
 
   @override
-  String get noPaymentInfo => 'Aucune information de paiement disponible';
+  String get noPaymentInfo => 'Nėra mokėjimo informacijos';
 
   @override
-  String get receiver => 'Receveur';
+  String get receiver => 'Gavėjas';
 
   @override
   String get iban => 'IBAN';
@@ -441,605 +438,607 @@ class AppLocalizationsLt extends AppLocalizations {
   String get bic => 'BIC / SWIFT';
 
   @override
-  String get amountToPay => 'Montant à payer';
+  String get amountToPay => 'Mokėtina suma';
 
   @override
-  String get documentPreview => 'Aperçu du document';
+  String get documentPreview => 'Dokumento peržiūra';
 
   @override
-  String get confirmSubmission => 'Confirmer la soumission';
+  String get confirmSubmission => 'Patvirtinti pateikimą';
 
   @override
-  String get submitProof => 'Soumettre une preuve';
+  String get submitProof => 'Pateikti įrodymą';
 
   @override
-  String get uploadSuccess => '✅ Preuve envoyée avec succès';
+  String get uploadSuccess => '✅ Įrodymas sėkmingai išsiųstas';
 
   @override
   String uploadError(Object error) {
-    return '❌ Erreur lors de l\'envoi : $error';
+    return '❌ Klaida siunčiant: $error';
   }
 
   @override
-  String get teamTitle => 'Notre équipe';
+  String get teamTitle => 'Mūsų komanda';
 
   @override
   String get teamDescription =>
-      'Fondée par des experts de la finance et du digital, KreditSch accompagne depuis plusieurs années des milliers de clients dans la réalisation de leurs projets grâce à des solutions de prêt simples, rapides et transparentes.\n\nNotre équipe internationale travaille chaque jour avec une seule ambition : rendre l’accès au crédit plus juste, plus humain et accessible à tous.';
+      '„KreditSch“, įkurta finansų ir skaitmeninių technologijų ekspertų, jau kelerius metus padeda tūkstančiams klientų įgyvendinti jų projektus, siūlydama paprastus, greitus ir skaidrius paskolų sprendimus.\n\nMūsų tarptautinė komanda kasdien dirba siekdama vieno tikslo – padaryti prieigą prie kredito teisingesnę, žmogiškesnę ir prieinamą visiems.';
 
   @override
-  String get teamCta => 'Découvrez nos solutions de prêt >';
+  String get teamCta => 'Atraskite mūsų paskolų sprendimus >';
 
   @override
-  String get testimonialsLabel => 'Témoignages';
+  String get testimonialsLabel => 'Atsiliepimai';
 
   @override
   String get testimonialsTitle =>
-      'Nous bénéficions de la confiance de milliers de clients à travers l’Europe.';
+      'Mumis pasitiki tūkstančiai klientų visoje Europoje.';
 
   @override
   String get testimonialsSubtitle =>
-      'La satisfaction de nos clients est notre priorité. Découvrez ce qu’ils pensent de leur expérience avec KreditSch.';
+      'Mūsų klientų pasitenkinimas yra mūsų prioritetas. Sužinokite, ką jie mano apie savo patirtį su „KreditSch“.';
 
   @override
   String get testimonial1Text =>
-      'Grâce à KreditSch, j’ai obtenu un prêt professionnel en moins de 24 heures. Les conditions étaient claires et adaptées à ma situation. Une vraie solution fiable.';
+      '„KreditSch“ dėka gavau verslo paskolą per mažiau nei 24 valandas. Sąlygos buvo aiškios ir pritaikytos mano situacijai. Tikrai patikimas sprendimas.';
 
   @override
   String get testimonial1Name => 'Martin K.';
 
   @override
-  String get testimonial1Role => 'Entrepreneur – Berlin';
+  String get testimonial1Role => 'Verslininkas – Berlynas';
 
   @override
   String get testimonial2Text =>
-      'J’avais besoin d’un financement urgent pour des frais médicaux. KreditSch a été rapide, humain et transparent. Je recommande sans hésiter.';
+      'Man reikėjo skubaus finansavimo medicininėms išlaidoms. „KreditSch“ buvo greita, žmogiška ir skaidri. Rekomenduoju be dvejonių.';
 
   @override
   String get testimonial2Name => 'Sophie L.';
 
   @override
-  String get testimonial2Role => 'Salariée – Lyon';
+  String get testimonial2Role => 'Darbuotoja – Lionas';
 
   @override
   String get testimonial3Text =>
-      'L’interface est simple et le suivi du prêt est très clair. KreditSch m’a permis de concrétiser mon projet immobilier sereinement.';
+      'Sąsaja paprasta, o paskolos stebėjimas labai aiškus. „KreditSch“ padėjo ramiai įgyvendinti mano nekilnojamojo turto projektą.';
 
   @override
   String get testimonial3Name => 'Julien R.';
 
   @override
-  String get testimonial3Role => 'Investisseur – Bruxelles';
+  String get testimonial3Role => 'Investuotojas – Briuselis';
 
   @override
   String get testimonial4Text =>
-      'Enfin une plateforme de prêt qui comprend les indépendants. Aucune surprise, tout est expliqué dès le départ.';
+      'Pagaliau paskolų platforma, kuri supranta savarankiškai dirbančius. Jokių staigmenų – viskas aišku nuo pat pradžių.';
 
   @override
   String get testimonial4Name => 'Nadia B.';
 
   @override
-  String get testimonial4Role => 'Freelance – Paris';
+  String get testimonial4Role => 'Laisvai samdoma specialistė – Paryžius';
 
   @override
   String get testimonial5Text =>
-      'Un service client réactif et des offres adaptées. KreditSch m’a accompagné du début à la fin.';
+      'Reaktyvus klientų aptarnavimas ir pritaikyti pasiūlymai. „KreditSch“ lydėjo mane nuo pradžios iki pabaigos.';
 
   @override
   String get testimonial5Name => 'Thomas W.';
 
   @override
-  String get testimonial5Role => 'Dirigeant PME – Munich';
+  String get testimonial5Role => 'MVĮ vadovas – Miunchenas';
 
   @override
-  String get testimonials0Label => 'Témoignages';
+  String get testimonials0Label => 'Atsiliepimai';
 
   @override
   String get testimonials0Title =>
-      'Nous bénéficions de la confiance de plus de 50 pays à travers le monde.';
+      'Mumis pasitiki daugiau nei 50 šalių visame pasaulyje.';
 
   @override
   String get testimonial6Text =>
-      'Grâce à ce service de prêt, j’ai pu lancer mon activité sans passer par une banque.';
+      'Šios paskolų paslaugos dėka galėjau pradėti savo veiklą neperėjęs per banką.';
 
   @override
   String get testimonial6Name => 'Aïcha M.';
 
   @override
-  String get testimonial6Role => 'Entrepreneure';
+  String get testimonial6Role => 'Verslininkė';
 
   @override
   String get testimonial7Text =>
-      'Les conditions sont claires, les intérêts transparents et le remboursement flexible.';
+      'Sąlygos aiškios, palūkanos skaidrios, o grąžinimas lankstus.';
 
   @override
   String get testimonial7Name => 'Jean K.';
 
   @override
-  String get testimonial7Role => 'Commerçant';
+  String get testimonial7Role => 'Prekybininkas';
 
   @override
   String get testimonial8Text =>
-      'J’ai obtenu un prêt rapidement pour une urgence familiale.';
+      'Greitai gavau paskolą šeimos ekstremaliai situacijai.';
 
   @override
   String get testimonial8Name => 'Fatou S.';
 
   @override
-  String get testimonial8Role => 'Particulier';
+  String get testimonial8Role => 'Privatus asmuo';
 
   @override
   String get testimonial9Text =>
-      'Une plateforme fiable qui met en relation prêteurs et emprunteurs en toute confiance.';
+      'Patikima platforma, kuri sujungia skolintojus ir skolininkus visiško pasitikėjimo sąlygomis.';
 
   @override
   String get testimonial9Name => 'Marc D.';
 
   @override
-  String get testimonial9Role => 'Investisseur privé';
+  String get testimonial9Role => 'Privatus investuotojas';
 
   @override
-  String get trustCardTitle => 'Pourquoi nous faire confiance ?';
+  String get trustCardTitle => 'Kodėl mumis pasitikėti?';
 
   @override
-  String get trustCardItem1 => 'Taux transparents';
+  String get trustCardItem1 => 'Skaidrūs tarifai';
 
   @override
-  String get trustCardItem2 => 'Analyse rapide';
+  String get trustCardItem2 => 'Greita analizė';
 
   @override
-  String get trustCardItem3 => 'Données sécurisées';
+  String get trustCardItem3 => 'Saugūs duomenys';
 
   @override
-  String get trustCardItem4 => 'Assistance dédiée';
+  String get trustCardItem4 => 'Skirta pagalba';
 
   @override
   String get whatsappDefaultMessage =>
-      'Bonjour, j\'ai une question concernant votre service de prêt.';
+      'Sveiki, turiu klausimą dėl jūsų paskolų paslaugos.';
 
   @override
-  String get whatsappError => 'Impossible d\'ouvrir WhatsApp';
+  String get whatsappError => 'Nepavyko atidaryti „WhatsApp“';
 
   @override
-  String get whyUsTitle => 'Pourquoi nous ?';
+  String get whyUsTitle => 'Kodėl mes?';
 
   @override
-  String get whyUsSubtitle => 'Votre partenaire de prêts privés de confiance';
+  String get whyUsSubtitle => 'Jūsų patikimas privačių paskolų partneris';
 
   @override
   String get whyUsDescription =>
-      'Nous combinons rapidité, transparence et accompagnement personnalisé pour vous offrir des solutions de prêts simples, efficaces et adaptées à vos objectifs.';
+      'Deriname greitį, skaidrumą ir asmeninį palaikymą, kad pasiūlytume paprastus, veiksmingus ir jūsų tikslams pritaikytus paskolų sprendimus.';
 
   @override
-  String get fastProcessing => 'Rapidité de traitement';
+  String get fastProcessing => 'Greitas apdorojimas';
 
   @override
-  String get securityReliability => 'Sécurité & fiabilité';
+  String get securityReliability => 'Saugumas ir patikimumas';
 
   @override
-  String get continuousImprovement => 'Amélioration continue de nos offres';
+  String get continuousImprovement => 'Nuolatinis pasiūlymų tobulinimas';
 
   @override
-  String get clientCommitment => 'Engagement envers nos clients';
+  String get clientCommitment => 'Įsipareigojimas klientams';
 
   @override
-  String get clearConditions => 'Conditions claires et sans surprise';
+  String get clearConditions => 'Aiškios sąlygos be netikėtumų';
 
   @override
-  String get submitRequest => 'Soumettre la demande';
+  String get submitRequest => 'Pateikti paraišką';
 
   @override
-  String get financingSolutionsTitle => 'Nos solutions de financement';
+  String get financingSolutionsTitle => 'Mūsų finansavimo sprendimai';
 
   @override
   String get financingSolutionsDesc =>
-      'Bien plus qu’un prêt, nous vous accompagnons à chaque étape de votre projet personnel ou professionnel.';
+      'Daugiau nei paskola – mes lydime jus kiekviename asmeninio ar profesinio projekto etape.';
 
   @override
-  String get viewOffers => 'Voir les offres';
+  String get viewOffers => 'Peržiūrėti pasiūlymus';
 
   @override
-  String get whyChooseUsTitle => 'Pourquoi nous choisir ?';
+  String get whyChooseUsTitle => 'Kodėl rinktis mus?';
 
   @override
   String get whyChooseUsSubtitle =>
-      'Une communauté internationale de milliers de clients\nnous fait confiance.';
+      'Tarptautinė tūkstančių klientų bendruomenė\nmumis pasitiki.';
 
   @override
   String get whyChooseUsDescription =>
-      'Particuliers, entrepreneurs et professionnels choisissent nos solutions de prêts pour leur simplicité, leur rapidité et la clarté de leurs conditions.';
+      'Privatūs asmenys, verslininkai ir profesionalai renkasi mūsų paskolų sprendimus dėl jų paprastumo, greičio ir aiškių sąlygų.';
 
   @override
-  String get infoQualifiedStaff => 'Personnel qualifié';
+  String get infoQualifiedStaff => 'Kvalifikuotas personalas';
 
   @override
-  String get infoFreeConsultation => 'Consultation gratuite';
+  String get infoFreeConsultation => 'Nemokama konsultacija';
 
   @override
-  String get infoSaveTime => 'Vous gagnez du temps';
+  String get infoSaveTime => 'Taupote laiką';
 
   @override
-  String get infoOptimalService => 'Qualité de service optimale';
+  String get infoOptimalService => 'Aukščiausios kokybės paslaugos';
 
   @override
-  String get clientsSatisfied => 'Clients satisfaits';
+  String get clientsSatisfied => 'Patenkinti klientai';
 
   @override
-  String get yearsActive => 'Années d’activité';
+  String get yearsActive => 'Veiklos metai';
 
   @override
-  String get financialExperts => 'Experts financiers';
+  String get financialExperts => 'Finansų ekspertai';
 
   @override
-  String get activePartners => 'Partenaires actifs';
+  String get activePartners => 'Aktyvūs partneriai';
 
   @override
-  String get fillAllFields => 'Veuillez remplir tous les champs';
+  String get fillAllFields => 'Prašome užpildyti visus laukus';
 
   @override
   String get accountAlreadyExists =>
-      'Ce compte existe déjà. Veuillez vous connecter.';
+      'Ši paskyra jau egzistuoja. Prašome prisijungti.';
 
   @override
-  String get invalidEmail => 'Email invalide';
+  String get invalidEmail => 'Neteisingas el. pašto adresas';
 
   @override
-  String get weakPassword => 'Mot de passe trop faible (min. 6 caractères)';
+  String get weakPassword => 'Per silpnas slaptažodis (min. 6 simboliai)';
 
   @override
-  String get registrationError => 'Erreur lors de la création du compte';
+  String get registrationError => 'Klaida kuriant paskyrą';
 
   @override
-  String get createAccount => 'Créer un compte';
+  String get createAccount => 'Sukurti paskyrą';
 
   @override
-  String get joinKreditSch => 'Rejoignez KreditSch en quelques secondes';
+  String get joinKreditSch =>
+      'Prisijunkite prie „KreditSch“ per kelias sekundes';
 
   @override
-  String get currency => 'Devise';
+  String get currency => 'Valiuta';
 
   @override
-  String get email => 'Email';
+  String get email => 'El. paštas';
 
   @override
-  String get password => 'Mot de passe';
+  String get password => 'Slaptažodis';
 
   @override
-  String get createMyAccount => 'Créer mon compte';
+  String get createMyAccount => 'Sukurti mano paskyrą';
 
   @override
-  String get continueWithGoogle => 'Continuer avec Google';
+  String get continueWithGoogle => 'Tęsti su „Google“';
 
   @override
-  String get selectCurrency => 'Veuillez sélectionner une devise';
+  String get selectCurrency => 'Prašome pasirinkti valiutą';
 
   @override
-  String get alreadyHaveAccount => 'Déjà un compte ?';
+  String get alreadyHaveAccount => 'Jau turite paskyrą?';
 
   @override
-  String get signIn => 'Se connecter';
+  String get signIn => 'Prisijungti';
 
   @override
-  String get googleAuthError => 'Erreur lors de l\'inscription Google';
+  String get googleAuthError => 'Klaida registruojantis per „Google“';
 
   @override
-  String get loggingOut => 'Déconnexion en cours…';
+  String get loggingOut => 'Atsijungiama…';
 
   @override
-  String get noAccountFound => 'Aucun compte trouvé. Veuillez vous inscrire.';
+  String get noAccountFound => 'Paskyra nerasta. Prašome užsiregistruoti.';
 
   @override
-  String get incorrectPassword => 'Mot de passe incorrect';
+  String get incorrectPassword => 'Neteisingas slaptažodis';
 
   @override
-  String get loginError => 'Erreur de connexion';
+  String get loginError => 'Prisijungimo klaida';
 
   @override
-  String get login => 'Connexion';
+  String get login => 'Prisijungimas';
 
   @override
-  String get loginSubtitle => 'Accédez à votre espace client';
+  String get loginSubtitle => 'Prisijunkite prie savo kliento paskyros';
 
   @override
-  String get forgotPassword => 'Mot de passe oublié ?';
+  String get forgotPassword => 'Pamiršote slaptažodį?';
 
   @override
-  String get loginButton => 'Se connecter';
+  String get loginButton => 'Prisijungti';
 
   @override
-  String get googleSignInError => 'Erreur lors de la connexion Google';
+  String get googleSignInError => 'Klaida jungiantis per „Google“';
 
   @override
-  String get noAccountYet => 'Pas encore de compte ?';
+  String get noAccountYet => 'Dar neturite paskyros?';
 
   @override
   String get emailAlreadyInUse =>
-      'Ce compte existe déjà. Veuillez vous connecter.';
+      'Ši paskyra jau egzistuoja. Prašome prisijungti.';
 
   @override
-  String get registerError => 'Erreur lors de la création du compte';
+  String get registerError => 'Klaida kuriant paskyrą';
 
   @override
-  String get register => 'Créer un compte';
+  String get register => 'Sukurti paskyrą';
 
   @override
-  String get registerSubtitle => 'Rejoignez KreditSch en quelques secondes';
+  String get registerSubtitle =>
+      'Prisijunkite prie „KreditSch“ per kelias sekundes';
 
   @override
-  String get registerButton => 'Créer un compte';
+  String get registerButton => 'Sukurti paskyrą';
 
   @override
-  String get googleRegisterError => 'Erreur lors de l\'inscription Google';
+  String get googleRegisterError => 'Klaida registruojantis per „Google“';
 
   @override
-  String get userNotFound => 'Aucun compte trouvé. Veuillez vous inscrire.';
+  String get userNotFound => 'Paskyra nerasta. Prašome užsiregistruoti.';
 
   @override
-  String get wrongPassword => 'Mot de passe incorrect';
+  String get wrongPassword => 'Neteisingas slaptažodis';
 
   @override
-  String get googleLoginError => 'Erreur lors de la connexion Google';
+  String get googleLoginError => 'Klaida jungiantis per „Google“';
 
   @override
-  String get forgotPasswordTitle => 'Mot de passe oublié';
+  String get forgotPasswordTitle => 'Pamirštas slaptažodis';
 
   @override
   String get forgotPasswordSubtitle =>
-      'Entrez votre adresse e-mail pour recevoir un lien de réinitialisation.';
+      'Įveskite savo el. pašto adresą, kad gautumėte atkūrimo nuorodą.';
 
   @override
-  String get emailAddress => 'Adresse e-mail';
+  String get emailAddress => 'El. pašto adresas';
 
   @override
-  String get sendLink => 'Envoyer le lien';
+  String get sendLink => 'Siųsti nuorodą';
 
   @override
   String get resetLinkSent =>
-      'Un lien de réinitialisation a été envoyé à votre adresse e-mail.';
+      'Atkūrimo nuoroda išsiųsta į jūsų el. pašto adresą.';
 
   @override
-  String get errorOccurred => 'Erreur lors de l\'envoi';
+  String get errorOccurred => 'Klaida siunčiant';
 
   @override
-  String get backToLogin => 'Retour à la connexion';
+  String get backToLogin => 'Grįžti į prisijungimą';
 
   @override
-  String get loading => 'Chargement…';
+  String get loading => 'Įkeliama…';
 
   @override
-  String get userNotLoggedIn => 'Utilisateur non connecté';
+  String get userNotLoggedIn => 'Naudotojas neprisijungęs';
 
   @override
-  String get serverError => 'Erreur serveur';
+  String get serverError => 'Serverio klaida';
 
   @override
-  String get errorLoading => '❌ Erreur chargement:';
+  String get errorLoading => '❌ Įkėlimo klaida:';
 
   @override
-  String get noDocumentsSubmitted => 'Aucun document soumis';
+  String get noDocumentsSubmitted => 'Nepateikta jokių dokumentų';
 
   @override
-  String get imageUnavailable => 'Image indisponible';
+  String get imageUnavailable => 'Vaizdas nepasiekiamas';
 
   @override
-  String get approved => 'Approuvé';
+  String get approved => 'Patvirtinta';
 
   @override
-  String get rejected => 'Rejeté';
+  String get rejected => 'Atmesta';
 
   @override
-  String get pending => 'En attente';
+  String get pending => 'Laukiama';
 
   @override
-  String get transactionHistory => 'Historique des transactions';
+  String get transactionHistory => 'Operacijų istorija';
 
   @override
-  String get noTransactionsSubmitted => 'Aucune transaction soumise';
+  String get noTransactionsSubmitted => 'Nepateikta jokių operacijų';
 
   @override
-  String get submittedOn => 'Soumis le :';
+  String get submittedOn => 'Pateikta:';
 
   @override
-  String get status => 'Statut';
+  String get status => 'Būsena';
 
   @override
-  String get errorFetching => '❌ Erreur récupération:';
+  String get errorFetching => '❌ Gavimosi klaida:';
 
   @override
-  String get heroTitle2 => 'L\'alternative pour l\'ici et maintenant.';
+  String get heroTitle2 => 'Alternatyva čia ir dabar.';
 
   @override
   String get heroDescription =>
-      'Dans un contexte économique exigeant, accéder rapidement à un financement fiable est devenu essentiel. KreditSch propose des solutions de prêts flexibles, transparentes et adaptées aux particuliers comme aux entreprises.';
+      'Sudėtingoje ekonominėje aplinkoje greita prieiga prie patikimo finansavimo tapo būtina. „KreditSch“ siūlo lanksčius, skaidrius paskolų sprendimus, pritaikytus tiek privatiems asmenims, tiek įmonėms.';
 
   @override
-  String get bulletFastLoans => 'Prêts rapides avec réponse sous 24h.';
+  String get bulletFastLoans => 'Greitos paskolos su atsakymu per 24 val.';
 
   @override
-  String get bulletFlexibleDuration => 'Durées flexibles de 6 à 60 mois.';
+  String get bulletFlexibleDuration =>
+      'Lankstūs terminai nuo 6 iki 60 mėnesių.';
 
   @override
   String get bulletForAll =>
-      'Solutions adaptées aux particuliers et professionnels.';
+      'Sprendimai privatiems asmenims ir profesionalams.';
 
   @override
-  String get heroCTA => 'Demander un prêt KreditSch Standard >';
+  String get heroCTA => 'Pateikti „KreditSch Standard“ paskolos paraišką >';
 
   @override
-  String get cardLowRisk => 'Prêt à faible risque';
+  String get cardLowRisk => 'Mažos rizikos paskola';
 
   @override
   String get cardLowRiskDesc =>
-      'Des mensualités fixes et transparentes pour une meilleure maîtrise de votre budget.';
+      'Fiksuotos ir skaidrios mėnesinės įmokos geresnei biudžeto kontrolei.';
 
   @override
-  String get cardTargeted => 'Prêts ciblés';
+  String get cardTargeted => 'Tikslinės paskolos';
 
   @override
   String get cardTargetedDesc =>
-      'Financement dédié : logement, auto, études, projets personnels ou trésorerie.';
+      'Skirtas finansavimas: būstui, automobiliui, studijoms, asmeniniams projektams ar apyvartinėms lėšoms.';
 
   @override
-  String get cardFlexibleAmount => 'Montant flexible';
+  String get cardFlexibleAmount => 'Lanksti suma';
 
   @override
   String get cardFlexibleAmountDesc =>
-      'Empruntez entre 1 000 € et 500 000 € selon votre profil et votre besoin.';
+      'Skolinkitės nuo 1 000 € iki 500 000 € pagal savo profilį ir poreikius.';
 
   @override
   String get dividerText =>
-      'Si cette solution de prêt ne correspond pas à votre situation, KreditSch vous propose d\'autres options de financement.';
+      'Jei ši paskolos galimybė neatitinka jūsų situacijos, „KreditSch“ siūlo kitas finansavimo alternatyvas.';
 
   @override
-  String get cardPersonalized => 'Prêts personnalisés';
+  String get cardPersonalized => 'Individualios paskolos';
 
   @override
   String get cardPersonalizedDesc =>
-      'Des offres adaptées à votre situation financière et à votre capacité de remboursement.';
+      'Pasiūlymai, pritaikyti jūsų finansinei situacijai ir grąžinimo galimybėms.';
 
   @override
-  String get cardResponsible => 'Prêts responsables';
+  String get cardResponsible => 'Atsakingos paskolos';
 
   @override
   String get cardResponsibleDesc =>
-      'Financements pensés pour des projets durables et à impact positif.';
+      'Finansavimas tvariems ir teigiamą poveikį turintiems projektams.';
 
   @override
-  String get cardThematic => 'Prêts thématiques';
+  String get cardThematic => 'Teminės paskolos';
 
   @override
   String get cardThematicDesc =>
-      'Santé, études, mobilité, logement ou entrepreneuriat.';
+      'Sveikata, studijos, mobilumas, būstas ar verslumas.';
 
   @override
-  String get cardPartners => 'Partenaires financiers';
+  String get cardPartners => 'Finansiniai partneriai';
 
   @override
   String get cardPartnersDesc =>
-      'Accès à des solutions issues de partenaires financiers nationaux et internationaux.';
+      'Prieiga prie nacionalinių ir tarptautinių finansinių partnerių sprendimų.';
 
   @override
-  String get simulationTitle => 'Simulez votre prêt';
+  String get simulationTitle => 'Simuliuokite savo paskolą';
 
   @override
   String get simulationDescription =>
-      'Ajustez les paramètres pour estimer votre crédit.';
+      'Sureguliuokite parametrus, kad įvertintumėte savo kreditą.';
 
   @override
-  String get loanAmount => 'Montant du prêt';
+  String get loanAmount => 'Paskolos suma';
 
   @override
-  String get duration => 'Durée';
+  String get duration => 'Trukmė';
 
   @override
-  String get months => 'mois';
+  String get months => 'mėnesiai';
 
   @override
-  String get monthlyPayment => 'Mensualité';
+  String get monthlyPayment => 'Mėnesinė įmoka';
 
   @override
-  String get annualInterestRate => 'Taux d\'intérêt annuel du crédit';
+  String get annualInterestRate => 'Metinė palūkanų norma';
 
   @override
-  String get monthlyInsurance => 'Assurance mensuelle';
+  String get monthlyInsurance => 'Mėnesinis draudimas';
 
   @override
-  String get totalPayments => 'Total des mensualités (hors assurance)';
+  String get totalPayments => 'Bendra įmokų suma (be draudimo)';
 
   @override
-  String get totalInterests => 'Total des intérêts';
+  String get totalInterests => 'Bendros palūkanos';
 
   @override
-  String get totalInsurance => 'Total de l’assurance';
+  String get totalInsurance => 'Bendras draudimas';
 
   @override
-  String get continueRequest => 'Continuer la demande';
+  String get continueRequest => 'Tęsti paraišką';
 
   @override
-  String get personalInfoTitle => 'Informations personnelles';
+  String get personalInfoTitle => 'Asmeninė informacija';
 
   @override
-  String get fullNameLabel => 'Nom complet *';
+  String get fullNameLabel => 'Vardas ir pavardė *';
 
   @override
-  String get fullNameHint => 'Votre nom complet';
+  String get fullNameHint => 'Jūsų pilnas vardas';
 
   @override
-  String get emailLabel => 'Email *';
+  String get emailLabel => 'El. paštas *';
 
   @override
-  String get emailHint => 'exemple@email.com';
+  String get emailHint => 'pavyzdys@email.com';
 
   @override
-  String get phoneLabel => 'Téléphone *';
+  String get phoneLabel => 'Telefonas *';
 
   @override
   String get phoneHint => '+41798079255';
 
   @override
-  String get dobLabel => 'Date de naissance';
+  String get dobLabel => 'Gimimo data';
 
   @override
-  String get dobHint => 'JJ/MM/AAAA';
+  String get dobHint => 'DD/MM/MMMM';
 
   @override
-  String get addressLabel => 'Adresse *';
+  String get addressLabel => 'Adresas *';
 
   @override
   String get addressHint => '';
 
   @override
-  String get cityLabel => 'Ville';
+  String get cityLabel => 'Miestas';
 
   @override
-  String get countryLabel => 'Pays';
+  String get countryLabel => 'Šalis';
 
   @override
-  String get requiredDocsTitle => 'Documents requis';
+  String get requiredDocsTitle => 'Reikalingi dokumentai';
 
   @override
   String get identityDoc =>
-      'Pièce d\'identité (Carte d\'identité / Passeport / Permis)';
+      'Asmens dokumentas (ID kortelė / pasas / vairuotojo pažymėjimas)';
 
   @override
-  String get addressProof => 'Justificatif de domicile';
+  String get addressProof => 'Gyvenamosios vietos įrodymas';
 
   @override
-  String get noFileSelected => 'Aucun fichier sélectionné';
+  String get noFileSelected => 'Failas nepasirinktas';
 
   @override
-  String get documentAdded => 'Document ajouté';
+  String get documentAdded => 'Dokumentas pridėtas';
 
   @override
-  String get uploadButton => 'Télécharger';
+  String get uploadButton => 'Įkelti';
 
   @override
-  String get financialInfoTitle => 'Informations financières';
+  String get financialInfoTitle => 'Finansinė informacija';
 
   @override
-  String get amountLabel => 'Montant demandé';
+  String get amountLabel => 'Prašoma suma';
 
   @override
-  String get durationLabel => 'Durée (mois)';
+  String get durationLabel => 'Trukmė (mėn.)';
 
   @override
-  String get incomeLabel => 'Source de revenus';
+  String get incomeLabel => 'Pajamų šaltinis';
 
   @override
-  String get professionLabel => 'Profession';
+  String get professionLabel => 'Profesija';
 
   @override
-  String get fillRequiredFields =>
-      'Veuillez compléter tous les champs obligatoires';
+  String get fillRequiredFields => 'Prašome užpildyti visus privalomus laukus';
 
   @override
-  String get invalidAmountOrDuration => 'Montant ou durée invalide';
+  String get invalidAmountOrDuration => 'Netinkama suma arba trukmė';
 
   @override
-  String get notAuthenticated => 'Utilisateur non authentifié';
+  String get notAuthenticated => 'Naudotojas neautentifikuotas';
 
   @override
-  String get requestSuccessTitle => 'Demande envoyée avec succès';
+  String get requestSuccessTitle => 'Paraiška sėkmingai išsiųsta';
 
   @override
   String requestSuccessContent(
@@ -1052,326 +1051,324 @@ class AppLocalizationsLt extends AppLocalizations {
     Object totalInterest,
     Object totalAmount,
   ) {
-    return 'Merci $name,\n\nMontant : $amount $currency\nDurée : $duration mois\nTaux annuel : 3%\n\nMensualité : $monthlyPayment $currency\nTotal mensualités : $totalPayments $currency\nTotal intérêts : $totalInterest $currency\nTotal à rembourser : $totalAmount $currency';
+    return 'Ačiū $name,\n\nSuma: $amount $currency\nTrukmė: $duration mėn.\nMetinė norma: 3%\n\nMėnesinė įmoka: $monthlyPayment $currency\nBendra įmokų suma: $totalPayments $currency\nBendros palūkanos: $totalInterest $currency\nBendra grąžintina suma: $totalAmount $currency';
   }
 
   @override
-  String get okButton => 'OK';
+  String get okButton => 'Gerai';
 
   @override
-  String get loanOffersHeroTitle => 'Nos offres de financement';
+  String get loanOffersHeroTitle => 'Mūsų finansavimo pasiūlymai';
 
   @override
   String get loanOffersHeroSubtitle =>
-      'Des solutions de crédit rapides, transparentes et adaptées à vos besoins personnels et professionnels.';
+      'Greiti, skaidrūs ir jūsų asmeniniams bei profesiniams poreikiams pritaikyti kredito sprendimai.';
 
   @override
-  String get loanOffersTitle => 'Nos offres';
+  String get loanOffersTitle => 'Mūsų pasiūlymai';
 
   @override
   String get loanOffersSubtitle =>
-      'Découvrez les solutions de crédit que nous mettons à votre disposition.';
+      'Atraskite kredito sprendimus, kuriuos siūlome.';
 
   @override
-  String get offerPersonalTitle => 'Prêt personnel';
+  String get offerPersonalTitle => 'Asmeninė paskola';
 
   @override
   String get offerPersonalDesc =>
-      'Financez vos projets personnels avec des conditions flexibles et un traitement rapide.';
+      'Finansuokite savo asmeninius projektus lanksčiomis sąlygomis ir greitu apdorojimu.';
 
   @override
-  String get offerBusinessTitle => 'Prêt entrepreneurial';
+  String get offerBusinessTitle => 'Verslo paskola';
 
   @override
   String get offerBusinessDesc =>
-      'Un accompagnement financier pour développer et faire grandir votre entreprise.';
+      'Finansinė parama jūsų verslo augimui ir plėtrai.';
 
   @override
-  String get offerInvestmentTitle => 'Prêt investissement';
+  String get offerInvestmentTitle => 'Investicinė paskola';
 
   @override
   String get offerInvestmentDesc =>
-      'Investissez dans l’immobilier ou d’autres opportunités rentables.';
+      'Investuokite į nekilnojamąjį turtą ar kitas pelningas galimybes.';
 
   @override
-  String get offerEmergencyTitle => 'Prêt d’urgence';
+  String get offerEmergencyTitle => 'Skubi paskola';
 
   @override
   String get offerEmergencyDesc =>
-      'Une solution rapide pour faire face aux imprévus financiers.';
+      'Greitas sprendimas netikėtoms finansinėms situacijoms.';
 
   @override
-  String get loanOffersCtaTitle => 'Prêt à faire votre demande ?';
+  String get loanOffersCtaTitle => 'Pasiruošę pateikti paraišką?';
 
   @override
   String get loanOffersCtaSubtitle =>
-      'Contactez-nous dès aujourd’hui et bénéficiez d’un accompagnement personnalisé.';
+      'Susisiekite su mumis šiandien ir gaukite individualią pagalbą.';
 
   @override
-  String get loanOffersCtaButton => 'Faire une demande';
+  String get loanOffersCtaButton => 'Pateikti paraišką';
 
   @override
-  String get loanHistoryTitle => 'Historique des demandes';
+  String get loanHistoryTitle => 'Prašymų istorija';
 
   @override
-  String get loanHistoryEmpty => 'Aucune demande trouvée';
+  String get loanHistoryEmpty => 'Prašymų nerasta';
 
   @override
-  String get loanSubmittedOn => 'Soumise le';
+  String get loanSubmittedOn => 'Pateikta';
 
   @override
-  String get personalInformation => 'Informations personnelles';
+  String get personalInformation => 'Asmeninė informacija';
 
   @override
-  String get financialInformation => 'Informations financières';
+  String get financialInformation => 'Finansinė informacija';
 
   @override
-  String get loanSummary => 'Récapitulatif du crédit';
+  String get loanSummary => 'Paskolos suvestinė';
 
   @override
-  String get phone => 'Téléphone';
+  String get phone => 'Telefonas';
 
   @override
-  String get address => 'Adresse';
+  String get address => 'Adresas';
 
   @override
-  String get city => 'Ville';
+  String get city => 'Miestas';
 
   @override
-  String get country => 'Pays';
+  String get country => 'Šalis';
 
   @override
-  String get profession => 'Profession';
+  String get profession => 'Profesija';
 
   @override
-  String get incomeSource => 'Source de revenus';
+  String get incomeSource => 'Pajamų šaltinis';
 
   @override
-  String get requestedAmount => 'Montant demandé';
+  String get requestedAmount => 'Prašoma suma';
 
   @override
-  String get totalInterest => 'Intérêts';
+  String get totalInterest => 'Palūkanos';
 
   @override
-  String get totalToRepay => 'Total à rembourser';
+  String get totalToRepay => 'Bendra grąžintina suma';
 
   @override
-  String get submittedDocuments => 'Documents soumis';
+  String get submittedDocuments => 'Pateikti dokumentai';
 
   @override
-  String get identityDocument => 'Pièce d\'identité';
+  String get identityDocument => 'Asmens tapatybės dokumentas';
 
   @override
-  String get statusPending => 'En cours';
+  String get statusPending => 'Vykdoma';
 
   @override
-  String get statusApproved => 'Approuvée';
+  String get statusApproved => 'Patvirtinta';
 
   @override
-  String get statusRejected => 'Refusée';
+  String get statusRejected => 'Atmesta';
 
   @override
-  String get dashboardTitle => 'Tableau de bord';
+  String get dashboardTitle => 'Valdymo skydelis';
 
   @override
-  String get dashboardHello => 'Bonjour 👋';
+  String get dashboardHello => 'Sveiki 👋';
 
   @override
-  String get dashboardWelcome => 'Bienvenue dans votre espace client sécurisé';
+  String get dashboardWelcome => 'Sveiki atvykę į savo saugią kliento erdvę';
 
   @override
-  String get dashboardSecureData => '🔒 Données protégées';
+  String get dashboardSecureData => '🔒 Duomenys apsaugoti';
 
   @override
-  String get contactSectionLabel => 'Contact';
+  String get contactSectionLabel => 'Kontaktai';
 
   @override
-  String get contactTitle => 'Contactez KreditSch';
+  String get contactTitle => 'Susisiekite su KreditSch';
 
   @override
   String get contactDescription =>
-      'Notre équipe KreditSch est à votre écoute pour toute demande de prêt personnel, professionnel ou d’urgence.';
+      'KreditSch komanda pasirengusi padėti dėl asmeninių, verslo ar skubių paskolų.';
 
   @override
-  String get contactAddressTitle => 'Allemagne';
+  String get contactAddressTitle => 'Vokietija';
 
   @override
   String get contactAddress => 'Audensstraße 2 – 61348 Bad Homburg v.d. Höhe';
 
   @override
-  String get contactPhoneTitle => 'Téléphone';
+  String get contactPhoneTitle => 'Telefonas';
 
   @override
   String get contactPhone => '+41798079255';
 
   @override
-  String get contactEmailTitle => 'E-mail';
+  String get contactEmailTitle => 'El. paštas';
 
   @override
   String get contactEmail => 'kontakt@kreditsch.de';
 
   @override
-  String get contactFormName => 'Nom';
+  String get contactFormName => 'Vardas';
 
   @override
-  String get contactFormNameHint => 'Votre nom';
+  String get contactFormNameHint => 'Jūsų vardas';
 
   @override
-  String get contactFormEmail => 'E-mail';
+  String get contactFormEmail => 'El. paštas';
 
   @override
-  String get contactFormEmailHint => 'Votre adresse e-mail';
+  String get contactFormEmailHint => 'Jūsų el. pašto adresas';
 
   @override
-  String get contactFormSubject => 'Thème';
+  String get contactFormSubject => 'Tema';
 
   @override
   String get contactFormSubjectHint =>
-      'Demande de prêt, informations, assistance...';
+      'Paskolos prašymas, informacija, pagalba...';
 
   @override
-  String get contactFormMessage => 'Message';
+  String get contactFormMessage => 'Žinutė';
 
   @override
-  String get contactFormMessageHint =>
-      'Décrivez votre besoin ou votre question';
+  String get contactFormMessageHint => 'Aprašykite savo poreikį arba klausimą';
 
   @override
-  String get contactFormSubmit => 'Envoyer un message';
+  String get contactFormSubmit => 'Siųsti žinutę';
 
   @override
-  String get profileTitle => 'Mon profil';
+  String get profileTitle => 'Mano profilis';
 
   @override
-  String get profileNotCreatedTitle => 'Profil non encore créé';
+  String get profileNotCreatedTitle => 'Profilis dar nesukurtas';
 
   @override
   String get profileNotCreatedDescription =>
-      'Pour compléter votre profil, veuillez effectuer\nvotre première demande de prêt.';
+      'Norėdami užpildyti profilį,\npateikite pirmą paskolos prašymą.';
 
   @override
-  String get profileCreateLoanButton => 'Faire une demande de prêt';
+  String get profileCreateLoanButton => 'Pateikti paskolos prašymą';
 
   @override
-  String get profilePersonalInfoTitle => 'Informations personnelles';
+  String get profilePersonalInfoTitle => 'Asmeninė informacija';
 
   @override
-  String get profileContactTitle => 'Coordonnées';
+  String get profileContactTitle => 'Kontaktiniai duomenys';
 
   @override
-  String get profileProfessionalTitle => 'Situation professionnelle';
+  String get profileProfessionalTitle => 'Profesinė situacija';
 
   @override
-  String get profileBirthDate => 'Date de naissance';
+  String get profileBirthDate => 'Gimimo data';
 
   @override
-  String get profileCountry => 'Pays';
+  String get profileCountry => 'Šalis';
 
   @override
-  String get profileCity => 'Ville';
+  String get profileCity => 'Miestas';
 
   @override
-  String get profileAddress => 'Adresse';
+  String get profileAddress => 'Adresas';
 
   @override
-  String get profileEmail => 'Email';
+  String get profileEmail => 'El. paštas';
 
   @override
-  String get profilePhone => 'Téléphone';
+  String get profilePhone => 'Telefonas';
 
   @override
-  String get profileProfession => 'Profession';
+  String get profileProfession => 'Profesija';
 
   @override
-  String get profileIncomeSource => 'Source de revenus';
+  String get profileIncomeSource => 'Pajamų šaltinis';
 
   @override
-  String get profileStatusPending => 'En cours';
+  String get profileStatusPending => 'Vykdoma';
 
   @override
-  String get profileStatusApproved => 'Approuvé';
+  String get profileStatusApproved => 'Patvirtinta';
 
   @override
-  String get profileStatusRejected => 'Refusé';
+  String get profileStatusRejected => 'Atmesta';
 
   @override
-  String get aboutContactUs => 'Écrivez-nous';
+  String get aboutContactUs => 'Parašykite mums';
 
   @override
-  String get aboutLabel => 'Via KreditSch';
+  String get aboutLabel => 'Apie KreditSch';
 
   @override
-  String get aboutTitle => 'Des solutions de prêt adaptées à chaque projet';
+  String get aboutTitle => 'Paskolų sprendimai kiekvienam projektui';
 
   @override
   String get aboutDescription =>
-      'KreditSch accompagne particuliers et entrepreneurs avec des solutions de prêt fiables, transparentes et rapides, adaptées à vos besoins financiers réels.';
+      'KreditSch padeda privatiems asmenims ir verslininkams, siūlydama patikimus, skaidrius ir greitus paskolų sprendimus, pritaikytus realiems finansiniams poreikiams.';
 
   @override
-  String get aboutFeaturePersonalLoanTitle => 'Prêt personnel flexible';
+  String get aboutFeaturePersonalLoanTitle => 'Lanksti asmeninė paskola';
 
   @override
   String get aboutFeaturePersonalLoanDesc =>
-      'Financez vos projets personnels avec des conditions claires et sans surprise.';
+      'Finansuokite savo asmeninius projektus aiškiomis ir be netikėtumų sąlygomis.';
 
   @override
-  String get aboutFeatureBusinessLoanTitle => 'Prêt professionnel';
+  String get aboutFeatureBusinessLoanTitle => 'Verslo paskola';
 
   @override
   String get aboutFeatureBusinessLoanDesc =>
-      'Un soutien financier solide pour développer votre activité en toute sérénité.';
+      'Tvirtas finansinis palaikymas jūsų verslo plėtrai ramiai.';
 
   @override
-  String get aboutFeatureFastPaymentTitle => 'Décaissement rapide';
+  String get aboutFeatureFastPaymentTitle => 'Greitas lėšų pervedimas';
 
   @override
   String get aboutFeatureFastPaymentDesc =>
-      'Recevez vos fonds rapidement après validation de votre dossier.';
+      'Gaukite lėšas greitai po paraiškos patvirtinimo.';
 
   @override
-  String get aboutFeatureSecurityTitle => 'Processus sécurisé';
+  String get aboutFeatureSecurityTitle => 'Saugus procesas';
 
   @override
   String get aboutFeatureSecurityDesc =>
-      'Vos données sont protégées selon les normes les plus strictes.';
+      'Jūsų duomenys apsaugoti pagal griežčiausius standartus.';
 
   @override
-  String get supportTitle => 'Support';
+  String get supportTitle => 'Pagalba';
 
   @override
-  String get supportChatTitle => 'Chat support';
+  String get supportChatTitle => 'Pagalbos pokalbis';
 
   @override
-  String get newConversation => 'Nouvelle discussion';
+  String get newConversation => 'Naujas pokalbis';
 
   @override
-  String get supportTyping => 'Le support est en train d’écrire…';
+  String get supportTyping => 'Pagalba rašo…';
 
   @override
-  String get messageHint => 'Votre message...';
+  String get messageHint => 'Jūsų žinutė...';
 
   @override
-  String get bankDetailsSubtitle => 'Informations du compte bancaire';
+  String get bankDetailsSubtitle => 'Banko sąskaitos informacija';
 
   @override
-  String get receiverFullName => 'Nom complet du receveur';
+  String get receiverFullName => 'Gavėjo pilnas vardas';
 
   @override
-  String get save => 'Enregistrer';
+  String get save => 'Išsaugoti';
 
   @override
-  String get requiredField => 'Champ requis';
+  String get requiredField => 'Privalomas laukas';
 
   @override
-  String get bankDetailsSaved =>
-      'Coordonnées bancaires enregistrées avec succès';
+  String get bankDetailsSaved => 'Banko duomenys sėkmingai išsaugoti';
 
   @override
   String genericError(Object error) {
-    return '❌ Une erreur est survenue : $error';
+    return '❌ Įvyko klaida : $error';
   }
 
   @override
   String get textyellowcard =>
-      'Vous développez vos projets,\n nous finançons votre ambition.';
+      'Jūs vystote savo projektus,\n mes finansuojame jūsų ambicijas.';
 }

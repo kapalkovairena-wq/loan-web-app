@@ -673,7 +673,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activePartners => 'Active partners';
 
   @override
-  String get fillAllFields => 'Please fill in all fields';
+  String get fillAllFields => 'Please fill all fields';
 
   @override
   String get accountAlreadyExists =>
