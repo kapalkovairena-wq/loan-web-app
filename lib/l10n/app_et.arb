@@ -366,6 +366,18 @@
   "notAuthenticated": "Kasutaja pole autentitud",
   "requestSuccessTitle": "Taotlus edukalt saadetud",
   "requestSuccessContent": "Aitäh {name},\n\nSumma: {amount} {currency}\nKestus: {duration} kuud\nAastane määr: 3%\n\nKuumakse: {monthlyPayment} {currency}\nKogumaksed: {totalPayments} {currency}\nKogu intress: {totalInterest} {currency}\nTagasimakstav kogusumma: {totalAmount} {currency}",
+  "@requestSuccessContent": {
+    "placeholders": {
+      "name": {},
+      "amount": {},
+      "currency": {},
+      "duration": {},
+      "monthlyPayment": {},
+      "totalPayments": {},
+      "totalInterest": {},
+      "totalAmount": {}
+    }
+  },
   "okButton": "OK",
   "errorOccurred": "Viga saatmisel",
 

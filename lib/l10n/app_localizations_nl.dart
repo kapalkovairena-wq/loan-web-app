@@ -734,7 +734,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get loginError => 'Fout bij het inloggen';
 
   @override
-  String get login => 'Connexion';
+  String get login => 'Inloggen';
 
   @override
   String get loginSubtitle => 'Toegang tot uw account';
@@ -752,17 +752,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get noAccountYet => 'Nog geen account?';
 
   @override
-  String get emailAlreadyInUse =>
-      'Ce compte existe déjà. Veuillez vous connecter.';
+  String get emailAlreadyInUse => 'Dit account bestaat al. Log alstublieft in.';
 
   @override
-  String get registerError => 'Erreur lors de la création du compte';
+  String get registerError => 'Fout bij het aanmaken van het account';
 
   @override
-  String get register => 'Créer un compte';
+  String get register => 'Account aanmaken';
 
   @override
-  String get registerSubtitle => 'Rejoignez KreditSch en quelques secondes';
+  String get registerSubtitle => 'Word lid van KreditSch in enkele seconden';
 
   @override
   String get registerButton => 'Account aanmaken';

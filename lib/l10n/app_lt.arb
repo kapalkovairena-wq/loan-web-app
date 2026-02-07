@@ -366,6 +366,18 @@
   "notAuthenticated": "Naudotojas neautentifikuotas",
   "requestSuccessTitle": "Paraiška sėkmingai išsiųsta",
   "requestSuccessContent": "Ačiū {name},\n\nSuma: {amount} {currency}\nTrukmė: {duration} mėn.\nMetinė norma: 3%\n\nMėnesinė įmoka: {monthlyPayment} {currency}\nBendra įmokų suma: {totalPayments} {currency}\nBendros palūkanos: {totalInterest} {currency}\nBendra grąžintina suma: {totalAmount} {currency}",
+  "@requestSuccessContent": {
+    "placeholders": {
+      "name": {},
+      "amount": {},
+      "currency": {},
+      "duration": {},
+      "monthlyPayment": {},
+      "totalPayments": {},
+      "totalInterest": {},
+      "totalAmount": {}
+    }
+  },
   "okButton": "Gerai",
   "errorOccurred": "Klaida siunčiant",
 

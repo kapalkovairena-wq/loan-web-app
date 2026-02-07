@@ -25,10 +25,24 @@ void main() async {
 
   // Choisir le fichier "maître" (souvent en anglais)
   final masterFile = arbFiles.firstWhere(
-          (f) => f.path.contains('_en.arb'),
-      orElse: () => arbFiles.first);
+        (f) => f.path.contains('_en.arb'),
+    orElse: () => arbFiles.first,
+  );
 
-  final masterMap = json.decode(await masterFile.readAsString()) as Map<String, dynamic>;
+  Map<String, dynamic> masterMap;
+
+  // Lecture du master avec gestion d'erreur
+  try {
+    final masterContent = await masterFile.readAsString();
+    if (masterContent.trim().isEmpty) {
+      print('❌ Fichier maître ${masterFile.path} vide !');
+      return;
+    }
+    masterMap = json.decode(masterContent) as Map<String, dynamic>;
+  } catch (e) {
+    print('❌ Erreur lors de la lecture du fichier maître ${masterFile.path} : $e');
+    return;
+  }
 
   print('✅ Fichier maître : ${masterFile.path}');
   print('---');
@@ -37,7 +51,22 @@ void main() async {
   for (var file in arbFiles) {
     if (file.path == masterFile.path) continue;
 
-    final targetMap = json.decode(await file.readAsString()) as Map<String, dynamic>;
+    Map<String, dynamic> targetMap;
+
+    try {
+      final content = await file.readAsString();
+      if (content.trim().isEmpty) {
+        print('⚠️ ${file.path} est vide → ignoré.');
+        print('---');
+        continue;
+      }
+      targetMap = json.decode(content) as Map<String, dynamic>;
+    } catch (e) {
+      print('⚠️ ${file.path} contient un JSON invalide → ignoré. Erreur: $e');
+      print('---');
+      continue;
+    }
+
     final missingKeys =
     masterMap.keys.where((key) => !targetMap.containsKey(key)).toList();
 

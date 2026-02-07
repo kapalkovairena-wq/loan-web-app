@@ -245,6 +245,12 @@
   "signIn": "Inloggen",
   "googleAuthError": "Fout bij Google-registratie",
 
+  "login": "Inloggen",
+  "emailAlreadyInUse": "Dit account bestaat al. Log alstublieft in.",
+  "registerError": "Fout bij het aanmaken van het account",
+  "register": "Account aanmaken",
+  "registerSubtitle": "Word lid van KreditSch in enkele seconden",
+
   "loggingOut": "Uitloggen…",
 
   "noAccountFound": "Geen account gevonden. Registreer alstublieft.",
